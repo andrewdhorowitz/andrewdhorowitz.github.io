@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew (fourpshot) — Projects &amp; Automations</title>
+<meta name="description" content="Personal projects and home automations, built spec-first with AI: a family routines app, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
+<style>
+  :root{
+    --ink:#111111; --paper:#fafafa; --card:#ffffff; --line:#e3e3e3;
+    --muted:#5c5c5c; --accent:#d97706; --accent-soft:#fef3c7;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--paper); color:var(--ink); line-height:1.55;}
+  a{color:var(--ink); text-decoration-color:var(--accent); text-decoration-thickness:2px; text-underline-offset:3px;}
+  a:hover{color:var(--accent);}
+  .band{background:var(--ink); color:#fff; padding:56px 20px 44px;}
+  .wrap{max-width:960px; margin:0 auto;}
+  .band h1{font-size:2.3rem; letter-spacing:-0.5px; line-height:1.15;}
+  .band h1 .accent{color:var(--accent);}
+  .band p{color:#d6d6d6; max-width:640px; margin-top:14px; font-size:1.05rem;}
+  .band .links{margin-top:20px; font-size:0.95rem;}
+  .band .links a{color:#fff; margin-right:18px;}
+  main{padding:36px 20px 10px;}
+  h2{font-size:1.45rem; letter-spacing:-0.3px; margin:34px 0 6px;}
+  h2:first-child{margin-top:0;}
+  .sub{color:var(--muted); margin-bottom:18px; max-width:680px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; margin-bottom:18px;}
+  .card h3{font-size:1.2rem; margin-bottom:6px;}
+  .card h3 .tag{font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
+  .card p{color:#2b2b2b; margin-bottom:10px;}
+  .card p.note{color:var(--muted); font-size:0.93rem;}
+  .card ul{margin:0 0 4px 18px; color:#2b2b2b;}
+  .card li{margin-bottom:4px;}
+  .btns{margin-top:12px; display:flex; flex-wrap:wrap; gap:8px;}
+  .btn{display:inline-block; border:1.5px solid var(--ink); border-radius:8px; padding:6px 14px;
+       font-size:0.9rem; font-weight:600; text-decoration:none;}
+  .btn:hover{background:var(--ink); color:#fff;}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn.primary:hover{background:var(--ink); border-color:var(--ink);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
+  .grid .card{margin-bottom:0;}
+  .grid .card h3{font-size:1.05rem;}
+  .grid .card p{font-size:0.95rem; margin-bottom:0;}
+  .howto{background:var(--ink); color:#eee; border-radius:12px; padding:22px; margin:8px 0 18px;}
+  .howto h3{color:#fff; margin-bottom:8px;}
+  .howto ol{margin-left:20px;}
+  .howto li{margin-bottom:5px;}
+  footer{padding:26px 20px 44px; color:var(--muted); font-size:0.9rem;}
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <h1>Andrew builds things<br>that <span class="accent">run themselves</span>.</h1>
+    <p>Personal projects and home automations, designed spec-first and built with AI assistance —
+       then left to run on their own: an app generated from its own prompt library, a protocol two AI
+       assistants use to talk to each other, and a small fleet of systems that quietly keep a
+       calendar, a car, and a household on schedule.</p>
+    <div class="links">
+      <a href="https://github.com/fourpshot">GitHub — fourpshot</a>
+      <a href="#projects">Projects</a>
+      <a href="#automations">Automations</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <h2 id="projects">Featured projects</h2>
+    <p class="sub">Both are public on GitHub — including the specs and the AI prompts that produced them.
+       Around here, the prompt is the source code.</p>
+
+    <div class="card">
+      <h3>Family Routines App <span class="tag">Live app</span></h3>
+      <p>A daily routine tracker for families: morning and evening check-offs, streaks, and a
+         noon-rollover cycle, with per-person dashboards and an admin mode. The whole app is a
+         single HTML file backed by Firebase — and it was <em>generated</em>, not hand-written.</p>
+      <p class="note">The interesting part is how it was built: a full specification and a library of
+         prompts live in the same repo — the master design spec, the generator prompt that produces
+         the code, the build prompt, and the phase plan. Change the prompt, regenerate the app.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://fourpshot.github.io/my-family-routines-app/">Open the app</a>
+        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app">Repository</a>
+        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/SPEC.md">The spec</a>
+        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/MASTER_DESIGN_SPEC.md">Master design spec</a>
+        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/GENERATOR_PROMPT.md">Generator prompt</a>
+        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/BUILD_PROMPT.md">Build prompt</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>AIMF — AI Messaging Format <span class="tag">Protocol</span></h3>
+      <p>An open protocol that lets AI assistants exchange structured messages — notes, file drops,
+         requests, status reports — over ordinary email, with sender verification, consent
+         agreements between the humans behind them, and versioned updates that every participant
+         has to acknowledge.</p>
+      <p class="note">Designed, tested, and run live between two different AI assistants in October 2026:
+         the spec carries test vectors a bot can grade itself against, a trial prompt any assistant
+         can be onboarded with, and a public registry of agreements. The canonical home is the repo —
+         if it isn't on GitHub, it isn't an update.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://fourpshot.github.io/aimf-protocol/">Invite page</a>
+        <a class="btn" href="https://github.com/fourpshot/aimf-protocol">Repository</a>
+        <a class="btn" href="https://raw.githubusercontent.com/fourpshot/aimf-protocol/main/SPEC.md">The spec (bot-readable)</a>
+        <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/trial-prompt.md">Trial prompt</a>
+        <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
+        <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/CHANGELOG.md">Changelog</a>
+      </div>
+    </div>
+
+    <h2 id="automations">Automations</h2>
+    <p class="sub">The unglamorous systems that do the daily work. Each one was designed around a simple
+       rule: it should run quietly, explain itself when it acts, and never guess when it can ask.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🚗 The self-maintaining calendar</h3>
+        <p>Every morning, a scanner reads the next seven days of the calendar and adds private
+           drive-time blocks before in-person events — mapped drive × 1.2 + a cushion, chained from
+           home or the previous stop, with get-ready blocks, pickup routing for family events, and a
+           plain-English note in each block explaining how the route was deduced. Tight gaps get a
+           warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.</p>
+      </div>
+      <div class="card">
+        <h3>⏰ Time-to-leave alerts, with a light show</h3>
+        <p>Every 15 minutes, the next trip is checked against live traffic from the current GPS
+           position. When it's time to go: one ping — and if I'm home, all five smart lights run a
+           prism show at full brightness, then restore themselves three minutes later. If I leave
+           and stay away, the house turns its own lights off.</p>
+      </div>
+      <div class="card">
+        <h3>⛽ Gas tracker</h3>
+        <p>I report fill-ups and the gauge needle; the system estimates miles driven from the
+           calendar, projects the day the tank crosses a quarter, and pins a "get gas" stop onto a
+           trip I'm already making — at the best-priced convenient station on that route, never
+           slipping an arrival time to do it.</p>
+      </div>
+      <div class="card">
+        <h3>🎺 Band schedule monitor</h3>
+        <p>A daily diff of a high-school marching band's weekly schedule document, plus coordinator
+           emails and crew texts. Changes surface the same morning; on performance days the brief
+           leads with the call time (not the show time) and the crew sign-up link.</p>
+      </div>
+      <div class="card">
+        <h3>🗂️ PARA + GTD filing system</h3>
+        <p>Every new document lands in a PARA folder structure in Drive; every task lives in exactly
+           one GTD list and carries links back to its project resources, so a task and its paperwork
+           are always one search apart. A weekly review task generates itself every Friday.</p>
+      </div>
+      <div class="card">
+        <h3>📬 Priority comms watch</h3>
+        <p>Every 15 minutes during waking hours, texts, email, and call logs are checked for one
+           priority contact, so a time-sensitive family request never sits unseen. Everything else
+           batches into a single morning list — no drips.</p>
+      </div>
+      <div class="card">
+        <h3>🧹 Inbox hygiene</h3>
+        <p>School digest and notification mail is auto-labeled and swept out of the inbox daily;
+           anything stale past five days trashes itself. The inbox stays for things that need a human.</p>
+      </div>
+      <div class="card">
+        <h3>🌅 Morning day-plan</h3>
+        <p>One consolidated brief to start the day: today's drives and tight spots, tasks due,
+           replies owed, and anything that changed overnight — assembled from the same systems above.</p>
+      </div>
+    </div>
+
+    <h2>How these get built</h2>
+    <div class="howto">
+      <h3>Spec first, prompt as source, verify by reading back</h3>
+      <ol>
+        <li>Write the spec — behavior, edge cases, and what "done" means — before any code.</li>
+        <li>Keep the prompts in the repo next to the output they generate; a fix starts as a prompt edit.</li>
+        <li>Generate, then verify by reading the result back from where it actually lives.</li>
+        <li>Track every known issue in the open, in the repo, with a status log anyone can audit.</li>
+        <li>Automate the boring verification too — the systems watch themselves and report changes.</li>
+      </ol>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Andrew · <a href="https://github.com/fourpshot">github.com/fourpshot</a> ·
+       Built with AI assistance — the specs and prompts are linked on every project, judge for yourself.</p>
+  </div>
+</footer>
+
+</body>
+</html>
