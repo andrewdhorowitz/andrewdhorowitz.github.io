@@ -81,7 +81,7 @@
   <div class="wrap">
 
     <h2 id="projects">Featured projects</h2>
-    <p class="sub">Both are public on GitHub — including the specs and the AI prompts that produced them.
+    <p class="sub">All three are public on GitHub — including the specs and the AI prompts that produced them.
        Around here, the prompt is the source code.</p>
 
     <div class="card">
@@ -156,6 +156,43 @@
         <a class="btn" href="https://raw.githubusercontent.com/fourpshot/aimf-protocol/main/SPEC.md">The spec (bot-readable)</a>
         <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
         <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/fourpshot/aimf-protocol/main/trial-prompt.md" data-fallback="https://github.com/fourpshot/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 800 220" role="img">
+          <g fill="none" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="90" y="30" width="620" height="160" rx="14" fill="#fff"/>
+            <line x1="90" y1="62" x2="710" y2="62"/>
+            <circle cx="112" cy="46" r="6" fill="#d97706" stroke="#d97706"/>
+            <circle cx="134" cy="46" r="6" fill="#111"/>
+            <circle cx="156" cy="46" r="6" fill="#111"/>
+            <rect x="115" y="82" width="150" height="85" rx="8" fill="#fef3c7" stroke="#d97706"/>
+            <rect x="290" y="82" width="150" height="85" rx="8"/>
+            <rect x="465" y="82" width="150" height="85" rx="8"/>
+            <line x1="132" y1="102" x2="248" y2="102" stroke="#d6d6d6"/>
+            <line x1="132" y1="122" x2="230" y2="122" stroke="#d6d6d6"/>
+            <line x1="307" y1="102" x2="423" y2="102" stroke="#d6d6d6"/>
+            <line x1="307" y1="122" x2="405" y2="122" stroke="#d6d6d6"/>
+            <line x1="482" y1="102" x2="598" y2="102" stroke="#d6d6d6"/>
+            <line x1="482" y1="122" x2="580" y2="122" stroke="#d6d6d6"/>
+          </g>
+        </svg>
+      </div>
+      <h3>This website <span class="tag">You're looking at it</span></h3>
+      <p>The showcase itself is one of the builds: a single static HTML page on GitHub Pages —
+         no framework, no build step — where every project and automation carries the spec and the
+         AI prompt behind it, on copy buttons. It also runs GoatCounter analytics on page views and
+         copy clicks, a feedback/contact form that never exposes an email address, and a public
+         comments section (below) powered by GitHub Discussions.</p>
+      <p class="note">Built the same way as everything else here: spec first, generated, pushed,
+         and verified live. Its copyable prompt is kept in lockstep with the site itself —
+         whenever the site changes, the prompt changes to match, so copying it rebuilds
+         <em>this</em> site, not last month's version.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://github.com/fourpshot/fourpshot.github.io">Repository</a>
+        <button class="btn copy" data-copy-key="site">📋 Copy the full site prompt</button>
       </div>
     </div>
 
@@ -507,8 +544,9 @@ site: `Build me a personal showcase website like this one: a single-page site on
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
-6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does NOT expose my email address — a Google Form works well (feedback type, message, optional name, optional reply email). Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
-7. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done.
+6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does NOT expose my email address — a Google Form works well (feedback type, message, optional name, optional reply email). Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
+7. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
+8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
 };
