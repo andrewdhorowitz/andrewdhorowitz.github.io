@@ -344,13 +344,43 @@
       </ol>
     </div>
 
+    <h2>Steal this site</h2>
+    <p class="sub">This whole page — the inventory, the cards, the visuals, the copy-prompt buttons —
+       was built by Muse (Meta's personal AI agent) from a conversation. Here is that conversation, distilled into one
+       prompt. Copy it, paste it into your own AI assistant, and get your own version.</p>
+    <div class="card">
+      <h3>🎁 The "build my showcase" prompt</h3>
+      <p>It walks your assistant through everything: inventorying your GitHub, featuring the specs and
+         prompts behind each project, writing up your automations without leaking private details,
+         wiring the copy buttons, share links, feedback form, and analytics — then publishing to
+         GitHub Pages and verifying the live page before declaring victory.</p>
+      <div class="btns"><button class="btn copy primary" data-copy-key="site">📋 Copy the full site prompt</button></div>
+    </div>
+
+    <h2>Get in touch</h2>
+    <p class="sub">Like something? Spot a mistake? Want to talk about building systems like these?
+       All of it lands in the same place — and nothing here exposes an email address.</p>
+    <div class="card">
+      <h3>Share, feedback &amp; contact</h3>
+      <p>Share the site with a friend, send feedback or an idea, or just contact Andrew directly —
+         the form has a "Contact Andrew" option, and you can leave your email if you'd like a reply.</p>
+      <div class="btns">
+        <button class="btn primary" id="shareBtn" data-track="share">🔗 Share this site</button>
+        <button class="btn copy" id="copyLinkBtn" data-track="copylink">📋 Copy the link</button>
+        <a class="btn" data-track="share-linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ffourpshot.github.io%2F">Share on LinkedIn</a>
+        <a class="btn" data-track="share-x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Ffourpshot.github.io%2F&amp;text=Projects%20and%20automations%20built%20spec-first%20with%20AI%20%E2%80%94%20including%20the%20prompts%20behind%20them">Share on X</a>
+        <a class="btn primary" data-track="feedback" target="_blank" rel="noopener" href="https://docs.google.com/forms/d/e/1FAIpQLSdWsNlIUOtcfYeBuaJZfcWc-d9JLwP0wrxEwaVrN1uJqj1HvA/viewform">✉️ Send feedback / Contact me</a>
+      </div>
+    </div>
+
   </div>
 </main>
 
 <footer>
   <div class="wrap">
     <p>© 2026 Andrew · <a href="https://github.com/fourpshot">github.com/fourpshot</a> ·
-       Built with AI assistance — the specs and prompts are linked on every project, judge for yourself.</p>
+       Built with Muse, Meta's personal AI agent — it runs most of the automations above and maintains this page.
+       The specs and prompts are linked on every project, judge for yourself.</p>
   </div>
 </footer>
 
@@ -445,7 +475,19 @@ Assemble it from my calendar, my task lists, and overnight changes:
 - Replies I owe: messages or emails from yesterday that clearly expect an answer from me, with who and what they are waiting on, in one line each.
 - Anything that changed overnight: new events, cancellations, schedule changes from the groups I follow.
 
-Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.`
+Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.`,
+
+site: `Build me a personal showcase website like this one: a single-page site on GitHub Pages that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
+
+1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
+2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code.
+3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
+4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system.
+5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
+6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does NOT expose my email address — a Google Form works well (feedback type, message, optional name, optional reply email). Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
+7. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done.
+
+Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
 };
 
 function toast(msg){
@@ -462,8 +504,29 @@ async function copyText(text){
     ta.remove(); return ok;
   }
 }
+function track(name){
+  try{ if(window.goatcounter && window.goatcounter.count)
+    window.goatcounter.count({path:'event/'+name, event:true}); }catch(e){}
+}
+document.querySelectorAll('[data-track]').forEach(el=>{
+  el.addEventListener('click', ()=>track(el.dataset.track));
+});
+const shareBtn = document.getElementById('shareBtn');
+if(shareBtn) shareBtn.addEventListener('click', async ()=>{
+  const data = {title:'Andrew (fourpshot) — Projects & Automations',
+    text:'Projects and automations built spec-first with AI — including the prompts behind them.',
+    url:'https://fourpshot.github.io/'};
+  if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
+  else { const ok = await copyText(data.url); toast(ok ? '✓ Link copied — share it anywhere' : 'Copy failed'); }
+});
+const copyLinkBtn = document.getElementById('copyLinkBtn');
+if(copyLinkBtn) copyLinkBtn.addEventListener('click', async ()=>{
+  const ok = await copyText('https://fourpshot.github.io/');
+  toast(ok ? '✓ Link copied' : 'Copy failed — your browser blocked it');
+});
 document.querySelectorAll('[data-copy-key]').forEach(btn=>{
   btn.addEventListener('click', async ()=>{
+    track('copy-'+btn.dataset.copyKey);
     const ok = await copyText(PROMPTS[btn.dataset.copyKey] || '');
     toast(ok ? '✓ Prompt copied — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
   });
@@ -475,6 +538,7 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
       const r = await fetch(btn.dataset.copyRemote);
       if(!r.ok) throw new Error('fetch failed');
       const text = await r.text();
+      track('copy-remote');
       const ok = await copyText(text);
       toast(ok ? '✓ Full prompt copied from GitHub — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
     }catch(e){
