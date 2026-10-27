@@ -26,29 +26,36 @@
   h2{font-size:1.45rem; letter-spacing:-0.3px; margin:34px 0 6px;}
   h2:first-child{margin-top:0;}
   .sub{color:var(--muted); margin-bottom:18px; max-width:680px;}
-  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; margin-bottom:18px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; margin-bottom:18px; overflow:hidden;}
   .card h3{font-size:1.2rem; margin-bottom:6px;}
   .card h3 .tag{font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
     background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
   .card p{color:#2b2b2b; margin-bottom:10px;}
   .card p.note{color:var(--muted); font-size:0.93rem;}
-  .card ul{margin:0 0 4px 18px; color:#2b2b2b;}
-  .card li{margin-bottom:4px;}
+  .art{margin:-22px -22px 16px; border-bottom:1px solid var(--line); background:#f5f5f4;}
+  .art svg{display:block; width:100%; height:auto;}
+  .grid .art{margin:-22px -22px 14px;}
   .btns{margin-top:12px; display:flex; flex-wrap:wrap; gap:8px;}
   .btn{display:inline-block; border:1.5px solid var(--ink); border-radius:8px; padding:6px 14px;
-       font-size:0.9rem; font-weight:600; text-decoration:none;}
+       font-size:0.9rem; font-weight:600; text-decoration:none; background:#fff; cursor:pointer; font-family:inherit;}
   .btn:hover{background:var(--ink); color:#fff;}
   .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
   .btn.primary:hover{background:var(--ink); border-color:var(--ink);}
+  .btn.copy{border-style:dashed;}
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
-  .grid .card{margin-bottom:0;}
+  .grid .card{margin-bottom:0; display:flex; flex-direction:column;}
   .grid .card h3{font-size:1.05rem;}
-  .grid .card p{font-size:0.95rem; margin-bottom:0;}
+  .grid .card p{font-size:0.95rem;}
+  .grid .card .btns{margin-top:auto; padding-top:10px;}
   .howto{background:var(--ink); color:#eee; border-radius:12px; padding:22px; margin:8px 0 18px;}
   .howto h3{color:#fff; margin-bottom:8px;}
   .howto ol{margin-left:20px;}
   .howto li{margin-bottom:5px;}
   footer{padding:26px 20px 44px; color:var(--muted); font-size:0.9rem;}
+  #toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; padding:10px 20px; border-radius:999px; font-size:0.92rem;
+    opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:50;}
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -60,6 +67,8 @@
        then left to run on their own: an app generated from its own prompt library, a protocol two AI
        assistants use to talk to each other, and a small fleet of systems that quietly keep a
        calendar, a car, and a household on schedule.</p>
+    <p style="margin-top:10px;">Every card below has a <strong style="color:#fff;">Copy prompt</strong> button —
+       paste it into your own AI assistant and it can build you the same thing.</p>
     <div class="links">
       <a href="https://github.com/fourpshot">GitHub — fourpshot</a>
       <a href="#projects">Projects</a>
@@ -76,6 +85,23 @@
        Around here, the prompt is the source code.</p>
 
     <div class="card">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 800 220" role="img">
+          <g fill="none" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="70" y="35" width="300" height="150" rx="14" fill="#fff"/>
+            <line x1="100" y1="75" x2="300" y2="75" stroke="#d6d6d6"/>
+            <rect x="100" y="95" width="26" height="26" rx="6" fill="#d97706" stroke="#d97706"/>
+            <path d="M107 108 l6 7 l11 -13" stroke="#fff" stroke-width="5"/>
+            <line x1="140" y1="108" x2="330" y2="108"/>
+            <rect x="100" y="135" width="26" height="26" rx="6" fill="#fff"/>
+            <line x1="140" y1="148" x2="300" y2="148"/>
+            <path d="M470 160 a55 55 0 1 1 55 -55" stroke="#d6d6d6"/>
+            <circle cx="525" cy="105" r="10" fill="#d97706" stroke="#d97706"/>
+            <path d="M610 150 c-14 -22 -4 -38 6 -52 c2 12 8 18 14 24 c10 -14 10 -26 8 -38 c20 16 30 36 26 58 c-3 22 -20 38 -40 40 c-16 -6 -22 -18 -14 -32z" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="600" y1="195" x2="700" y2="195" stroke="#d6d6d6"/>
+          </g>
+        </svg>
+      </div>
       <h3>Family Routines App <span class="tag">Live app</span></h3>
       <p>A daily routine tracker for families: morning and evening check-offs, streaks, and a
          noon-rollover cycle, with per-person dashboards and an admin mode. The whole app is a
@@ -89,11 +115,32 @@
         <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/SPEC.md">The spec</a>
         <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/MASTER_DESIGN_SPEC.md">Master design spec</a>
         <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/GENERATOR_PROMPT.md">Generator prompt</a>
-        <a class="btn" href="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/BUILD_PROMPT.md">Build prompt</a>
+        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/fourpshot/my-family-routines-app/main/docs/GENERATOR_PROMPT.md" data-fallback="https://github.com/fourpshot/my-family-routines-app/blob/main/docs/GENERATOR_PROMPT.md">📋 Copy the full generator prompt</button>
       </div>
     </div>
 
     <div class="card">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 800 220" role="img">
+          <g fill="none" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="90" y="60" width="110" height="95" rx="18" fill="#fff"/>
+            <line x1="145" y1="60" x2="145" y2="35"/>
+            <circle cx="145" cy="30" r="7" fill="#d97706" stroke="#d97706"/>
+            <circle cx="122" cy="100" r="7" fill="#111"/>
+            <circle cx="168" cy="100" r="7" fill="#111"/>
+            <path d="M125 132 q20 12 40 0"/>
+            <rect x="600" y="60" width="110" height="95" rx="18" fill="#fff"/>
+            <line x1="655" y1="60" x2="655" y2="35"/>
+            <circle cx="655" cy="30" r="7" fill="#d97706" stroke="#d97706"/>
+            <circle cx="632" cy="100" r="7" fill="#111"/>
+            <circle cx="678" cy="100" r="7" fill="#111"/>
+            <path d="M635 132 q20 12 40 0"/>
+            <path d="M215 95 h120 M465 125 h120" stroke="#d97706" stroke-dasharray="2 14"/>
+            <rect x="335" y="70" width="130" height="85" rx="10" fill="#fef3c7" stroke="#d97706"/>
+            <path d="M338 76 l62 44 l62 -44" stroke="#d97706"/>
+          </g>
+        </svg>
+      </div>
       <h3>AIMF — AI Messaging Format <span class="tag">Protocol</span></h3>
       <p>An open protocol that lets AI assistants exchange structured messages — notes, file drops,
          requests, status reports — over ordinary email, with sender verification, consent
@@ -107,66 +154,181 @@
         <a class="btn primary" href="https://fourpshot.github.io/aimf-protocol/">Invite page</a>
         <a class="btn" href="https://github.com/fourpshot/aimf-protocol">Repository</a>
         <a class="btn" href="https://raw.githubusercontent.com/fourpshot/aimf-protocol/main/SPEC.md">The spec (bot-readable)</a>
-        <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/trial-prompt.md">Trial prompt</a>
         <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
-        <a class="btn" href="https://github.com/fourpshot/aimf-protocol/blob/main/CHANGELOG.md">Changelog</a>
+        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/fourpshot/aimf-protocol/main/trial-prompt.md" data-fallback="https://github.com/fourpshot/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
       </div>
     </div>
 
     <h2 id="automations">Automations</h2>
     <p class="sub">The unglamorous systems that do the daily work. Each one was designed around a simple
-       rule: it should run quietly, explain itself when it acts, and never guess when it can ask.</p>
+       rule: it should run quietly, explain itself when it acts, and never guess when it can ask.
+       Each card's prompt is a complete, self-contained brief — copy it, paste it into an AI
+       assistant that can see your calendar, and it can build the same system for you.</p>
 
     <div class="grid">
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="80" y="30" width="300" height="160" rx="14" fill="#fff"/>
+            <line x1="80" y1="75" x2="380" y2="75"/>
+            <line x1="155" y1="75" x2="155" y2="190"/><line x1="230" y1="75" x2="230" y2="190"/><line x1="305" y1="75" x2="305" y2="190"/>
+            <line x1="80" y1="132" x2="380" y2="132"/>
+            <rect x="245" y="90" width="45" height="30" rx="6" fill="#fef3c7" stroke="#d97706"/>
+            <path d="M430 170 C 520 170, 540 60, 640 60" stroke="#d97706" stroke-dasharray="2 16"/>
+            <path d="M640 38 c16 22 16 40 0 56 c-16 -16 -16 -34 0 -56z" fill="#fff" stroke="#d97706"/>
+            <circle cx="640" cy="66" r="8" fill="#d97706"/>
+            <circle cx="430" cy="170" r="9" fill="#111"/>
+          </g></svg></div>
         <h3>🚗 The self-maintaining calendar</h3>
         <p>Every morning, a scanner reads the next seven days of the calendar and adds private
            drive-time blocks before in-person events — mapped drive × 1.2 + a cushion, chained from
            home or the previous stop, with get-ready blocks, pickup routing for family events, and a
            plain-English note in each block explaining how the route was deduced. Tight gaps get a
            warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="calendar">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="150" cy="80" r="42" fill="#fff"/>
+            <path d="M150 55 v25 l18 12" />
+            <path d="M300 185 L400 60 L500 185 Z" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="400" y1="60" x2="400" y2="185" stroke="#d97706"/>
+            <line x1="352" y1="130" x2="290" y2="110" stroke="#d97706"/>
+            <line x1="448" y1="130" x2="510" y2="110" stroke="#d97706"/>
+            <line x1="330" y1="185" x2="235" y2="185"/>
+            <line x1="470" y1="185" x2="565" y2="185"/>
+            <path d="M610 60 c0 30 -22 44 -22 70 a22 22 0 1 0 44 0 c0 -26 -22 -40 -22 -70z" fill="#fff"/>
+            <circle cx="610" cy="128" r="7" fill="#d97706" stroke="#d97706"/>
+          </g></svg></div>
         <h3>⏰ Time-to-leave alerts, with a light show</h3>
         <p>Every 15 minutes, the next trip is checked against live traffic from the current GPS
            position. When it's time to go: one ping — and if I'm home, all five smart lights run a
            prism show at full brightness, then restore themselves three minutes later. If I leave
            and stay away, the house turns its own lights off.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="leave">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M120 170 a95 95 0 1 1 190 0" fill="#fff"/>
+            <path d="M150 170 a65 65 0 0 1 55 -55" stroke="#d97706" stroke-width="16"/>
+            <line x1="215" y1="170" x2="245" y2="105"/>
+            <circle cx="215" cy="170" r="10" fill="#111"/>
+            <line x1="105" y1="195" x2="330" y2="195"/>
+            <rect x="480" y="45" width="95" height="150" rx="12" fill="#fff"/>
+            <rect x="498" y="65" width="59" height="42" rx="6" fill="#fef3c7" stroke="#d97706"/>
+            <path d="M575 85 h35 a15 15 0 0 1 15 15 v60" />
+            <path d="M610 100 l35 -30" stroke="#d97706"/>
+            <circle cx="652" cy="64" r="10" fill="#d97706" stroke="#d97706"/>
+          </g></svg></div>
         <h3>⛽ Gas tracker</h3>
         <p>I report fill-ups and the gauge needle; the system estimates miles driven from the
            calendar, projects the day the tank crosses a quarter, and pins a "get gas" stop onto a
            trip I'm already making — at the best-priced convenient station on that route, never
            slipping an arrival time to do it.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="gas">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="140" y1="30" x2="140" y2="195"/>
+            <path d="M140 35 c60 -18 90 18 150 0 v55 c-60 18 -90 -18 -150 0z" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="330" y1="85" x2="700" y2="85" stroke="#d6d6d6"/>
+            <line x1="330" y1="115" x2="700" y2="115" stroke="#d6d6d6"/>
+            <line x1="330" y1="145" x2="700" y2="145" stroke="#d6d6d6"/>
+            <circle cx="420" cy="128" r="17" fill="#111"/>
+            <line x1="437" y1="128" x2="437" y2="70"/>
+            <circle cx="545" cy="143" r="17" fill="#111"/>
+            <line x1="562" y1="143" x2="562" y2="85"/>
+            <line x1="437" y1="70" x2="562" y2="85" stroke="#111"/>
+          </g></svg></div>
         <h3>🎺 Band schedule monitor</h3>
         <p>A daily diff of a high-school marching band's weekly schedule document, plus coordinator
            emails and crew texts. Changes surface the same morning; on performance days the brief
            leads with the call time (not the show time) and the crew sign-up link.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="band">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M90 60 h110 l25 30 h-135z" fill="#fef3c7" stroke="#d97706"/>
+            <rect x="90" y="60" width="200" height="120" rx="10" fill="#fff"/>
+            <path d="M330 70 h90 l22 26 h-112z" fill="#fff"/>
+            <path d="M330 125 h90 l22 26 h-112z" fill="#fff"/>
+            <rect x="500" y="45" width="210" height="140" rx="12" fill="#fff"/>
+            <rect x="525" y="72" width="24" height="24" rx="5" fill="#d97706" stroke="#d97706"/>
+            <path d="M532 84 l5 6 l9 -11" stroke="#fff"/>
+            <line x1="562" y1="84" x2="685" y2="84"/>
+            <rect x="525" y="112" width="24" height="24" rx="5"/>
+            <line x1="562" y1="124" x2="660" y2="124"/>
+            <rect x="525" y="152" width="24" height="24" rx="5"/>
+            <line x1="562" y1="164" x2="675" y2="164"/>
+          </g></svg></div>
         <h3>🗂️ PARA + GTD filing system</h3>
         <p>Every new document lands in a PARA folder structure in Drive; every task lives in exactly
            one GTD list and carries links back to its project resources, so a task and its paperwork
            are always one search apart. A weekly review task generates itself every Friday.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="para">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="110" y="35" width="120" height="155" rx="16" fill="#fff"/>
+            <line x1="155" y1="55" x2="185" y2="55"/>
+            <path d="M300 55 h240 a25 25 0 0 1 25 25 v55 a25 25 0 0 1 -25 25 h-160 l-55 38 v-38 h-25 a25 25 0 0 1 -25 -25 v-55 a25 25 0 0 1 25 -25z" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="330" y1="95" x2="530" y2="95"/>
+            <line x1="330" y1="125" x2="480" y2="125"/>
+            <path d="M640 55 a38 38 0 0 1 76 0 c0 30 10 38 10 38 h-96 s10 -8 10 -38z" fill="#fff" stroke="#d97706"/>
+            <circle cx="678" cy="112" r="10" fill="#d97706" stroke="#d97706"/>
+          </g></svg></div>
         <h3>📬 Priority comms watch</h3>
         <p>Every 15 minutes during waking hours, texts, email, and call logs are checked for one
            priority contact, so a time-sensitive family request never sits unseen. Everything else
            batches into a single morning list — no drips.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="comms">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="130" y="60" width="230" height="130" rx="12" fill="#fff"/>
+            <path d="M136 70 l109 82 l109 -82" />
+            <rect x="420" y="85" width="230" height="105" rx="12" fill="#fef3c7" stroke="#d97706"/>
+            <path d="M426 95 l109 78 l109 -78" stroke="#d97706"/>
+            <path d="M255 30 l6 14 l14 2 l-11 10 l3 14 l-12 -8 l-13 8 l3 -14 l-10 -10 l14 -2z" fill="#d97706" stroke="#d97706"/>
+          </g></svg></div>
         <h3>🧹 Inbox hygiene</h3>
         <p>School digest and notification mail is auto-labeled and swept out of the inbox daily;
            anything stale past five days trashes itself. The inbox stays for things that need a human.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="inbox">📋 Copy build prompt</button></div>
       </div>
+
       <div class="card">
+        <div class="art" aria-hidden="true"><svg viewBox="0 0 800 220">
+          <g fill="none" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M110 165 a70 70 0 0 1 140 0" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="80" y1="165" x2="280" y2="165"/>
+            <line x1="180" y1="55" x2="180" y2="30"/>
+            <line x1="105" y1="80" x2="88" y2="62" stroke="#d97706"/>
+            <line x1="255" y1="80" x2="272" y2="62" stroke="#d97706"/>
+            <rect x="400" y="40" width="280" height="150" rx="12" fill="#fff"/>
+            <line x1="430" y1="80" x2="650" y2="80"/>
+            <line x1="430" y1="115" x2="620" y2="115"/>
+            <line x1="430" y1="150" x2="640" y2="150"/>
+            <circle cx="415" cy="80" r="4" fill="#d97706" stroke="#d97706"/>
+            <circle cx="415" cy="115" r="4" fill="#d97706" stroke="#d97706"/>
+            <circle cx="415" cy="150" r="4" fill="#d97706" stroke="#d97706"/>
+          </g></svg></div>
         <h3>🌅 Morning day-plan</h3>
         <p>One consolidated brief to start the day: today's drives and tight spots, tasks due,
            replies owed, and anything that changed overnight — assembled from the same systems above.</p>
+        <div class="btns"><button class="btn copy" data-copy-key="morning">📋 Copy build prompt</button></div>
       </div>
     </div>
 
@@ -191,6 +353,138 @@
        Built with AI assistance — the specs and prompts are linked on every project, judge for yourself.</p>
   </div>
 </footer>
+
+<div id="toast" role="status"></div>
+
+<script>
+const PROMPTS = {
+calendar: `Build me a self-maintaining calendar travel-block system.
+
+Every morning, scan my calendar for the next 7 days. For every in-person event that has a street address and no travel block yet, create a private block immediately before it titled "Travel to <event>". Rules:
+- Block length = mapped drive time x 1.2 + 5 minutes, rounded up to the next 5 minutes (minimum 5). Measure the drive from my home address, or from the previous event's location when events are back-to-back.
+- Add one 30-minute private "get ready" block per day, placed before the day's first timed event (or before its travel block, whichever comes first).
+- Skip virtual events. Never create a duplicate block — check first.
+- If the gap between two events is too short for the drive, add a small private warning event pinned before the second event saying the travel time is short, and clean it up once the gap is fixed.
+- Anything ambiguous (who is driving, whether a pickup is needed) must NOT be guessed: collect those into one batched confirmation list and ask me once.
+- Use free-flow routing for the blocks (not live traffic), and write a short note in each block explaining how you worked out the route.
+
+Verify after each run by re-reading the calendar and listing what you added, what you skipped, and what needs my decision.`,
+
+leave: `Build me a time-to-leave alert system with a light show.
+
+Every 15 minutes between 7 AM and 9 PM:
+1. Get my phone's current GPS location.
+2. Find my next calendar transition: the event I am currently at (or just left) and the next event after it.
+3. Get the live drive time with traffic from my current location to the next event's location.
+4. Compute leave-by = next event start, minus 5 minutes (I aim to arrive 5 early), minus (live drive x 1.2 + 5 minutes buffer).
+5. If it is past leave-by and you have not already alerted me for this exact transition today, send me one message: "Time to leave: head to <event> now to arrive by <time> (<drive> min drive with traffic)." Never alert twice for the same transition.
+6. If I am at home when the alert fires, also run a light show: snapshot the current state of all my smart lights, set them all to a prism effect at full brightness, and start a 3-minute timer that restores the snapshot. Append "Lights are doing the prism show" to my alert.
+7. Separately: if I have been away from home for 10+ minutes, turn all the lights off. Never act on a location reading older than 30 minutes — stale location data must mean "do nothing" for that run.`,
+
+gas: `Build me a gas tracker that works off my calendar.
+
+My car: I will tell you the model, tank size, and typical MPG. I will report each fill-up (date, amount paid) and the gauge reading afterwards (e.g. "about 5/8").
+
+Your job:
+- Keep a state file: last fill-up, estimated gallons in tank, recent miles driven.
+- Estimate miles driven between fill-ups from my calendar events (trips with addresses), weighting highway driving as more efficient than local driving.
+- Project the date I will cross 1/4 tank. When that date is within about 2 days, pick a drive already on my calendar that day and attach a visible 20-minute calendar event to it titled "Get gas — tank at 1/4 (on the way to <event>)". Never create a standalone gas trip; the stop extends that drive's departure earlier and must never make an arrival slip.
+- Choose the station: the best-priced station on the route or within a ~5 minute detour. Put the station name and address in the event location and the price you checked in the description. If a different drive that day passes a station at least 10 cents/gallon cheaper and it is still convenient, move the stop to that drive.
+- Re-project every morning and move the event if the projection changes. Report the gauge estimate, miles to 1/4 tank, and projected crossing date when I ask.`,
+
+band: `Build me a schedule-change monitor for a school marching band.
+
+Sources: a shared weekly schedule document (I will give you the link), the band director's schedule emails, and texts from the pit crew lead. Check them once every morning.
+
+Report to me, same morning, ONLY what changed since yesterday:
+- New, moved, or cancelled rehearsals, performances, and call times.
+- On a performance day, lead with the crew call time (when volunteers must arrive), with the performance time next to it — never the other way around. Include the crew sign-up link.
+- Treat events as real only if a source confirms them; label everything else "tentative" and never present a tentative event as a firm conflict on my calendar.
+- If nothing changed, say nothing. No daily "all clear" messages.
+
+Keep a dated log of every change you report so I can audit what you saw and when.`,
+
+para: `Set up a PARA + GTD organization system for me in Google Drive and Google Tasks.
+
+Drive: create a root folder "PARA" containing "1. Projects", "2. Areas", "3. Resources", "4. Archives". Create my project and area subfolders (I will name them) and a short guide document explaining the system. From now on, file every document you create for me into the matching PARA folder.
+
+Tasks: create lists — Inbox, Next Actions, Waiting For, Someday / Maybe, one list per project, and one Areas list. Filing rule: a task lives in exactly ONE list — its project list if it has one, else Next Actions if it is due this week, Waiting For if it is blocked on a person, Areas for ongoing responsibilities (prefix those titles with the area, like "[Health]").
+
+Linking: in each task's notes, add a "Resources:" block with links to its Drive project/area folder and a shared token "PARA-LINK: <slug>". In each project folder, add a short "Links" doc naming its task list and the same token, so tasks and files find each other by search.
+
+Finally, create a recurring weekly-review task every Friday afternoon that walks me through clearing Inbox, reviewing Waiting For, and checking each project list.`,
+
+comms: `Build me a priority-contact watch.
+
+I will name one priority contact (phone number and email). Every 15 minutes between 7 AM and 10 PM, check three channels for anything new from them in the last 20 minutes:
+1. Text messages from their number.
+2. Emails from their address.
+3. Missed calls from their number.
+
+The moment you find something new, message me immediately in this format: "<Name> [texted/emailed/called] at [time]: [content or subject]". Surface their messages in full, right away — do not batch them with anything else, and do not summarize away details.
+
+Track what you have already alerted me about (by timestamp and channel) so I never get the same alert twice. If nothing is new, stay completely silent.
+
+Be honest about coverage: if a channel cannot be checked (phone offline, message store lagging), say so once rather than claiming "nothing new". Never describe message access as real-time if the source you checked is a synced copy that can lag.`,
+
+inbox: `Build me an inbox hygiene system for digest and notification email.
+
+1. Create a Gmail label for each noisy sender I name (school notification systems, app digests, shipping notices).
+2. Every morning, find all mail from those senders still sitting in the inbox, apply the matching label, and archive it out of the inbox. Never delete anything in this step. Verify zero remain in the inbox afterwards and log how many you swept.
+3. Separately, every day: permanently trash digest/notification email from those same senders once it is more than 5 days old — it has served its purpose by then.
+4. Stay silent when everything works. Only message me if a sweep fails, a sender changes its address, or the counts look abnormal.
+
+The goal: my inbox holds only mail that needs a human. Everything else is filed or gone, and I never have to think about it.`,
+
+morning: `Build me a single morning day-plan briefing, delivered once at the start of my day.
+
+Assemble it from my calendar, my task lists, and overnight changes:
+- Today's timeline: every event with its time, and the drives between them. Flag any gap that is too short for the drive it contains.
+- Decisions I need to make today, each as a single concrete item — a time, a place, a yes/no. Batch them into one list; no drip-feeding me questions all day.
+- Tasks due today, overdue first.
+- Replies I owe: messages or emails from yesterday that clearly expect an answer from me, with who and what they are waiting on, in one line each.
+- Anything that changed overnight: new events, cancellations, schedule changes from the groups I follow.
+
+Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.`
+};
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+async function copyText(text){
+  try{ await navigator.clipboard.writeText(text); return true; }
+  catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    let ok = false; try{ ok = document.execCommand('copy'); }catch(_){}
+    ta.remove(); return ok;
+  }
+}
+document.querySelectorAll('[data-copy-key]').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const ok = await copyText(PROMPTS[btn.dataset.copyKey] || '');
+    toast(ok ? '✓ Prompt copied — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
+  });
+});
+document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    btn.textContent = '⏳ Fetching the canonical prompt…';
+    try{
+      const r = await fetch(btn.dataset.copyRemote);
+      if(!r.ok) throw new Error('fetch failed');
+      const text = await r.text();
+      const ok = await copyText(text);
+      toast(ok ? '✓ Full prompt copied from GitHub — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
+    }catch(e){
+      window.open(btn.dataset.fallback, '_blank');
+      toast('Could not fetch it directly — opened the prompt on GitHub instead');
+    }
+    btn.textContent = '📋 Copy the full prompt';
+  });
+});
+</script>
 
 </body>
 </html>
