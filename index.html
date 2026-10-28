@@ -77,6 +77,7 @@
        calendar, a car, and a household on schedule.</p>
     <p style="margin-top:10px;">Every card below has a <strong style="color:#fff;">Copy prompt</strong> button —
        paste it into your own AI assistant and it can build you the same thing.</p>
+    <div class="gtranslate_wrapper" style="margin-top:14px;"></div>
     <div class="links">
       <a href="https://github.com/andrewdhorowitz">GitHub — andrewdhorowitz</a>
       <a href="#projects">Projects</a>
@@ -553,7 +554,7 @@ site: `Build me a personal showcase website like this one: a single-page site on
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
-6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
+6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 7. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
 8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain.
 
@@ -621,5 +622,7 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
 </script>
 
 <script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper"}</script>
+<script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
 </body>
 </html>
