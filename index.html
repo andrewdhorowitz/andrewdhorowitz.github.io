@@ -230,7 +230,9 @@
            drive-time blocks before in-person events — mapped drive × 1.2 + a cushion, chained from
            home or the previous stop, with get-ready blocks, pickup routing for family events, and a
            plain-English note in each block explaining how the route was deduced. Tight gaps get a
-           warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.</p>
+           warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.
+           Every block carries the ID of the event it belongs to, so the scanner always recognizes its
+           own blocks — duplicates are checked before every insert and swept clean at the end of every run.</p>
         <div class="btns"><button class="btn copy" data-copy-key="calendar">📋 Copy build prompt</button></div>
       </div>
 
