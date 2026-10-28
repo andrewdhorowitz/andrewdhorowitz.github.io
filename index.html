@@ -396,17 +396,18 @@
 
     <h2>Get in touch</h2>
     <p class="sub">Like something? Spot a mistake? Want to talk about building systems like these?
-       All of it lands in the same place — and nothing here exposes an email address.</p>
+       All of it lands in the same place.</p>
     <div class="card">
       <h3>Share, feedback &amp; contact</h3>
       <p>Share the site with a friend, send feedback or an idea, or just contact Andrew directly —
-         the form has a "Contact Andrew" option, and you can leave your email if you'd like a reply.</p>
+         the form has a "Contact Andrew" option, and you can leave your email if you'd like a reply. Prefer plain email? <a href="mailto:hello@andrewdhorowitz.com">hello@andrewdhorowitz.com</a> reaches the same inbox.</p>
       <div class="btns">
         <button class="btn primary" id="shareBtn" data-track="share">🔗 Share this site</button>
         <button class="btn copy" id="copyLinkBtn" data-track="copylink">📋 Copy the link</button>
         <a class="btn" data-track="share-linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fandrewdhorowitz.com%2F">Share on LinkedIn</a>
         <a class="btn" data-track="share-x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fandrewdhorowitz.com%2F&amp;text=Projects%20and%20automations%20built%20spec-first%20with%20AI%20%E2%80%94%20including%20the%20prompts%20behind%20them">Share on X</a>
         <a class="btn primary" data-track="feedback" target="_blank" rel="noopener" href="https://docs.google.com/forms/d/e/1FAIpQLSdWsNlIUOtcfYeBuaJZfcWc-d9JLwP0wrxEwaVrN1uJqj1HvA/viewform">✉️ Send feedback / Contact me</a>
+        <a class="btn" data-track="email" href="mailto:hello@andrewdhorowitz.com">📧 hello@andrewdhorowitz.com</a>
       </div>
     </div>
 
@@ -544,7 +545,7 @@ site: `Build me a personal showcase website like this one: a single-page site on
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
-6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does NOT expose my email address — a Google Form works well (feedback type, message, optional name, optional reply email). Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
+6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take.
 7. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
 8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain.
 
