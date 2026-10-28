@@ -40,6 +40,9 @@
     background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
   .card p{color:#2b2b2b; margin-bottom:10px;}
   .card p.note{color:var(--muted); font-size:0.93rem;}
+  .highlights{list-style:none; margin:4px 0 6px;}
+  .highlights li{font-size:0.93rem; color:#2b2b2b; padding-left:18px; position:relative; margin-bottom:4px;}
+  .highlights li::before{content:"▸"; position:absolute; left:0; color:var(--accent); font-weight:700;}
   .art{margin:-22px -22px 16px; border-bottom:1px solid var(--line); background:#f5f5f4;}
   .art svg{display:block; width:100%; height:auto;}
   .grid .art{margin:-22px -22px 14px;}
@@ -118,6 +121,11 @@
       <p class="note">The interesting part is how it was built: a full specification and a library of
          prompts live in the same repo — the master design spec, the generator prompt that produces
          the code, the build prompt, and the phase plan. Change the prompt, regenerate the app.</p>
+      <ul class="highlights">
+        <li>The whole app is a build artifact: fix the prompt, regenerate, and the code follows.</li>
+        <li>Its day resets at noon, not midnight — the cycle follows family life, not the clock.</li>
+        <li>Streaks and history live in the cloud database, so they survive a new phone or a cleared browser.</li>
+      </ul>
       <div class="btns">
         <a class="btn primary" href="https://andrewdhorowitz.github.io/my-family-routines-app/">Open the app</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/my-family-routines-app">Repository</a>
@@ -159,6 +167,11 @@
          the spec carries test vectors a bot can grade itself against, a trial prompt any assistant
          can be onboarded with, and a public registry of agreements. The canonical home is the repo —
          if it isn't on GitHub, it isn't an update.</p>
+      <ul class="highlights">
+        <li>Ships with test vectors a bot can grade itself against before claiming it speaks the protocol.</li>
+        <li>Consent is explicit: nothing beyond simple notes flows until the humans record an agreement, with a level and an expiry.</li>
+        <li>Updates are versioned and must be acknowledged — silence never counts as agreement.</li>
+      </ul>
       <div class="btns">
         <a class="btn primary" href="https://andrewdhorowitz.github.io/aimf-protocol/">Invite page</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol">Repository</a>
@@ -199,6 +212,11 @@
          and verified live. Its copyable prompt is kept in lockstep with the site itself —
          whenever the site changes, the prompt changes to match, so copying it rebuilds
          <em>this</em> site, not last month's version.</p>
+      <ul class="highlights">
+        <li>Project prompts are fetched live from GitHub when you tap copy — always the current version, never a stale snapshot.</li>
+        <li>The site's own prompt is updated in the same push as every change, so copying it rebuilds this site as it is today.</li>
+        <li>The page auto-translates into each visitor's browser language; the copyable prompts themselves stay verbatim.</li>
+      </ul>
       <div class="btns">
         <a class="btn primary" href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io">Repository</a>
         <button class="btn copy" data-copy-key="site">📋 Copy the full site prompt</button>
@@ -209,7 +227,8 @@
     <p class="sub">The unglamorous systems that do the daily work. Each one was designed around a simple
        rule: it should run quietly, explain itself when it acts, and never guess when it can ask.
        Each card's prompt is a complete, self-contained brief — copy it, paste it into an AI
-       assistant that can see your calendar, and it can build the same system for you.</p>
+       assistant that can see your calendar, and it can build the same system for you.
+       Under each summary sit the highlights: the clever bits and hard-won lessons drawn from the full spec.</p>
 
     <div class="grid">
       <div class="card">
@@ -230,9 +249,12 @@
            drive-time blocks before in-person events — mapped drive × 1.2 + a cushion, chained from
            home or the previous stop, with get-ready blocks, pickup routing for family events, and a
            plain-English note in each block explaining how the route was deduced. Tight gaps get a
-           warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.
-           Every block carries the ID of the event it belongs to, so the scanner always recognizes its
-           own blocks — duplicates are checked before every insert and swept clean at the end of every run.</p>
+           warning pin; ambiguous driving duties get batched into one confirmation list instead of a guess.</p>
+        <ul class="highlights">
+          <li>Every block is stamped with its event's ID, so the scanner recognizes its own blocks — duplicates are checked before every insert and swept after every run.</li>
+          <li>For school pickups it deduces where a kid actually is — still at school, or back at the home base — and writes the reasoning into the block.</li>
+          <li>Ambiguous driving duties are never guessed: they collect into one batched confirmation list, asked once.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="calendar">📋 Copy build prompt</button></div>
       </div>
 
@@ -255,6 +277,11 @@
            position. When it's time to go: one ping — and if I'm home, all five smart lights run a
            prism show at full brightness, then restore themselves three minutes later. If I leave
            and stay away, the house turns its own lights off.</p>
+        <ul class="highlights">
+          <li>One alert per trip, ever — a transition that already fired never pings again.</li>
+          <li>A location reading older than 30 minutes counts as "unknown" and the system does nothing; stale GPS once turned the lights off while I was home.</li>
+          <li>The light show snapshots the lights first and restores them on a 3-minute timer — with a second job as backstop if the timer is missed.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="leave">📋 Copy build prompt</button></div>
       </div>
 
@@ -277,6 +304,11 @@
            calendar, projects the day the tank crosses a quarter, and pins a "get gas" stop onto a
            trip I'm already making — at the best-priced convenient station on that route, never
            slipping an arrival time to do it.</p>
+        <ul class="highlights">
+          <li>Fill-ups are reconstructed from the settled charge on the card — never the $175 authorization hold a pump places.</li>
+          <li>The stop is added time, not taken from the drive: the travel block grows earlier so the arrival never slips.</li>
+          <li>If another drive that day passes a station at least 10¢/gal cheaper, the stop moves to that drive instead.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="gas">📋 Copy build prompt</button></div>
       </div>
 
@@ -298,6 +330,11 @@
         <p>A daily diff of a high-school marching band's weekly schedule document, plus coordinator
            emails and crew texts. Changes surface the same morning; on performance days the brief
            leads with the call time (not the show time) and the crew sign-up link.</p>
+        <ul class="highlights">
+          <li>It diffs the source schedule document itself, so a silent edit surfaces the same morning.</li>
+          <li>Schedules lead with the checkpoint time — when the crew must arrive — with performance time alongside, never the other way round.</li>
+          <li>Tentative dates stay visibly tentative: a placeholder is never treated as a firm conflict.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="band">📋 Copy build prompt</button></div>
       </div>
 
@@ -321,6 +358,11 @@
         <p>Every new document lands in a PARA folder structure in Drive; every task lives in exactly
            one GTD list and carries links back to its project resources, so a task and its paperwork
            are always one search apart. A weekly review task generates itself every Friday.</p>
+        <ul class="highlights">
+          <li>Every task lives in exactly one list — a project list if it has one. Never two homes.</li>
+          <li>Tasks carry links to their project files, and every project folder links back to its task list — one search from either side finds both.</li>
+          <li>The weekly review task creates itself every Friday; nothing depends on remembering it.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="para">📋 Copy build prompt</button></div>
       </div>
 
@@ -339,6 +381,11 @@
         <p>Every 15 minutes during waking hours, texts, email, and call logs are checked for one
            priority contact, so a time-sensitive family request never sits unseen. Everything else
            batches into a single morning list — no drips.</p>
+        <ul class="highlights">
+          <li>Checks texts, email, and the call log every 15 minutes from 7 AM to 10 PM — and surfaces anything from the priority contact immediately, in full.</li>
+          <li>It knows its evidence limits: phone message stores can lag hours, so anything seen only in a notification is labeled as exactly that.</li>
+          <li>Everything else waits for the morning batch by design — one list, no drip of notifications.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="comms">📋 Copy build prompt</button></div>
       </div>
 
@@ -354,6 +401,11 @@
         <h3>🧹 Inbox hygiene</h3>
         <p>School digest and notification mail is auto-labeled and swept out of the inbox daily;
            anything stale past five days trashes itself. The inbox stays for things that need a human.</p>
+        <ul class="highlights">
+          <li>Nothing is ever permanently deleted — trashed mail stays recoverable for 30 days.</li>
+          <li>Only an approved list of digest senders is touched; everything else stays exactly where it was.</li>
+          <li>School mail is labeled and archived the day it arrives, so reports never pile up in the inbox.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="inbox">📋 Copy build prompt</button></div>
       </div>
 
@@ -376,6 +428,11 @@
         <h3>🌅 Morning day-plan</h3>
         <p>One consolidated brief to start the day: today's drives and tight spots, tasks due,
            replies owed, and anything that changed overnight — assembled from the same systems above.</p>
+        <ul class="highlights">
+          <li>Collisions and hard deadlines come first, before the day's schedule — the brief leads with what needs a decision.</li>
+          <li>Replies owed are listed with how long each person has been waiting.</li>
+          <li>It may suggest one inbox cleanup, with a count from real mail — but never applies one without an explicit yes.</li>
+        </ul>
         <div class="btns"><button class="btn copy" data-copy-key="morning">📋 Copy build prompt</button></div>
       </div>
     </div>
@@ -553,9 +610,9 @@ Keep it skimmable: times first, one line per item, nothing decorative. If someth
 site: `Build me a personal showcase website like this one: a single-page site on GitHub Pages that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
 
 1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
-2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code.
+2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
-4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, and update this site prompt too whenever a change affects what it specifies.
+4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
 6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 7. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
