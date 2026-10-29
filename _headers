@@ -1,0 +1,6 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app https://cdn.jsdelivr.net https://gc.zgo.at https://cdn.gtranslate.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.gtranslate.net https://fourpshot.goatcounter.com; connect-src 'self' https://raw.githubusercontent.com https://fourpshot.goatcounter.com https://cloudflareinsights.com https://cdn.gtranslate.net https://translate-pa.googleapis.com https://giscus.app; frame-src https://giscus.app; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
