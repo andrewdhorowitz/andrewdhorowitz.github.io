@@ -1,0 +1,28 @@
+# CI — thin caller for the shared fleet workflow (kit v3.6;
+# host re-pointed in v3.6.1).
+# The baseline checks themselves (Python / Web / actionlint) live in
+# the public fleet-ci repo as a reusable workflow; this file only
+# points at them, so a kit CI fix lands once, centrally, and this
+# repo picks it up on its next run. There are no jobs to edit here —
+# the only knob is the inputs block below. (The host repo is public
+# because GitHub lets a public repository call only public-hosted
+# reusable workflows; the v3.6 caller pointed at the private
+# template repo and could not run.)
+# Installed to .github/workflows/ci.yml by update-ci.sh (until then
+# it travels in this repo at ci-src/ci.yml — the Muse GitHub App
+# cannot push files under .github/workflows/; the repo owner can).
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fleet-ci:
+    uses: andrewdhorowitz/fleet-ci/.github/workflows/fleet-ci.yml@main
+    with:
+      py_files: "app.py main.py"
