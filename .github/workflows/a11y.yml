@@ -1,0 +1,73 @@
+# Accessibility — standalone axe audit of the live site
+# (approved by Andrew, Oct 29, 2026).
+# pa11y-ci (bundling axe-core) audits the two live pages below
+# for WCAG violations. There is no fleet-ci reusable workflow
+# for this yet, so the machinery lives in this file; it follows
+# the same shape as Lighthouse and Links: weekly schedule plus
+# manual dispatch, never on push — it audits the live site, not
+# the commit. REPORT-ONLY by design: the job uploads the JSON
+# report as an artifact and always exits green, so a violation
+# surfaces as a report, never a red build.
+# Targets: https://andrewdhorowitz.com/ and
+# https://andrewdhorowitz.com/privacy (the site's two pages).
+name: Accessibility
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 15 * * 1" # Mondays 15:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Write pa11y-ci config
+        run: |
+          cat > .pa11yci <<'EOF'
+          {
+            "defaults": {
+              "runners": ["axe"],
+              "standard": "WCAG2AA",
+              "timeout": 60000,
+              "chromeLaunchConfig": {
+                "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+              }
+            },
+            "urls": [
+              "https://andrewdhorowitz.com/",
+              "https://andrewdhorowitz.com/privacy"
+            ]
+          }
+          EOF
+
+      - name: Run pa11y-ci (report-only)
+        continue-on-error: true
+        run: |
+          npx --yes pa11y-ci@5 --config .pa11yci --reporter json > pa11y-report.json 2> pa11y-run.log || true
+          echo "pa11y-ci finished (exit code ignored — report-only)."
+
+      - name: Summarize findings
+        if: always()
+        run: |
+          {
+            echo "## axe accessibility audit (report-only)"
+            jq -r '.results | to_entries[] | "- \(.key): \(.value | map(select(.type == "error")) | length) error(s), \(.value | length) total issue(s)"' pa11y-report.json || echo "- summary unavailable (see the pa11y-report artifact)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pa11y-report
+          path: |
+            pa11y-report.json
+            pa11y-run.log
+          if-no-files-found: warn
