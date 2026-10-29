@@ -23,7 +23,7 @@
 <style>
   :root{
     --ink:#111111; --paper:#fafafa; --card:#ffffff; --line:#e3e3e3;
-    --muted:#5c5c5c; --accent:#d97706; --accent-soft:#fef3c7;
+    --muted:#5c5c5c; --accent:#d97706; --accent-deep:#92400e; --accent-soft:#fef3c7;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -44,7 +44,7 @@
   .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; margin-bottom:18px; overflow:hidden;}
   .card h3{font-size:1.2rem; margin-bottom:6px;}
   .card h3 .tag{font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
-    background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
+    background:var(--accent-soft); color:var(--accent-deep); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
   .card p{color:#2b2b2b; margin-bottom:10px;}
   .card p.note{color:var(--muted); font-size:0.93rem;}
   .highlights{list-style:none; margin:4px 0 6px;}
@@ -57,7 +57,7 @@
   .btn{display:inline-block; border:1.5px solid var(--ink); border-radius:8px; padding:6px 14px;
        font-size:0.9rem; font-weight:600; text-decoration:none; background:#fff; cursor:pointer; font-family:inherit;}
   .btn:hover{background:var(--ink); color:#fff;}
-  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn.primary{background:var(--accent-deep); border-color:var(--accent-deep); color:#fff;}
   .btn.primary:hover{background:var(--ink); border-color:var(--ink);}
   .btn.copy{border-style:dashed;}
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
@@ -73,6 +73,7 @@
   .diagram{border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; background:#fff;}
   .diagram summary{cursor:pointer; font-weight:600; font-size:0.95rem; padding:2px 0 6px;}
   .diagram .mermaid{min-width:620px;}
+  .diagram .mermaid:not([data-processed]){white-space:pre-wrap; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:0.78rem; color:var(--muted);}
   .band .tagline{color:#fff; font-size:1.2rem; font-weight:600; margin-top:12px;}
   .band .motto{color:var(--accent); font-size:1.05rem; font-weight:600; margin-top:4px;}
   .tabs{display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 30px;}
@@ -1020,8 +1021,39 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
   activate(nameFromHash() || 'projects', false);
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>mermaid.initialize({startOnLoad:true});</script>
+<script>
+// Mermaid is lazy-loaded: it is most of this page's weight and only the
+// architecture diagrams (Projects tab) need it. The library loads when a
+// diagram nears the viewport; until then — and if the script is blocked —
+// each diagram simply shows its source text.
+(function(){
+  var nodes = Array.prototype.slice.call(document.querySelectorAll('.mermaid'));
+  if(!nodes.length) return;
+  var started = false;
+  function render(){
+    try{
+      mermaid.initialize({startOnLoad:false});
+      var p = mermaid.run({nodes: nodes});
+      if(p && p.catch) p.catch(function(){});
+    }catch(e){ /* leave the source text in place */ }
+  }
+  function load(){
+    if(started) return;
+    started = true;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+    s.onload = render;
+    document.head.appendChild(s);
+  }
+  if(!('IntersectionObserver' in window)){ load(); return; }
+  var io = new IntersectionObserver(function(entries){
+    for(var i = 0; i < entries.length; i++){
+      if(entries[i].isIntersecting){ io.disconnect(); load(); break; }
+    }
+  }, {rootMargin: '400px 0px'});
+  nodes.forEach(function(n){ io.observe(n); });
+})();
+</script>
 <script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper"}</script>
 <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
