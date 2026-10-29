@@ -1,14 +1,17 @@
-# Link check — repo-template kit.
-# Installed to .github/workflows/links.yml by setup-settings.sh
-# (travels at ci-src/ for the same reason as ci.yml — see
-# BOOTSTRAP-NOTES.md).
-#
-# Weekly + on-demand link-rot check (lychee) over every link in the
-# repo's Markdown files. Schedule-only BY DESIGN: it never runs on
-# push or PR, so a rotten external link can't block work — instead
-# the weekly run fails visibly, which is the rot alarm. Loopback /
-# localhost targets and the example.* placeholder domains are
-# excluded; everything else that 404s fails the run.
+# Links — thin caller for the shared fleet link check (kit v3.7).
+# The check itself (lychee over the repo's Markdown files) lives in
+# the public fleet-ci repo as a reusable workflow; this file only
+# points at it, so a kit fix lands once, centrally, and this repo
+# picks it up on its next scheduled run. There are no jobs to edit
+# here and no inputs — the check is identical in every repo.
+# The triggers are unchanged from the standalone file this
+# replaces: weekly schedule plus manual dispatch, BY DESIGN — it
+# never runs on push or PR, so a rotten external link can't block
+# work; the weekly run failing visibly is the rot alarm.
+# Installed to .github/workflows/links.yml by update-ci.sh (until
+# then it travels in this repo at ci-src/links.yml — the Muse
+# GitHub App cannot push files under .github/workflows/; the repo
+# owner can).
 name: Links
 
 on:
@@ -20,16 +23,5 @@ permissions:
   contents: read
 
 jobs:
-  links:
-    name: Lychee link check (Markdown)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check Markdown links
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: >-
-            --no-progress --exclude-loopback
-            --exclude 'example\.(com|org|net)'
-            './**/*.md'
-          fail: true
+  fleet-links:
+    uses: andrewdhorowitz/fleet-ci/.github/workflows/fleet-links.yml@main
