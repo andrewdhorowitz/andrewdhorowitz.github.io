@@ -282,7 +282,7 @@
          person, a browser window is a screen, a rack is a server, a gear is a worker, a cylinder
          is a data store — and every piece sits on the host that runs it. The Mermaid below is
          generated from the canonical source in the demo repo, never a second hand-drawn copy.</p>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>Container view — the pieces inside the system</summary>
         <div class="mermaid">
 C4Container
@@ -337,7 +337,7 @@ C4Container
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
         </div>
       </details>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>Deployment view — which host runs what</summary>
         <div class="mermaid">
 C4Deployment
@@ -391,7 +391,7 @@ C4Deployment
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
         </div>
       </details>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>System Context view — the system and its neighbours</summary>
         <div class="mermaid">
 C4Context
@@ -472,7 +472,7 @@ C4Context
          data store — and every piece sits on the host that runs it. The Mermaid below is
          generated from the canonical source in this site's repo, never a second
          hand-drawn copy.</p>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>Container view — the pieces inside the system</summary>
         <div class="mermaid">
 C4Container
@@ -522,7 +522,7 @@ C4Container
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
         </div>
       </details>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>Deployment view — which host runs what</summary>
         <div class="mermaid">
 C4Deployment
@@ -582,7 +582,7 @@ C4Deployment
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
         </div>
       </details>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>System Context view — the system and its neighbours</summary>
         <div class="mermaid">
 C4Context
@@ -651,7 +651,7 @@ C4Context
          makes sense — the per-project cards above and their repos carry the container and
          deployment detail. The Mermaid below is generated from the canonical source in
          this repo, never a second hand-drawn copy.</p>
-      <details class="diagram notranslate" translate="no" open>
+      <details class="diagram notranslate" translate="no">
         <summary>System Context view — the whole ecosystem</summary>
         <div class="mermaid">
 C4Context
@@ -1124,7 +1124,7 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
-6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation.
+6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation. In-page diagram boxes ship collapsed (a details element with no open attribute): the Mermaid library may preload as a box's summary nears the viewport, but a diagram renders only when its box is first opened — scrolling never opens a box.
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
@@ -1258,35 +1258,67 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
 </script>
 <script>
 // Mermaid is lazy-loaded: it is most of this page's weight and only the
-// architecture diagrams (Projects tab) need it. The library loads when a
-// diagram nears the viewport; until then — and if the script is blocked —
-// each diagram simply shows its source text.
+// architecture diagrams (Projects tab) need it. Diagram boxes ship
+// collapsed and stay collapsed: the library may preload when a box's
+// summary nears the viewport, but a diagram renders only when its box
+// is first opened \u2014 scrolling never opens a box. Until a box is
+// opened (and if the script is blocked) it simply shows its source text.
 (function(){
   var nodes = Array.prototype.slice.call(document.querySelectorAll('.mermaid'));
   if(!nodes.length) return;
-  var started = false;
-  function render(){
+  var started = false, ready = false, pending = [];
+  function boxOf(n){ var d = n; while(d && d.tagName !== 'DETAILS') d = d.parentElement; return d; }
+  function renderNode(n){
+    if(n.getAttribute('data-processed')) return;
     try{
-      mermaid.initialize({startOnLoad:false});
-      var p = mermaid.run({nodes: nodes});
+      var p = mermaid.run({nodes: [n]});
       if(p && p.catch) p.catch(function(){});
     }catch(e){ /* leave the source text in place */ }
   }
+  function flush(){
+    if(!ready) return;
+    for(var i = pending.length - 1; i >= 0; i--){
+      var d = boxOf(pending[i]);
+      if(!d || d.open){ renderNode(pending[i]); pending.splice(i, 1); }
+    }
+  }
+  function queue(n){ if(!n.getAttribute('data-processed') && pending.indexOf(n) < 0) pending.push(n); }
   function load(){
     if(started) return;
     started = true;
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
-    s.onload = render;
+    s.onload = function(){
+      try{ mermaid.initialize({startOnLoad:false}); }catch(e){}
+      ready = true;
+      flush();
+    };
     document.head.appendChild(s);
   }
-  if(!('IntersectionObserver' in window)){ load(); return; }
-  var io = new IntersectionObserver(function(entries){
-    for(var i = 0; i < entries.length; i++){
-      if(entries[i].isIntersecting){ io.disconnect(); load(); break; }
-    }
-  }, {rootMargin: '400px 0px'});
-  nodes.forEach(function(n){ io.observe(n); });
+  nodes.forEach(function(n){
+    var d = boxOf(n);
+    if(!d){ queue(n); load(); return; }
+    if(d.open) queue(n);
+    d.addEventListener('toggle', function(){ if(d.open){ queue(n); load(); flush(); } });
+  });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      for(var i = 0; i < entries.length; i++){
+        if(entries[i].isIntersecting){ io.disconnect(); load(); break; }
+      }
+    }, {rootMargin: '400px 0px'});
+    nodes.forEach(function(n){ var d = boxOf(n); if(d) io.observe(d); });
+  }
+  // Printing opens every box (and renders), so the printed page keeps
+  // the diagrams it had when boxes shipped open.
+  window.addEventListener('beforeprint', function(){
+    nodes.forEach(function(n){
+      var d = boxOf(n);
+      if(d && !d.open) d.open = true;
+      queue(n);
+    });
+    load(); flush();
+  });
 })();
 </script>
 <script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
