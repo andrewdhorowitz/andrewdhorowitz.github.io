@@ -1,0 +1,16 @@
+# Dependabot — part of the repo-template standard kit (kit v2).
+# Opens weekly version-update PRs for the repo's GitHub Actions pins.
+# This repo has no Python, so there is deliberately no pip entry —
+# github-actions is the only ecosystem with anything to update.
+# (Dependabot *alerts* and *security updates* are repo settings —
+# already enabled by the showcase settings pass on 2026-10-28; this
+# file is what schedules the version-update PRs themselves.)
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
