@@ -34,6 +34,9 @@
   .wrap{max-width:960px; margin:0 auto;}
   .band h1{font-size:2.3rem; letter-spacing:-0.5px; line-height:1.15;}
   .band h1 .accent{color:var(--accent);}
+  .band h1 .mono{height:.95em; width:auto; vertical-align:-.12em; margin-right:.3em;
+    fill:none; stroke:#fff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round;}
+  .band h1 .mono .xbar{stroke:var(--accent);}
   .band p{color:#d6d6d6; max-width:640px; margin-top:14px; font-size:1.05rem;}
   .band .links{margin-top:20px; font-size:0.95rem;}
   .band .links a{color:#fff; margin-right:18px;}
@@ -45,6 +48,10 @@
   .card h3{font-size:1.2rem; margin-bottom:6px;}
   .card h3 .tag{font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
     background:var(--accent-soft); color:var(--accent-deep); border-radius:999px; padding:3px 10px; margin-left:8px; vertical-align:middle;}
+  .card h3 .ic{width:24px; height:24px; vertical-align:-6px; margin-right:9px;
+    fill:none; stroke:var(--accent-deep); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+  .card h3 .ic .dot{fill:var(--accent); stroke:none;}
+  .card h3 .ic .paper{fill:#fff;}
   .card p{color:#2b2b2b; margin-bottom:10px;}
   .card p.note{color:var(--muted); font-size:0.93rem;}
   .highlights{list-style:none; margin:4px 0 6px;}
@@ -92,6 +99,7 @@
     body{background:#fff; color:#000;}
     .band{background:#fff; color:#000; padding:0 0 12px;}
     .band p{color:#000;}
+    .band h1 .mono path{stroke:#000 !important;}
     .band .links, .btns, #toast, .gtranslate_wrapper, .art{display:none !important;}
     main{padding:0;}
     .wrap{max-width:none;}
@@ -107,7 +115,7 @@
 
 <header class="band">
   <div class="wrap">
-    <h1>Andrew Horowitz</h1>
+    <h1><svg class="mono" viewBox="2 8 58 48" aria-hidden="true" focusable="false"><path d="M8 50 L20 14 L32 50"/><path class="xbar" d="M12.6 38 L27.4 38"/><path d="M38 14 V50 M54 14 V50 M38 32 H54"/></svg>Andrew Horowitz</h1>
     <p class="tagline">An open portfolio — every project with its playbook attached.</p>
     <p class="motto">Andrew builds things that run themselves.</p>
     <p>Personal projects and home automations, designed spec-first and built with AI assistance —
@@ -158,7 +166,7 @@
           </g>
         </svg>
       </div>
-      <h3>Routines &amp; Streaks <span class="tag">Live app</span></h3>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.9 12 A8.9 8.9 0 1 1 14.6 3.5"/><path d="M11.5 1.7 L14.6 3.5 L11.8 6.2"/><path d="M12 9.6c1.05 1.6 2.5 2.8 2.5 4.5a2.5 2.5 0 1 1-5 0c0-1.7 1.45-2.9 2.5-4.5z"/></svg>Routines &amp; Streaks <span class="tag">Live app</span></h3>
       <p>A daily routines-and-streaks tracker: tasks on a daily cycle that resets at noon,
          persistent streaks and history, everything scoped to the signed-in person. It started
          as a way to keep my kids' daily routines on track — the engine turned out to be
@@ -204,7 +212,7 @@
           </g>
         </svg>
       </div>
-      <h3>AIMF — AI Messaging Format <span class="tag">Protocol</span></h3>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.8" y="3.2" width="12.4" height="9.6" rx="3"/><path d="M6.4 12.8 L6.4 15.9 L9.9 12.8"/><rect class="paper" x="9.4" y="10.6" width="11.8" height="9" rx="3"/><path d="M17.4 19.6 L17.4 22.4 L14.5 19.6"/><path d="M12.7 15.1 L17.9 15.1"/></svg>AIMF — AI Messaging Format <span class="tag">Protocol</span></h3>
       <p>An open protocol that lets AI assistants exchange structured messages — notes, file drops,
          requests, status reports — over ordinary email, with sender verification, consent
          agreements between the humans behind them, and versioned updates that every participant
@@ -245,7 +253,7 @@
           </g>
         </svg>
       </div>
-      <h3>Family Cards <span class="tag">Live demo</span></h3>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6.2" y="2.8" width="14.3" height="16.8" rx="2.5"/><rect class="paper" x="3.5" y="5.4" width="14.3" height="15.8" rx="2.5"/><path d="M6.9 12.7 L10.65 9.3 L14.4 12.7"/><path d="M8.1 11.5 L8.1 16.9 L13.2 16.9 L13.2 11.5"/><path d="M10.65 16.9 L10.65 14.6"/></svg>Family Cards <span class="tag">Live demo</span></h3>
       <p>Per-kid schedule cards for kids who won't use a calendar — each kid gets one simple page
          covering the next two weeks, framed as <strong>With Dad</strong> vs <strong>With Mom</strong>.
          Her events come first, non-school events are highlighted as <strong>Big</strong>, and a
@@ -441,7 +449,7 @@ C4Context
           </g>
         </svg>
       </div>
-      <h3>This website <span class="tag">You're looking at it</span></h3>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.2" width="18" height="15.6" rx="2.5"/><path d="M3 8.8 L21 8.8"/><circle class="dot" cx="6.1" cy="6.5" r="1"/><path d="M10.3 6.5 L18.4 6.5"/><path d="M10.1 12 L8.2 14.1 L10.1 16.2"/><path d="M13.9 12 L15.8 14.1 L13.9 16.2"/></svg>This website <span class="tag">You're looking at it</span></h3>
       <p>This site itself is one of the builds: a single static HTML page —
          no framework, no build step — served by Cloudflare Pages at this domain (the
          GitHub Pages copy just redirects here), where every project and automation carries the spec and the
@@ -863,10 +871,10 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Routines & Streaks is a daily routines-and-streaks tracker that began as family reminders for the kids — frame it generically, with that origin as the example. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
-5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
+5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
 6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders each project's diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — marks the rendered diagrams notranslate, and links both the canonical source on GitHub and an interactive rendering of the deployment view (drag the nodes, pan, zoom, click a node for details; the interactive page is generated from the same model, and dragging never edits the source). When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation: its card carries all three views plus links to the canonical source and the interactive version.
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
-8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
+8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
 };
