@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+# update-ci.sh — one-command CI refresh for the showcase repo (andrewdhorowitz/andrewdhorowitz.github.io).
+#
+# Run it from the repo root, signed in as the repo owner (Termux or a
+# GitHub Codespace):
+#   bash update-ci.sh
+#
+# What it does:
+#   1. REPLACES .github/workflows/ci.yml with the staged copy in
+#      ci-src/ when the two differ, and reports "already" when they
+#      are identical. Unlike the install passes — which never
+#      overwrote an installed workflow — this refresh deliberately
+#      replaces exactly one file: ci.yml. The staged copy carries kit v3.5.2: the Web job's
+#      inline-script syntax step embedded its Python extractor in a
+#      shell heredoc whose body and closing PY marker sat two spaces
+#      deeper than the run block's base lines; YAML strips only the
+#      first line's indent, so bash received an indented PY, never
+#      closed the heredoc, and the step failed before any JavaScript
+#      was checked. The fix de-indents the body and the marker to the
+#      block's base; nothing else in the file changes.
+#      (The workflow travels at ci-src/ because the Muse GitHub
+#      App cannot push files under .github/workflows/; the repo
+#      owner can.)
+#   2. Writes the full run output to setup-results.txt in the repo
+#      root (captured to a temp file first and copied in only when
+#      the run has finished, so the file always holds the complete
+#      output — `cat setup-results.txt` afterwards shows the whole
+#      run for review). This repo is PUBLIC, so the file stays local
+#      and untracked: it is never staged or committed.
+#   3. Deletes itself and ci-src/, and lands the removal plus the
+#      refreshed workflow in ONE cleanup commit, which it pushes.
+# It is safe to re-run: after a successful run there is nothing
+# left staged, and a repeat run reports ci.yml already current.
+set -uo pipefail
+cd "$(dirname "$0")"
+
+RESULTS_FILE="setup-results.txt"
+TMPLOG="$(mktemp)"
+
+RESULTS=""
+report() { # report <ok|fail|skip> <label>
+  local mark="✓"
+  [ "$1" = "fail" ] && mark="✗"
+  [ "$1" = "skip" ] && mark="–"
+  echo "$mark $2"
+  RESULTS+="$mark $2"$'\n'
+}
+
+main() {
+  echo "== File install =="
+  if [ -f ci-src/ci.yml ]; then
+    mkdir -p .github/workflows
+    if [ -f .github/workflows/ci.yml ] && cmp -s ci-src/ci.yml .github/workflows/ci.yml; then
+      report skip "Workflow ci.yml already current (.github/workflows/ci.yml) — left as-is"
+    elif [ -f .github/workflows/ci.yml ]; then
+      cp ci-src/ci.yml .github/workflows/ci.yml
+      report ok "Workflow ci.yml refreshed (.github/workflows/ci.yml) — kit v3.5.2 heredoc fix"
+    else
+      cp ci-src/ci.yml .github/workflows/ci.yml
+      report ok "Workflow ci.yml installed (.github/workflows/ci.yml) — kit v3.5.2 heredoc fix"
+    fi
+  else
+    report skip "No staged ci.yml found (ci-src/ci.yml) — nothing to do"
+  fi
+
+  echo ""
+  echo "== Summary =="
+  printf '%s' "$RESULTS"
+}
+
+# Capture the whole run to a temp log OUTSIDE the repo first; only when
+# it has fully finished is the log copied to setup-results.txt, so the
+# file always holds the complete, final output of the run.
+main 2>&1 | tee "$TMPLOG"
+cp "$TMPLOG" "$RESULTS_FILE"
+rm -f "$TMPLOG"
+echo ""
+echo "Full output saved locally in $RESULTS_FILE (untracked — delete it whenever; it is NOT committed)."
+
+echo ""
+echo "== Cleanup =="
+# One commit: this script removed, ci-src/ removed, the refreshed
+# workflow added. The staging below is pathspec-explicit.
+# setup-results.txt is deliberately NOT staged — it stays a local,
+# untracked file (public repo). If the commit or push fails, the
+# refresh above still stands — tidy the files by hand.
+git rm -q update-ci.sh >/dev/null 2>&1 || rm -f update-ci.sh
+if [ -d ci-src ]; then
+  git rm -rq ci-src >/dev/null 2>&1 || rm -rf ci-src
+fi
+[ -d .github/workflows ] && git add -- .github/workflows 2>/dev/null || true
+git add -A -- update-ci.sh ci-src 2>/dev/null || true
+push_cleanup() { # plain push, retrying with an upstream if the branch has none
+  git push -q 2>/dev/null || git push -q -u origin "$(git branch --show-current 2>/dev/null || echo main)"
+}
+if git diff --cached --quiet; then
+  echo "Nothing staged — cleanup already done."
+elif git commit -q -m "Refresh ci.yml (kit v3.5.2 heredoc fix, via update-ci.sh)" && push_cleanup; then
+  echo "Cleanup committed and pushed."
+else
+  echo "NOTE: couldn't commit/push the cleanup. Everything above still applied;"
+  echo "commit the removal of update-ci.sh + ci-src/ by hand whenever convenient."
+fi
