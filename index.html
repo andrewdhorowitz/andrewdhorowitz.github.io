@@ -440,14 +440,15 @@ C4Context
         </svg>
       </div>
       <h3>This website <span class="tag">You're looking at it</span></h3>
-      <p>This site itself is one of the builds: a single static HTML page on GitHub Pages —
-         no framework, no build step — where every project and automation carries the spec and the
+      <p>This site itself is one of the builds: a single static HTML page —
+         no framework, no build step — served by Cloudflare Pages at this domain (the
+         GitHub Pages copy just redirects here), where every project and automation carries the spec and the
          AI prompt behind it, on copy buttons. It also runs GoatCounter analytics (page views and
          copy-button click events) plus Cloudflare Web Analytics for cookieless page-view stats
-         on the custom domain, a feedback/contact form that never exposes an email address, and a public
+         on the custom domain, a feedback/contact form that never exposes a personal email address, and a public
          comments section (below) powered by GitHub Discussions.</p>
       <ul class="highlights">
-        <li>Project prompts are fetched live from GitHub when you tap copy — always the current version, never a stale snapshot.</li>
+        <li>The generator and trial prompts are fetched live from GitHub when you tap copy — always the current version, never a stale snapshot.</li>
         <li>The page auto-translates into each visitor's browser language; the copyable prompts themselves stay verbatim.</li>
       </ul>
       <div class="btns">
@@ -536,7 +537,8 @@ C4Context
             <circle cx="652" cy="64" r="10" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
         <h3>⛽ Gas tracker</h3>
-        <p>I report fill-ups and the gauge needle; the system estimates miles driven from the
+        <p>I report the gauge needle; fill-ups reconstruct themselves from the settled charges
+           on my card. The system estimates miles driven from the
            calendar, projects the day the tank crosses a quarter, and pins a "get gas" stop onto a
            trip I'm already making — at the best-priced convenient station on that route, never
            slipping an arrival time to do it.</p>
@@ -696,8 +698,8 @@ C4Context
       <h3>🎁 The "build my portfolio" prompt</h3>
       <p>It walks your assistant through everything: inventorying your GitHub, featuring the specs and
          prompts behind each project, writing up your automations without leaking private details,
-         wiring the copy buttons, share links, feedback form, and analytics — then publishing to
-         GitHub Pages and verifying the live page before declaring victory.</p>
+         wiring the copy buttons, share links, feedback form, and analytics — then publishing
+         the page and verifying it live before declaring victory.</p>
       <div class="btns"><button class="btn copy primary" data-copy-key="site">📋 Copy the full site prompt</button></div>
     </div>
 
@@ -835,7 +837,7 @@ inbox: `Build me an inbox hygiene system for digest and notification email.
 
 1. Create a Gmail label for each noisy sender I name (school notification systems, app digests, shipping notices).
 2. Every morning, find all mail from those senders still sitting in the inbox, apply the matching label, and archive it out of the inbox. Never delete anything in this step. Verify zero remain in the inbox afterwards and log how many you swept.
-3. Separately, every day: permanently trash digest/notification email from those same senders once it is more than 5 days old — it has served its purpose by then.
+3. Separately, every day: trash digest/notification email from those same senders once it is more than 5 days old (Gmail trash — recoverable for 30 days) — it has served its purpose by then.
 4. Stay silent when everything works. Only message me if a sweep fails, a sender changes its address, or the counts look abnormal.
 
 The goal: my inbox holds only mail that needs a human. Everything else is filed or gone, and I never have to think about it.`,
@@ -883,7 +885,7 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
 2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Routines & Streaks is a daily routines-and-streaks tracker that began as family reminders for the kids — frame it generically, with that origin as the example. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
-4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
+4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
 6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders each project's diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — marks the rendered diagrams notranslate, and links both the canonical source on GitHub and an interactive rendering of the deployment view (drag the nodes, pan, zoom, click a node for details; the interactive page is generated from the same model, and dragging never edits the source). When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation: its card carries all three views plus links to the canonical source and the interactive version.
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
