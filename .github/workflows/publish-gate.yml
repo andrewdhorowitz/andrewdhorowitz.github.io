@@ -1,0 +1,37 @@
+# Publish gate — the portfolio may never link a surface a fleet
+# manifest has declared private (PUBLISH-MANIFEST-SPEC §4).
+# The denylist comes from the fleet-kit registry copy, checked out
+# at CI time (vendored, not copied into this repo, so the registry
+# stays the single source). Lychee (links.yml) checks liveness;
+# this checks permission. Both run; neither replaces the other.
+name: Publish gate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the portfolio
+        uses: actions/checkout@v4
+        with:
+          path: site
+      - name: Check out the fleet publish registry (fleet-kit)
+        uses: actions/checkout@v4
+        with:
+          repository: andrewdhorowitz/fleet-kit
+          path: fleet-kit
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fail on any href to a declared-private host
+        run: >
+          python3 site/scripts/check_publish_gate.py
+          --registry fleet-kit/publish-registry
+          --root site
