@@ -11,4 +11,6 @@ Contact: hello@andrewdhorowitz.com
 Discovery: canonical link + Open Graph tags in the head (og-image.png is the social card, favicon.svg the tab icon); robots.txt and sitemap.xml sit at the root.
 Translation: a GTranslate free widget in the header band auto-detects the visitor's browser language and translates the page in place (prompts are not translated).
 
+Architecture: C4-lite diagrams for the site itself live in [docs/architecture.md](docs/architecture.md), and the whole-system context diagram in [docs/whole-system-architecture.md](docs/whole-system-architecture.md); the page renders both from those canonical sources.
+
 Plain static HTML, no build step. Edit `index.html` and push; Cloudflare Pages serves the custom domain and GitHub Pages serves the mirror.
