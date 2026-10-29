@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/ci.yml) [![Lighthouse](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/lighthouse.yml) [![Links](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/links.yml/badge.svg)](https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/actions/workflows/links.yml)
 
-Personal showcase site: featured projects (Family Routines App, AIMF Protocol) and the home automations that run the day — all built spec-first with AI assistance.
+Personal portfolio site (andrewdhorowitz.com): an open portfolio with tabs for Projects, Automations, The Playbook, and Get in touch — featuring Routines & Streaks, the AIMF Protocol, and Family Cards, plus the home automations that run the day, all built spec-first with AI assistance.
 
 Live at https://andrewdhorowitz.com/ (Cloudflare Pages; GitHub Pages mirror at https://andrewdhorowitz.github.io/)
 
