@@ -62,6 +62,10 @@
   .howto h3{color:#fff; margin-bottom:8px;}
   .howto ol{margin-left:20px;}
   .howto li{margin-bottom:5px;}
+  .card h4{font-size:1.02rem; margin:16px 0 4px;}
+  .diagram{border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; background:#fff;}
+  .diagram summary{cursor:pointer; font-weight:600; font-size:0.95rem; padding:2px 0 6px;}
+  .diagram .mermaid{min-width:620px;}
   footer{padding:26px 20px 44px; color:var(--muted); font-size:0.9rem;}
   #toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
     background:var(--ink); color:#fff; padding:10px 20px; border-radius:999px; font-size:0.92rem;
@@ -93,7 +97,7 @@
   <div class="wrap">
 
     <h2 id="projects">Featured projects</h2>
-    <p class="sub">All three are public on GitHub — including the specs and the AI prompts that produced them.
+    <p class="sub">All four are public on GitHub — including the specs and the AI prompts that produced them.
        Around here, the prompt is the source code.</p>
 
     <div class="card">
@@ -178,6 +182,199 @@
         <a class="btn" href="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/SPEC.md">The spec (bot-readable)</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
         <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/trial-prompt.md" data-fallback="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 800 220" role="img">
+          <g fill="none" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="80" y="40" width="290" height="145" rx="14" fill="#fff"/>
+            <rect x="100" y="60" width="110" height="26" rx="13" fill="#fef3c7" stroke="#d97706"/>
+            <line x1="100" y1="108" x2="330" y2="108"/>
+            <line x1="100" y1="132" x2="290" y2="132" stroke="#d6d6d6"/>
+            <line x1="100" y1="156" x2="315" y2="156" stroke="#d6d6d6"/>
+            <rect x="430" y="40" width="290" height="145" rx="14" fill="#fff"/>
+            <rect x="450" y="60" width="110" height="26" rx="13" fill="#fff"/>
+            <line x1="450" y1="108" x2="680" y2="108"/>
+            <rect x="450" y="124" width="92" height="24" rx="6" fill="#d97706" stroke="#d97706"/>
+            <line x1="450" y1="162" x2="640" y2="162" stroke="#d6d6d6"/>
+            <path d="M385 112 h30" stroke="#d97706" stroke-dasharray="2 10"/>
+          </g>
+        </svg>
+      </div>
+      <h3>Family Cards <span class="tag">Live demo</span></h3>
+      <p>Per-kid schedule cards for kids who won't use a calendar — each kid gets one simple page
+         covering the next two weeks, framed as <strong>With Dad</strong> vs <strong>With Mom</strong>.
+         Her events come first, non-school events are highlighted as <strong>Big</strong>, and a
+         pickup or drop-off shows only when Dad drives — she assumes Mom otherwise. Nothing to
+         install, no account, no invite spam: just one link that works.</p>
+      <p class="note">The demo below is the public twin of a private family system: same page, same
+         gate, same generator, running on fully invented kids (Emma and Noah) and invented events.
+         The calendars stay private on the assistant side — a generator there reads them and writes
+         one small JSON file per kid, and the page only renders that file. No calendar credential
+         ever lives on the web host. Access is an expiring code, not an account: only its hash is
+         stored, and a signed cookie does the rest. Each kid's card also carries a notes box —
+         "Anything on your side?" — so she can tell Dad about plans the calendar doesn't know.</p>
+      <ul class="highlights">
+        <li>It meets kids where they are: no calendar, no account — one card, framed With Dad / With Mom, with Dad's legs shown and Mom's simply assumed.</li>
+        <li>Exceptions get exactly one word — CHANGED: a third-party pickup names the driver, a moved time shows the new time only, no explanations.</li>
+        <li>Codes, not accounts: expiring links whose SHA-256 hashes are all the host stores, a signed scoped cookie per kid, and a gate that fails closed.</li>
+      </ul>
+      <h4>Architecture — three views, one canonical source</h4>
+      <p class="note">This is the first diagram on the site, and it sets the pattern the others will
+         follow: a System Context view, a Container view, and a Deployment (host) view, drawn as
+         Mermaid diagrams-as-code. Shapes say what kind of thing each piece is — a person is a
+         person, a browser window is a screen, a rack is a server, a gear is a worker, a cylinder
+         is a data store — and every piece sits on the host that runs it. The Mermaid below is
+         generated from the canonical source in the demo repo, never a second hand-drawn copy.</p>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>Container view — the pieces inside the system</summary>
+        <div class="mermaid">
+C4Container
+    title Family Cards - Container View (demo: Emma / Noah)
+
+    Person(kid, "Emma / Noah", "Kid viewers.")
+    Person(owner, "Dad", "Owner.")
+    Person(parent, "Parent viewer", "Read-only.")
+
+    System_Ext(cal, "Google Calendar", "Primary, Family, and Kids calendars (generic labels).")
+    System_Ext(form, "Google Form", "Kid-notes inbox. Full flow only.")
+    System_Ext(repo, "GitHub Repository", "This repo: canonical source for page, gate, generator, and card data.")
+
+    System_Boundary(fc, "Family Cards") {
+
+        Boundary(hosting, "Cloudflare Pages", "Hosting") {
+            Container(gate, "Gate Middleware", "Pages Function, JavaScript", "Checks every request: redeems a code against stored hashes, sets a signed scoped cookie, enforces scope per file, serves scope, and handles the note endpoint.")
+            Container(page, "Card Page", "Static HTML / JavaScript - the UI", "Renders one kid card, or both cards with tabs for owner and parent scopes. Shows Big and CHANGED tags and the kid-notes box.")
+            Container(noteep, "Note Endpoint", "Pages Function route, in the gate", "Attributes a note from the verified cookie, never from client input, and validates the text. Demo: stub that discards.")
+            ContainerDb(carddata, "Per-kid Card Data", "JSON files: emma.json, noah.json", "One file per kid: two-week window, With Dad / With Mom days, entries, legs, CHANGED tags, own notes only.")
+            ContainerDb(codes, "Access Code Hashes", "JSON file: codes.json", "SHA-256 hashes and expiries only. No plain codes are stored.")
+        }
+
+        Boundary(assistant, "Assistant side", "Scheduled automation, off the web host") {
+            Container(sched, "Scheduled Rebuilds and Watches", "Scheduled jobs", "Morning and nightly rebuilds, plus rebuilds when a change is spotted.")
+            Container(gen, "Card Generator", "Python", "Filters sensitive and admin events out, resolves drivers, applies the Big and CHANGED rules, folds in kid notes, and writes the per-kid JSON.")
+            Container(minter, "Code Minter", "Python", "Mints random per-scope expiring codes in batches. Only hashes are committed.")
+            Container(watch, "Notes Watch", "Scheduled job", "Polls the notes inbox, reports each new note to Dad verbatim, then triggers a regeneration. Full flow only.")
+            ContainerDb(snap, "Snapshots and Notes State", "Files, kept outside the repo", "Previous card per kid for the CHANGED diff. Seen-note IDs for dedupe.")
+        }
+    }
+
+    Rel(kid, gate, "Opens link with code, then browses with cookie", "HTTPS")
+    Rel(owner, gate, "Opens owner link", "HTTPS")
+    Rel(parent, gate, "Opens parent link", "HTTPS")
+    Rel(gate, page, "Allows the verified scope")
+    Rel(gate, codes, "Reads hashes and expiry")
+    Rel(page, carddata, "Fetches own JSON for a kid scope, or all card JSON for owner / parent")
+    Rel(page, noteep, "Posts a note: text plus optional date and time guess", "Demo: box disabled")
+    Rel(noteep, form, "Forwards the attributed note", "Full flow only")
+    Rel(watch, form, "Reads new responses, dedupes by response ID")
+    Rel(watch, gen, "New note: notify Dad, then regenerate")
+    Rel(sched, gen, "Triggers")
+    Rel(gen, cal, "Reads events for the rolling two-week window")
+    BiRel(gen, snap, "Diff vs previous card drives CHANGED tags and the Last changed stamp")
+    Rel(gen, carddata, "Writes per-kid JSON, each kid notes in their own file only")
+    Rel(minter, codes, "Writes hashes only")
+    Rel(gen, repo, "Pushes updated card data")
+    Rel(minter, repo, "Pushes updated hashes")
+    Rel(repo, gate, "Deploys page, gate, and data")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>Deployment view — which host runs what</summary>
+        <div class="mermaid">
+C4Deployment
+    title Family Cards - Deployment View (demo: Emma / Noah)
+
+    Person(kid, "Emma / Noah", "Kid viewers. Each reads only their own card.")
+    Person(owner, "Dad", "Owner. Reads both cards, tabbed.")
+    Person(parent, "Parent viewer", "Read-only. Reads both cards.")
+
+    Deployment_Node(github, "GitHub", "Repository hosting") {
+        Container(repo, "Family Cards Demo Repo", "Git repository", "Canonical source: page, gate, generator, this diagram. Plus the generated card data.")
+    }
+
+    Deployment_Node(cloudflare, "Cloudflare Pages", "Edge hosting") {
+        Container(page, "Card Page", "Static HTML / JavaScript - UI screen", "Renders one kid card, or both with tabs. Shows Big and CHANGED tags and the notes box.")
+        Container(gate, "Gate Middleware", "Pages Function - server", "Redeems codes against stored hashes, sets a signed scoped cookie, enforces scope, serves scope, handles the note endpoint.")
+        ContainerDb(carddata, "Per-kid Card Data", "JSON files", "emma.json and noah.json. One file per kid, own notes only.")
+        ContainerDb(codes, "Access Code Hashes", "JSON file", "SHA-256 hashes and expiries only.")
+    }
+
+    Deployment_Node(muse, "Muse - assistant side", "Automation runtime, off the web host") {
+        Container(gen, "Card Generator", "Python - worker", "Reads calendars, filters, resolves drivers, applies Big and CHANGED, folds notes, writes per-kid JSON.")
+        Container(minter, "Code Minter", "Python - worker", "Mints expiring scoped codes. Only hashes are committed.")
+        Container(watch, "Notes Watch and Scheduled Rebuilds", "Scheduled jobs - workers", "Morning and nightly rebuilds, on-change rebuilds, new-note alerts to Dad.")
+        ContainerDb(snap, "Snapshots and Notes State", "Files, outside the repo", "CHANGED diff baseline. Seen-note IDs for dedupe.")
+    }
+
+    Deployment_Node(google, "Google", "External services") {
+        Container_Ext(cal, "Google Calendar", "External service - cloud", "Source calendars, read on the assistant side only.")
+        Container_Ext(form, "Google Form", "External service - cloud", "Kid-notes inbox. Full flow only; stubbed in the demo.")
+    }
+
+    Rel(kid, gate, "Opens coded link, then browses with cookie", "HTTPS")
+    Rel(owner, gate, "Opens owner link", "HTTPS")
+    Rel(parent, gate, "Opens parent link", "HTTPS")
+    Rel(gate, page, "Allows the verified scope")
+    Rel(gate, codes, "Reads hashes and expiry")
+    Rel(page, carddata, "Fetches card JSON by scope")
+    Rel(page, gate, "Posts a note to the note endpoint", "Demo: box disabled")
+    Rel(gate, form, "Forwards the attributed note", "Full flow only")
+    Rel(watch, form, "Polls new note responses")
+    Rel(watch, gen, "New note: alert Dad, then regenerate")
+    Rel(gen, cal, "Reads events, rolling two-week window")
+    BiRel(gen, snap, "Diff drives CHANGED tags")
+    Rel(gen, carddata, "Writes per-kid JSON")
+    Rel(minter, codes, "Writes hashes only")
+    Rel(gen, repo, "Pushes generated card data")
+    Rel(minter, repo, "Pushes updated hashes")
+    Rel(repo, page, "Deploys page, gate, and data to Cloudflare")
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>System Context view — the system and its neighbours</summary>
+        <div class="mermaid">
+C4Context
+    title Family Cards - System Context (demo: Emma / Noah)
+
+    Person(kid, "Emma / Noah", "Kid viewers. Each reads only their own card, and can send a note.")
+    Person(owner, "Dad", "Owner. Reads both cards, tabbed.")
+    Person(parent, "Parent viewer", "Read-only. Reads both cards, logistics only.")
+
+    System(fc, "Family Cards", "Per-kid two-week cards behind expiring access codes.")
+
+    System_Ext(cal, "Google Calendar", "Source calendars, read on the assistant side only.")
+    System_Ext(form, "Google Form", "Kid-notes inbox. Full flow only; stubbed in the demo.")
+    System_Ext(gh, "GitHub", "This repo: page, generator, and generated card data.")
+    System_Ext(cf, "Cloudflare Pages", "Hosting and the server-side gate.")
+
+    Rel(kid, fc, "Views own card, sends notes")
+    Rel(owner, fc, "Views both cards")
+    Rel(parent, fc, "Views both cards")
+    Rel(fc, cal, "Generator reads events", "No calendar credential lives on the web host")
+    Rel(fc, form, "Stores notes as form responses", "Full flow only")
+    Rel(fc, gh, "Pushes generated files")
+    Rel(gh, cf, "Deploys")
+    Rel(cf, fc, "Serves the gated site")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <p class="note">Prefer to explore it? The
+         <a href="https://andrewdhorowitz.github.io/family-cards-demo/docs/interactive-architecture.html">interactive version</a>
+         lets you drag the boxes, pan and zoom, and click any piece for what it does. The canonical
+         source is <a href="https://github.com/andrewdhorowitz/family-cards-demo/blob/main/docs/architecture.md">docs/architecture.md in the demo repo</a>.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://andrewdhorowitz.github.io/family-cards-demo/">Live demo</a>
+        <a class="btn" href="https://github.com/andrewdhorowitz/family-cards-demo">Repository</a>
+        <a class="btn" href="https://github.com/andrewdhorowitz/family-cards-demo/blob/main/docs/architecture.md">Architecture</a>
+        <button class="btn copy" data-copy-key="familycards">📋 Copy the build prompt</button>
       </div>
     </div>
 
@@ -607,16 +804,44 @@ Assemble it from my calendar, my task lists, and overnight changes:
 
 Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.`,
 
+familycards: `Build me a Family Cards system: simple per-kid schedule cards for kids who will not use a calendar.
+
+THE CARD (one per kid, identical rules for each):
+- A rolling two-week window, framed as the week "With Dad" vs "With Mom" (whichever home base the day belongs to).
+- The kid's own events are the priority; non-school events are highlighted as "Big".
+- Pickup and drop-off legs are shown ONLY when Dad drives — the kid assumes Mom otherwise, so Mom legs are simply absent.
+- Exceptions get a single "CHANGED" tag, no explanations: a driver who is neither Mom nor Dad is named; a changed pickup or drop-off time shows the new time only.
+- A heading stamp reads "Last changed: ..." — when the card's content last actually changed, not when it was last rebuilt. A CHANGED entry carries its own "Updated ..." time.
+
+THE GENERATOR (runs on the assistant side, never on the web host):
+- Read the family calendars and write one small JSON data file per kid. The page only renders that JSON; no calendar credential ever lives on the web host, and the page never calls a calendar API.
+- Filter out anything sensitive (medical, therapy, financial, legal) and administrative blocks (travel and get-ready blocks) entirely, and reduce locations to a simple place name — no street addresses in the output.
+- Resolve each leg's driver in this order: an explicit tag or transport name on the event itself, then driver proof from a matching travel block, then the household day/time rule. Diff against the previous card snapshot (kept outside the repo) to set CHANGED tags.
+- Rebuild on a schedule (morning and nightly) and whenever a schedule change is spotted, so the two-week window rolls forward on its own.
+
+ACCESS (codes, not accounts):
+- Each kid gets her own expiring access code (about two weeks). Only the SHA-256 hash of each code is stored; a server-side gate (for example a Cloudflare Pages Function middleware) checks a code arriving as a link parameter, sets an HMAC-signed scoped cookie, and redirects to the clean URL. A kid scope can fetch only her own JSON; a parent scope can read both cards read-only; an owner scope sees both cards with tabs. Unknown or expired codes fail closed, the gate fails closed if its signing secret is unset, and the pages carry noindex.
+- The owner hands each kid her first link in person.
+
+KID NOTES:
+- Each kid's card has one simple box — "Anything on your side?" — with a text field plus an optional date and optional estimated from/to times (a guess is fine, never required). Submitting posts to a same-origin endpoint; the gate attributes the note from her verified cookie, never from client input, validates the text, and forwards it to a form an assistant watch polls (the form is never linked publicly). The watch reports each new note to Dad verbatim, then regenerates; the generator folds each kid's own notes into her JSON only, deduplicated by response ID.
+
+DEMO:
+- Ship a public demo running the same page, gate, minter, and generator code on fully invented kids and events, with one fixed public demo code (owner scope) and the notes box shown disabled. The private system, its real data, and its address never appear in the demo repo or on any public page.
+
+Verify by reading the generated JSON files and the rendered cards back, kid scope by kid scope (including a forged note attribution test), before calling it done.`,
+
 site: `Build me a personal showcase website like this one: a single-page site on GitHub Pages that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
 
 1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
-2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself.
+2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are a family routines app, the AIMF protocol, Family Cards, and the website itself. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
-6. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
-7. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
-8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain.
+6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders each project's diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — marks the rendered diagrams notranslate, and links both the canonical source on GitHub and an interactive rendering of the deployment view (drag the nodes, pan, zoom, click a node for details; the interactive page is generated from the same model, and dragging never edits the source). When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation: its card carries all three views plus links to the canonical source and the interactive version.
+7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (e.g. GoatCounter) counting page views and copy-button clicks, so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
+8. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
+9. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
 };
@@ -681,6 +906,8 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
 });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true});</script>
 <script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper"}</script>
 <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
