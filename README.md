@@ -4,6 +4,8 @@
 
 Personal portfolio site (andrewdhorowitz.com): an open portfolio with tabs for Projects, Automations, The Playbook, and Get in touch — featuring Routines & Streaks, the AIMF Protocol, and Family Cards, plus the home automations that run the day, all built spec-first with AI assistance.
 
+> **Published:** Site — https://andrewdhorowitz.com/ · Docs — https://andrewdhorowitz.com/docs/whole-system-architecture.md · Interactive — https://andrewdhorowitz.com/docs/interactive-architecture.html · Repo — https://github.com/andrewdhorowitz/andrewdhorowitz.github.io
+
 Live at https://andrewdhorowitz.com/ (Cloudflare Pages; GitHub Pages mirror at https://andrewdhorowitz.github.io/)
 
 Contact: hello@andrewdhorowitz.com
