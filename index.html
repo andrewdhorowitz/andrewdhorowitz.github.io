@@ -4,13 +4,13 @@
 <script>if(location.hostname==="andrewdhorowitz.github.io"){location.replace("https://andrewdhorowitz.com"+location.pathname+location.search+location.hash);}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Andrew (andrewdhorowitz) — Projects &amp; Automations</title>
+<title>Andrew Horowitz — Projects &amp; Automations</title>
 <meta name="description" content="Personal projects and home automations, built spec-first with AI: a routines-and-streaks tracker that began as family reminders for the kids, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
 <link rel="canonical" href="https://andrewdhorowitz.com/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://andrewdhorowitz.com/">
-<meta property="og:title" content="Andrew (andrewdhorowitz) — Projects &amp; Automations">
+<meta property="og:title" content="Andrew Horowitz — Projects &amp; Automations">
 <meta property="og:description" content="Personal projects and home automations, built spec-first with AI: a routines-and-streaks tracker that began as family reminders for the kids, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
 <meta property="og:image" content="https://andrewdhorowitz.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -73,6 +73,14 @@
   .diagram{border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:10px 0; overflow-x:auto; background:#fff;}
   .diagram summary{cursor:pointer; font-weight:600; font-size:0.95rem; padding:2px 0 6px;}
   .diagram .mermaid{min-width:620px;}
+  .band .tagline{color:#fff; font-size:1.2rem; font-weight:600; margin-top:12px;}
+  .band .motto{color:var(--accent); font-size:1.05rem; font-weight:600; margin-top:4px;}
+  .tabs{display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 30px;}
+  .tabs [role="tab"]{font:inherit; font-size:0.98rem; font-weight:600; padding:8px 18px;
+    border:1.5px solid var(--ink); border-radius:999px; background:#fff; color:var(--ink); cursor:pointer;}
+  .tabs [role="tab"]:hover{background:var(--accent-soft);}
+  .tabs [role="tab"][aria-selected="true"]{background:var(--ink); color:#fff;}
+  .tab-panel[hidden]{display:none;}
   footer{padding:26px 20px 44px; color:var(--muted); font-size:0.9rem;}
   #toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
     background:var(--ink); color:#fff; padding:10px 20px; border-radius:999px; font-size:0.92rem;
@@ -88,6 +96,8 @@
     .card{border:none; border-bottom:1px solid #ccc; border-radius:0; padding:12px 0; page-break-inside:avoid;}
     a{color:#000;}
     footer{padding:12px 0 0;}
+    .tabs{display:none !important;}
+    .tab-panel{display:block !important;}
   }
 </style>
 </head>
@@ -95,7 +105,9 @@
 
 <header class="band">
   <div class="wrap">
-    <h1>Andrew builds things<br>that <span class="accent">run themselves</span>.</h1>
+    <h1>Andrew Horowitz</h1>
+    <p class="tagline">An open portfolio — every project with its playbook attached.</p>
+    <p class="motto">Andrew builds things that run themselves.</p>
     <p>Personal projects and home automations, designed spec-first and built with AI assistance —
        then left to run on their own: an app generated from its own prompt library, a protocol two AI
        assistants use to talk to each other, and a small fleet of systems that quietly keep a
@@ -114,6 +126,14 @@
 <main>
   <div class="wrap">
 
+    <nav class="tabs" role="tablist" aria-label="Site sections">
+      <button type="button" role="tab" id="tab-projects" aria-controls="panel-projects" aria-selected="true" data-tab="projects">Projects</button>
+      <button type="button" role="tab" id="tab-automations" aria-controls="panel-automations" aria-selected="false" tabindex="-1" data-tab="automations">Automations</button>
+      <button type="button" role="tab" id="tab-playbook" aria-controls="panel-playbook" aria-selected="false" tabindex="-1" data-tab="playbook">The Playbook</button>
+      <button type="button" role="tab" id="tab-contact" aria-controls="panel-contact" aria-selected="false" tabindex="-1" data-tab="contact">Get in touch</button>
+    </nav>
+
+    <section class="tab-panel" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" data-panel="projects">
     <h2 id="projects">Featured projects</h2>
     <p class="sub">All four are public on GitHub — including the specs and the AI prompts that produced them.
        Around here, the prompt is the source code.</p>
@@ -420,7 +440,7 @@ C4Context
         </svg>
       </div>
       <h3>This website <span class="tag">You're looking at it</span></h3>
-      <p>The showcase itself is one of the builds: a single static HTML page on GitHub Pages —
+      <p>This site itself is one of the builds: a single static HTML page on GitHub Pages —
          no framework, no build step — where every project and automation carries the spec and the
          AI prompt behind it, on copy buttons. It also runs GoatCounter analytics (page views and
          copy-button click events) plus Cloudflare Web Analytics for cookieless page-view stats
@@ -436,6 +456,9 @@ C4Context
       </div>
     </div>
 
+    </section>
+
+    <section class="tab-panel" id="panel-automations" role="tabpanel" aria-labelledby="tab-automations" data-panel="automations" hidden>
     <h2 id="automations">Automations</h2>
     <p class="sub">The unglamorous systems that do the daily work. Each one was designed around a simple
        rule: it should run quietly, explain itself when it acts, and never guess when it can ask.
@@ -650,6 +673,9 @@ C4Context
       </div>
     </div>
 
+    </section>
+
+    <section class="tab-panel" id="panel-playbook" role="tabpanel" aria-labelledby="tab-playbook" data-panel="playbook" hidden>
     <h2>How these get built</h2>
     <div class="howto">
       <h3>Spec first, prompt as source, verify by reading back</h3>
@@ -662,12 +688,12 @@ C4Context
       </ol>
     </div>
 
-    <h2>Steal this site</h2>
+    <h2 id="playbook">The Playbook</h2>
     <p class="sub">This whole page — the inventory, the cards, the visuals, the copy-prompt buttons —
        was built by Muse (Meta's personal AI agent) from a conversation. Here is that conversation, distilled into one
        prompt. Copy it, paste it into your own AI assistant, and get your own version.</p>
     <div class="card">
-      <h3>🎁 The "build my showcase" prompt</h3>
+      <h3>🎁 The "build my portfolio" prompt</h3>
       <p>It walks your assistant through everything: inventorying your GitHub, featuring the specs and
          prompts behind each project, writing up your automations without leaking private details,
          wiring the copy buttons, share links, feedback form, and analytics — then publishing to
@@ -675,7 +701,10 @@ C4Context
       <div class="btns"><button class="btn copy primary" data-copy-key="site">📋 Copy the full site prompt</button></div>
     </div>
 
-    <h2>Get in touch</h2>
+    </section>
+
+    <section class="tab-panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact" data-panel="contact" hidden>
+    <h2 id="contact">Get in touch</h2>
     <p class="sub">Like something? Spot a mistake? Want to talk about building systems like these?
        All of it lands in the same place.</p>
     <div class="card">
@@ -714,6 +743,8 @@ C4Context
         async>
       </script>
     </div>
+
+    </section>
 
   </div>
 </main>
@@ -847,7 +878,7 @@ DEMO:
 
 Verify by reading the generated JSON files and the rendered cards back, kid scope by kid scope (including a forged note attribution test), before calling it done.`,
 
-site: `Build me a personal showcase website like this one: a single-page site on GitHub Pages that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
+site: `Build me a personal portfolio website like this one — an open portfolio: a single-page site on GitHub Pages, titled with my full name, that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
 
 1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
 2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Routines & Streaks is a daily routines-and-streaks tracker that began as family reminders for the kids — frame it generically, with that origin as the example. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
@@ -857,7 +888,7 @@ site: `Build me a personal showcase website like this one: a single-page site on
 6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders each project's diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — marks the rendered diagrams notranslate, and links both the canonical source on GitHub and an interactive rendering of the deployment view (drag the nodes, pan, zoom, click a node for details; the interactive page is generated from the same model, and dragging never edits the source). When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation: its card carries all three views plus links to the canonical source and the interactive version.
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 8. COMMUNITY: add a comments section powered by GitHub Discussions via Giscus — visitors sign in with GitHub to comment and react, and the threads live in the site repo's Discussions (Announcements category), where I can reply and moderate. Setup takes two owner-only steps (enable Discussions on the repo; install the Giscus app), then embed the script the Giscus site generates. Theme it to match the page (transparent_dark works well on a dark design).
-9. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — a © line with my full name, a contact link to the role address, and a Built by … with Muse credit — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly.
+9. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon, and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — a © line with my full name, a contact link to the role address, and a Built by … with Muse credit — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section and the community comments sit together under Get in touch.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
 };
@@ -885,7 +916,7 @@ document.querySelectorAll('[data-track]').forEach(el=>{
 });
 const shareBtn = document.getElementById('shareBtn');
 if(shareBtn) shareBtn.addEventListener('click', async ()=>{
-  const data = {title:'Andrew (andrewdhorowitz) — Projects & Automations',
+  const data = {title:'Andrew Horowitz — Projects & Automations',
     text:'Projects and automations built spec-first with AI — including the prompts behind them.',
     url:'https://andrewdhorowitz.com/'};
   if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
@@ -922,6 +953,71 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
 });
 </script>
 
+<script>
+(function(){
+  var names = ['projects','automations','playbook','contact'];
+  var tabs = {}, panels = {};
+  names.forEach(function(n){
+    tabs[n] = document.getElementById('tab-' + n);
+    panels[n] = document.getElementById('panel-' + n);
+  });
+  if(!tabs.projects || !panels.projects) return;
+  var current = 'projects';
+  function activate(name, focus){
+    if(!tabs[name] || !panels[name]) name = 'projects';
+    current = name;
+    names.forEach(function(n){
+      var on = n === name;
+      tabs[n].setAttribute('aria-selected', on ? 'true' : 'false');
+      tabs[n].tabIndex = on ? 0 : -1;
+      if(on){ panels[n].removeAttribute('hidden'); }
+      else { panels[n].setAttribute('hidden', ''); }
+    });
+    if(focus) tabs[name].focus();
+  }
+  function nameFromHash(){
+    var h = (location.hash || '').replace(/^#/, '');
+    if(!h) return null;
+    if(names.indexOf(h) >= 0) return h;
+    var el = document.getElementById(h);
+    if(el && el.closest){
+      var p = el.closest('[data-panel]');
+      if(p) return p.getAttribute('data-panel');
+    }
+    return null;
+  }
+  function setHash(n){
+    try{ history.pushState(null, '', '#' + n); }
+    catch(e){ location.hash = n; }
+  }
+  names.forEach(function(n, i){
+    tabs[n].addEventListener('click', function(){ activate(n, false); setHash(n); });
+    tabs[n].addEventListener('keydown', function(ev){
+      var j = null;
+      if(ev.key === 'ArrowRight') j = (i + 1) % names.length;
+      else if(ev.key === 'ArrowLeft') j = (i + names.length - 1) % names.length;
+      else if(ev.key === 'Home') j = 0;
+      else if(ev.key === 'End') j = names.length - 1;
+      if(j !== null){ ev.preventDefault(); activate(names[j], true); setHash(names[j]); }
+    });
+  });
+  window.addEventListener('hashchange', function(){
+    var n = nameFromHash();
+    if(n && n !== current) activate(n, false);
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      var id = (a.getAttribute('href') || '').replace(/^#/, '');
+      var target = id && document.getElementById(id);
+      if(target && target.closest){
+        var p = target.closest('[data-panel]');
+        if(p) activate(p.getAttribute('data-panel'), false);
+      }
+    });
+  });
+  activate(nameFromHash() || 'projects', false);
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:true});</script>
 <script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
