@@ -1,0 +1,172 @@
+{
+  "edges": {
+    "ci->repo": "checks every push",
+    "commenter->giscus": "signs in + comments",
+    "fbwatch->fbstate": "dedupes",
+    "fbwatch->responses": "polls hourly",
+    "gform->responses": "stores response",
+    "giscus->discussions": "threads live here",
+    "mirror->page": "redirects to domain",
+    "page->gc": "visit beacon",
+    "page->giscus": "embeds widget",
+    "page->gt": "translates in-browser",
+    "page->wa": "analytics beacon",
+    "repo->mirror": "deploys mirror",
+    "repo->page": "deploys (Cloudflare)",
+    "upkeep->repo": "pushes updates",
+    "visitor->gform": "submits feedback",
+    "visitor->mirror": "old links",
+    "visitor->page": "visits (HTTPS)"
+  },
+  "footer_note": "Interactive rendering of the canonical v3 diagram in docs/architecture.md (same folder) — the Mermaid source there is the source of truth, and this rendering is generated from the same model.",
+  "header_sub": "<b>Drag any box</b> to move it, <b>drag the background</b> to pan, <b>scroll / pinch buttons</b> to zoom, <b>click a box</b> for its details. Dragging explores the view — it does not change the canonical source (docs/architecture.md in this repo).",
+  "nodes": {
+    "ci": {
+      "body": "The thin fleet-CI caller on every push: validation, link check, and Lighthouse, all defined once in the shared kit's reusable workflow.",
+      "host": "GitHub",
+      "icon": "⚙️",
+      "k": "Worker — GitHub Actions",
+      "title": "CI Workflows"
+    },
+    "commenter": {
+      "body": "Comments in the Community section, signing in with a GitHub account through the Giscus widget.",
+      "host": "People",
+      "icon": "👤",
+      "k": "Person — GitHub account",
+      "title": "Community commenter"
+    },
+    "discussions": {
+      "body": "The comment threads behind the Community section (Announcements category). The Giscus widget is only a window; the threads live here, moderated by the owner.",
+      "host": "GitHub",
+      "icon": "🛢️",
+      "k": "Database — GitHub Discussions",
+      "title": "Community Discussions"
+    },
+    "fbstate": {
+      "body": "Which form responses have already been reported, so each one surfaces exactly once.",
+      "host": "Muse — assistant side",
+      "icon": "🛢️",
+      "k": "Database — JSON file",
+      "title": "Feedback Watch State"
+    },
+    "fbwatch": {
+      "body": "Hourly: checks the feedback form for new responses and reports each one to Andrew verbatim (daytime hours only).",
+      "host": "Muse — assistant side",
+      "icon": "⚙️",
+      "k": "Worker — scheduled job",
+      "title": "Feedback Watch"
+    },
+    "gc": {
+      "body": "Privacy-friendly visit counts for the showcase. Kept on this site; deliberately not the fleet standard (domain properties count via Cloudflare instead).",
+      "host": "Third-party services",
+      "icon": "☁️",
+      "k": "External service — cloud",
+      "title": "GoatCounter"
+    },
+    "gform": {
+      "body": "The public feedback form linked from the site's Get in touch section. The public email address stays off the site; the form is the inbox.",
+      "host": "Google",
+      "icon": "☁️",
+      "k": "External service — Google Form",
+      "title": "Feedback Form"
+    },
+    "giscus": {
+      "body": "The hosted comment widget embedded in the Community section; it reads and writes GitHub Discussions.",
+      "host": "Third-party services",
+      "icon": "☁️",
+      "k": "External service — cloud",
+      "title": "Giscus"
+    },
+    "gt": {
+      "body": "Automatic translation into the visitor's language, detected from the browser. Copyable prompt blocks are marked notranslate so prompts stay verbatim.",
+      "host": "Third-party services",
+      "icon": "☁️",
+      "k": "External service — cloud",
+      "title": "GTranslate"
+    },
+    "mirror": {
+      "body": "The same page on the github.io address. Its first script redirects every visit to andrewdhorowitz.com, preserving path, query, and hash.",
+      "host": "GitHub Pages",
+      "icon": "🪟",
+      "k": "UI screen — static HTML",
+      "title": "GitHub Pages Mirror"
+    },
+    "owner": {
+      "body": "The person the site showcases. Publishes through the assistant and answers feedback.",
+      "host": "People",
+      "icon": "👤",
+      "k": "Person — owner",
+      "title": "Andrew (owner / author)"
+    },
+    "page": {
+      "body": "The canonical site at andrewdhorowitz.com (apex + www): project cards, copyable prompts, embedded architecture diagrams, community, and contact — all in one page.",
+      "host": "Cloudflare Pages",
+      "icon": "🪟",
+      "k": "UI screen — static HTML / JS",
+      "title": "Showcase Page"
+    },
+    "repo": {
+      "body": "andrewdhorowitz.github.io — canonical source: the page, its prompts, the embedded diagram sources, and (on approval) this diagram.",
+      "host": "GitHub",
+      "icon": "📦",
+      "k": "Repo — source store",
+      "title": "Showcase Repo"
+    },
+    "responses": {
+      "body": "Where submitted feedback lands. Read by the Feedback Watch on its hourly poll.",
+      "host": "Google",
+      "icon": "🛢️",
+      "k": "Database — Google Form responses",
+      "title": "Form Responses"
+    },
+    "upkeep": {
+      "body": "Builds each update, verifies it live, and pushes through the snapshot route. Under the upkeep rule, a feature change carries its card text, its embedded prompt, and its diagram in the same push.",
+      "host": "Muse — assistant side",
+      "icon": "⚙️",
+      "k": "Worker — assistant workflow",
+      "title": "Site Builder and Upkeep"
+    },
+    "visitor": {
+      "body": "Reads the portfolio: project cards, copyable build prompts, automations, architecture diagrams.",
+      "host": "People",
+      "icon": "👤",
+      "k": "Person — reader",
+      "title": "Visitor / evaluator"
+    },
+    "wa": {
+      "body": "Page-level counts for the domain, fed by the beacon script embedded in the page. Installed Oct 29 on the showcase and AIMF only.",
+      "host": "Cloudflare Pages",
+      "icon": "🗄️",
+      "k": "Server — Cloudflare Web Analytics",
+      "title": "Web Analytics Beacon"
+    }
+  },
+  "panel_body": "One static page, two hosts: <b>Cloudflare Pages</b> serves the canonical site at andrewdhorowitz.com and the <b>GitHub Pages</b> copy is a mirror that redirects to it. Comments live in <b>GitHub Discussions</b> behind a Giscus window; feedback lands in a <b>Google Form</b> that an assistant-side <b>watch</b> polls. Click any box for its job.",
+  "project": "Showcase Site",
+  "zones": {
+    "cloudflare": {
+      "sub": "Canonical hosting + DNS + analytics",
+      "title": "Cloudflare Pages"
+    },
+    "github": {
+      "sub": "Repo, Pages mirror, Discussions, Actions",
+      "title": "GitHub"
+    },
+    "google": {
+      "sub": "External services",
+      "title": "Google"
+    },
+    "muse": {
+      "sub": "Automation runtime, off the web host",
+      "title": "Muse — assistant side"
+    },
+    "third": {
+      "sub": "External widgets and counters",
+      "title": "Third-party services"
+    }
+  },
+  "folded_elements": [
+    "prompts",
+    "diagrams"
+  ]
+}
