@@ -96,10 +96,11 @@ C4Context
 | Grey, (PROPOSED) | A proposed system that does not exist yet | Visitor Error Reporting (PROPOSED) |
 
 Hosts in one line each: the **Showcase** and the **AIMF invite
-page** and the **live Family Cards** are canonical on Cloudflare
-Pages (their GitHub Pages copies are mirrors); the **Family
-Routines App** and the **Family Cards demo** are canonical on
-GitHub Pages; every source lives in a **GitHub** repo held to the
+page** are canonical on Cloudflare Pages (their GitHub Pages
+copies are mirrors), and the **live Family Cards** is canonical
+on Cloudflare Pages too \u2014 private, with no public copy; the
+**Routines & Streaks** app and the **Family Cards demo** are
+canonical on GitHub Pages; every source lives in a **GitHub** repo held to the
 **Shared Kit** standard; the **Assistant Layer** runs off the web
 hosts entirely and is the only part that writes to the others.
 
