@@ -10,14 +10,14 @@
 #      ci-src/ when the two differ, and reports "already" when they
 #      are identical. Unlike the install passes — which never
 #      overwrote an installed workflow — this refresh deliberately
-#      replaces exactly one file: ci.yml. The staged copy carries kit v3.5.2: the Web job's
-#      inline-script syntax step embedded its Python extractor in a
-#      shell heredoc whose body and closing PY marker sat two spaces
-#      deeper than the run block's base lines; YAML strips only the
-#      first line's indent, so bash received an indented PY, never
-#      closed the heredoc, and the step failed before any JavaScript
-#      was checked. The fix de-indents the body and the marker to the
-#      block's base; nothing else in the file changes.
+#      replaces exactly one file: ci.yml. The staged copy is the
+#      kit v3.6 THIN CALLER: the baseline jobs (Python / Web /
+#      actionlint) no longer live in this repo — they are the
+#      reusable workflow in andrewdhorowitz/repo-template
+#      (.github/workflows/fleet-ci.yml) and this repo's ci.yml only
+#      calls it (@main), so future kit CI fixes land centrally and
+#      need no per-repo update runs. Supersedes the v3.5.2 staged
+#      full-copy refresh, which never ran.
 #      (The workflow travels at ci-src/ because the Muse GitHub
 #      App cannot push files under .github/workflows/; the repo
 #      owner can.)
@@ -54,10 +54,10 @@ main() {
       report skip "Workflow ci.yml already current (.github/workflows/ci.yml) — left as-is"
     elif [ -f .github/workflows/ci.yml ]; then
       cp ci-src/ci.yml .github/workflows/ci.yml
-      report ok "Workflow ci.yml refreshed (.github/workflows/ci.yml) — kit v3.5.2 heredoc fix"
+      report ok "Workflow ci.yml refreshed (.github/workflows/ci.yml) — kit v3.6 thin caller (jobs centralized in repo-template)"
     else
       cp ci-src/ci.yml .github/workflows/ci.yml
-      report ok "Workflow ci.yml installed (.github/workflows/ci.yml) — kit v3.5.2 heredoc fix"
+      report ok "Workflow ci.yml installed (.github/workflows/ci.yml) — kit v3.6 thin caller (jobs centralized in repo-template)"
     fi
   else
     report skip "No staged ci.yml found (ci-src/ci.yml) — nothing to do"
@@ -95,7 +95,7 @@ push_cleanup() { # plain push, retrying with an upstream if the branch has none
 }
 if git diff --cached --quiet; then
   echo "Nothing staged — cleanup already done."
-elif git commit -q -m "Refresh ci.yml (kit v3.5.2 heredoc fix, via update-ci.sh)" && push_cleanup; then
+elif git commit -q -m "Refresh ci.yml (kit v3.6 thin caller (jobs centralized in repo-template), via update-ci.sh)" && push_cleanup; then
   echo "Cleanup committed and pushed."
 else
   echo "NOTE: couldn't commit/push the cleanup. Everything above still applied;"

@@ -1,110 +1,24 @@
-# Baseline CI — repo-template kit.
-# Installed to .github/workflows/ci.yml by setup-settings.sh (until then it
-# travels in this repo at ci-src/ci.yml — see BOOTSTRAP-NOTES.md for why).
-# Jobs: Python (ruff + byte-compile), Web (JS syntax + HTML validation),
-# and Workflows (actionlint — the workflow files lint themselves; the
-# binary is pinned and downloaded from the official release rather
-# than run through a third-party action). Every step whose files are
-# absent skips cleanly instead of failing. Checks run AFTER push (no
-# branch locks), per the owner's no-lockout rule.
-# Edit the file lists to fit the project: the Python job checks the
-# files named in PY_FILES.
+# CI — thin caller for the shared fleet workflow (kit v3.6).
+# The baseline checks themselves (Python / Web / actionlint) live in
+# the template repo as a reusable workflow; this file only points at
+# them, so a kit CI fix lands once, centrally, and this repo picks it
+# up on its next run. There are no jobs to edit here — the only knob
+# is the inputs block below.
+# Installed to .github/workflows/ci.yml by update-ci.sh (until then
+# it travels in this repo at ci-src/ci.yml — the Muse GitHub App
+# cannot push files under .github/workflows/; the repo owner can).
 name: CI
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  python:
-    name: Python — ruff + byte-compile
-    runs-on: ubuntu-latest
-    # EDIT THIS LIST: the Python files CI should check in this project.
-    env:
-      PY_FILES: "app.py main.py"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Keep only the listed files that exist
-        run: |
-          existing=""
-          for f in $PY_FILES; do [ -f "$f" ] && existing="$existing $f"; done
-          echo "PY_EXISTING=$existing" >> "$GITHUB_ENV"
-          if [ -z "$existing" ]; then echo "No listed Python files present — Python checks will skip."; fi
-      - name: Install ruff (pinned to the audited version)
-        if: env.PY_EXISTING != ''
-        run: pip install "ruff==0.15.20"
-      - name: Ruff check (baseline in ruff.toml)
-        if: env.PY_EXISTING != ''
-        run: ruff check $PY_EXISTING
-      - name: Byte-compile
-        if: env.PY_EXISTING != ''
-        run: python -m py_compile $PY_EXISTING
-      - name: Ruff format
-        if: env.PY_EXISTING != ''
-        run: ruff format --check $PY_EXISTING
-
-  web:
-    name: Web — JS syntax + HTML validation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Syntax-check the middleware, if present (ES module)
-        run: |
-          if [ -f functions/_middleware.js ]; then
-            cp functions/_middleware.js /tmp/_middleware.mjs
-            node --check /tmp/_middleware.mjs
-          else
-            echo "No functions/_middleware.js — skipping."
-          fi
-      - name: Syntax-check index.html's inline scripts, if present
-        run: |
-          if [ -f index.html ]; then
-            python3 - <<'PY'
-          import re, pathlib
-          html = pathlib.Path("index.html").read_text()
-          scripts = re.findall(r"<script>(.*?)</script>", html, re.S)
-          for i, s in enumerate(scripts):
-              pathlib.Path(f"/tmp/inline-{i}.js").write_text(s)
-          print(f"extracted {len(scripts)} inline script(s)")
-          PY
-            for f in /tmp/inline-*.js; do [ -e "$f" ] || continue; node --check "$f"; done
-          else
-            echo "No index.html — skipping."
-          fi
-      - name: Validate HTML, if index.html is present
-        run: |
-          if [ -f index.html ]; then
-            printf '{ "extends": ["html-validate:recommended"] }' > .htmlvalidate.json
-            npx --yes html-validate@9 index.html
-          else
-            echo "No index.html — skipping."
-          fi
-
-  actionlint:
-    name: Workflows — actionlint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download actionlint (pinned v1.7.11, official release)
-        run: |
-          if ls .github/workflows/*.yml .github/workflows/*.yaml >/dev/null 2>&1; then
-            curl -sSfL -o /tmp/actionlint.tar.gz \
-              https://github.com/rhysd/actionlint/releases/download/v1.7.11/actionlint_1.7.11_linux_amd64.tar.gz
-            tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
-            echo "ACTIONLINT_BIN=/tmp/actionlint" >> "$GITHUB_ENV"
-          else
-            echo "No workflow files present — actionlint will skip."
-          fi
-      - name: Lint the workflow files
-        if: env.ACTIONLINT_BIN != ''
-        run: |
-          "$ACTIONLINT_BIN" -color
+  fleet-ci:
+    uses: andrewdhorowitz/repo-template/.github/workflows/fleet-ci.yml@main
+    with:
+      py_files: "app.py main.py"
