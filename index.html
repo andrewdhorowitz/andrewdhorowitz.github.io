@@ -186,6 +186,8 @@
         <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/SPEC.md">The spec</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/MASTER_DESIGN_SPEC.md">Master design spec</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/GENERATOR_PROMPT.md">Generator prompt</a>
+        <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/architecture.md">Architecture</a>
+        <a class="btn" href="https://andrewdhorowitz.github.io/routines-and-streaks/docs/interactive-architecture.html">Interactive diagram</a>
         <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/routines-and-streaks/main/docs/GENERATOR_PROMPT.md" data-fallback="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/GENERATOR_PROMPT.md">📋 Copy the full generator prompt</button>
       </div>
     </div>
@@ -231,6 +233,8 @@
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol">Repository</a>
         <a class="btn" href="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/SPEC.md">The spec (bot-readable)</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
+        <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/docs/architecture.md">Architecture</a>
+        <a class="btn" href="https://aimf.andrewdhorowitz.com/docs/interactive-architecture.html">Interactive diagram</a>
         <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/trial-prompt.md" data-fallback="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
       </div>
     </div>
@@ -460,10 +464,258 @@ C4Context
         <li>The generator and trial prompts are fetched live from GitHub when you tap copy — always the current version, never a stale snapshot.</li>
         <li>The page auto-translates into each visitor's browser language; the copyable prompts themselves stay verbatim.</li>
       </ul>
+      <h4>Architecture — three views, one canonical source</h4>
+      <p class="note">The same pattern, turned on the site itself: a System Context view, a
+         Container view, and a Deployment (host) view, drawn as Mermaid diagrams-as-code.
+         Shapes say what kind of thing each piece is — a person is a person, a browser
+         window is a screen, a rack is a server, a gear is a worker, a cylinder is a
+         data store — and every piece sits on the host that runs it. The Mermaid below is
+         generated from the canonical source in this site's repo, never a second
+         hand-drawn copy.</p>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>Container view — the pieces inside the system</summary>
+        <div class="mermaid">
+C4Container
+    title Showcase Site - Container View
+
+    Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
+    Person(commenter, "Community commenter", "GitHub account.")
+    Person(owner, "Andrew (owner / author)", "Publishes via the assistant.")
+
+    System_Ext(giscus, "Giscus", "Comment widget backed by GitHub Discussions.")
+    System_Ext(gc, "GoatCounter", "Visit counts (no cookies, no tracking across sites).")
+    System_Ext(gt, "GTranslate", "In-browser automatic translation.")
+    System_Ext(wa, "Cloudflare Web Analytics", "Privacy-friendly page-level counts from a beacon script.")
+    System_Ext(gform, "Google Form", "Feedback form and its responses.")
+    System_Ext(raw, "GitHub Raw Content", "Canonical prompt files in the project repos, fetched at view time.")
+
+    System_Boundary(site, "Showcase Site") {
+
+        Boundary(serving, "Serving", "Cloudflare Pages (canonical) + GitHub Pages (mirror)") {
+            Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The whole site in one page: project cards, automations, diagrams, community, contact. The GitHub Pages mirror is the same page with a first-script redirect to the domain.")
+            Container(prompts, "Copyable Build Prompts", "Embedded data, in-page JavaScript", "One build prompt per card, copied verbatim (marked notranslate). Three prompts refresh themselves from their canonical repo files at view time; the rest are embedded snapshots updated with the site.")
+            Container(diagrams, "Architecture Diagrams", "Mermaid sources embedded in-page", "The v3 three-view diagrams, rendered in the browser from the same canonical Mermaid sources that live in each project repo.")
+        }
+
+        Boundary(assistant, "Assistant side", "Automation runtime, off the web host") {
+            Container(upkeep, "Site Builder and Upkeep", "Assistant workflow - worker", "Builds each update, verifies it live, and pushes through the snapshot route. The upkeep rule: a feature change updates the card, its prompt, and its diagram in the same push.")
+            Container(fbwatch, "Feedback Watch", "Scheduled job - worker", "Hourly: reports each new feedback-form response to Andrew verbatim (daytime hours).")
+            ContainerDb(fbstate, "Feedback Watch State", "JSON file, assistant side", "Which form responses have already been reported.")
+        }
+    }
+
+    ContainerDb_Ext(discussions, "Community Discussions", "GitHub Discussions", "The comment threads behind the Community section (Announcements category).")
+
+    Rel(visitor, page, "Reads, copies prompts, expands diagrams", "HTTPS")
+    Rel(commenter, page, "Comments via the embedded widget")
+    Rel(page, giscus, "Loads the widget", "Comments live in Discussions")
+    Rel(giscus, discussions, "Reads and writes comment threads")
+    Rel(page, gc, "Visit beacon")
+    Rel(page, wa, "Analytics beacon")
+    Rel(page, gt, "Translates content in-browser")
+    Rel(prompts, raw, "Three prompts fetch their canonical text", "At view time")
+    Rel(visitor, gform, "Submits feedback", "Form link")
+    Rel(fbwatch, gform, "Polls for new responses")
+    Rel(fbwatch, fbstate, "Dedupes reported responses")
+    Rel(upkeep, page, "Pushes verified updates")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>Deployment view — which host runs what</summary>
+        <div class="mermaid">
+C4Deployment
+    title Showcase Site - Deployment View
+
+    Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
+    Person(commenter, "Community commenter", "Comments with a GitHub account.")
+    Person(owner, "Andrew (owner / author)", "Publishes through the assistant.")
+
+    Deployment_Node(cloudflare, "Cloudflare Pages", "Canonical hosting + DNS + analytics") {
+        Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The canonical site at andrewdhorowitz.com (apex + www): cards, prompts, diagrams, community, contact.")
+        Container(wa, "Web Analytics Beacon", "Cloudflare Web Analytics - server", "Page-level counts for the domain, from the beacon embedded in the page.")
+    }
+
+    Deployment_Node(github, "GitHub", "Repository hosting, Pages mirror, Discussions, Actions") {
+        Container(repo, "Showcase Repo", "Git repository", "andrewdhorowitz.github.io - canonical source: the page, its prompts, the embedded diagrams, this diagram.")
+        Container(mirror, "GitHub Pages Mirror", "Static HTML - UI screen", "The same page served from the github.io address; its first script redirects every visit to andrewdhorowitz.com, keeping path and query.")
+        ContainerDb(discussions, "Community Discussions", "GitHub Discussions", "Comment threads for the Community section; moderation is the owner's.")
+        Container(ci, "CI Workflows", "GitHub Actions - worker", "The thin fleet-CI caller (validation, links, Lighthouse) on every push.")
+    }
+
+    Deployment_Node(muse, "Muse - assistant side", "Automation runtime, off the web host") {
+        Container(upkeep, "Site Builder and Upkeep", "Assistant workflow - worker", "Builds updates, verifies live, pushes via the snapshot route; keeps cards, prompts, and diagrams in sync.")
+        Container(fbwatch, "Feedback Watch", "Scheduled job - worker", "Hourly check for new feedback responses; each new one is reported verbatim.")
+        ContainerDb(fbstate, "Feedback Watch State", "JSON file", "Responses already reported.")
+    }
+
+    Deployment_Node(third, "Third-party services", "External widgets and counters") {
+        Container_Ext(giscus, "Giscus", "Hosted widget - cloud", "Renders Discussions as the page's comment section.")
+        Container_Ext(gc, "GoatCounter", "Hosted analytics - cloud", "Visit counts for the site.")
+        Container_Ext(gt, "GTranslate", "Hosted widget - cloud", "Automatic translation into the visitor's language.")
+    }
+
+    Deployment_Node(google, "Google", "External services") {
+        Container_Ext(gform, "Feedback Form", "Google Form - cloud", "The public feedback form linked from the site.")
+        ContainerDb(responses, "Form Responses", "Google Form responses", "Where feedback lands; read by the Feedback Watch.")
+    }
+
+    Rel(visitor, page, "Visits the canonical site", "HTTPS")
+    Rel(visitor, mirror, "Old links land here and redirect", "HTTPS")
+    Rel(mirror, page, "Redirects to the domain")
+    Rel(commenter, giscus, "Signs in with GitHub and comments")
+    Rel(page, giscus, "Embeds the widget")
+    Rel(giscus, discussions, "Threads live in Discussions")
+    Rel(page, gc, "Visit beacon")
+    Rel(page, gt, "Translation in the browser")
+    Rel(page, wa, "Analytics beacon")
+    Rel(visitor, gform, "Submits feedback")
+    Rel(gform, responses, "Stores the response")
+    Rel(fbwatch, responses, "Polls for new responses")
+    Rel(fbwatch, fbstate, "Dedupes")
+    Rel(upkeep, repo, "Pushes site updates")
+    Rel(repo, page, "Deploys to Cloudflare Pages")
+    Rel(repo, mirror, "Deploys the mirror to GitHub Pages")
+    Rel(ci, repo, "Checks every push")
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>System Context view — the system and its neighbours</summary>
+        <div class="mermaid">
+C4Context
+    title Showcase Site - System Context
+
+    Person(visitor, "Visitor / evaluator", "Reads the portfolio: project cards, copyable build prompts, automations, and architecture diagrams.")
+    Person(commenter, "Community commenter", "Comments in the Community section with a GitHub account.")
+    Person(owner, "Andrew (owner / author)", "The person the site showcases. Publishes through the assistant and answers feedback.")
+
+    System(site, "Showcase Site", "Static portfolio at andrewdhorowitz.com: featured projects, automations, architecture diagrams, community, and contact.")
+
+    System_Ext(cf, "Cloudflare Pages", "Canonical hosting for the domain (apex + www), plus DNS, TLS, and Web Analytics.")
+    System_Ext(gh, "GitHub", "Source repo, GitHub Pages mirror, Discussions behind the comments, and CI.")
+    System_Ext(giscus, "Giscus", "Comment widget powered by GitHub Discussions.")
+    System_Ext(gc, "GoatCounter", "Privacy-friendly visit counts.")
+    System_Ext(gform, "Google Form", "The feedback form; responses collect in Google.")
+    System_Ext(gt, "GTranslate", "Automatic translation into the visitor's language, detected from the browser.")
+    System_Ext(muse, "Muse - assistant side", "Builds and pushes site updates; watches for feedback; keeps cards, prompts, and diagrams in sync under the upkeep rule.")
+
+    Rel(visitor, site, "Reads pages, copies prompts, opens diagrams")
+    Rel(commenter, site, "Reads and comments")
+    Rel(site, giscus, "Embeds the comment widget")
+    Rel(site, gc, "Sends a visit beacon")
+    Rel(site, gt, "Translates page content in the browser")
+    Rel(visitor, gform, "Submits feedback", "Linked form")
+    Rel(muse, site, "Builds and pushes updates", "Upkeep rule")
+    Rel(muse, gform, "Checks for new feedback responses", "Hourly watch")
+    Rel(gh, site, "Repo is the source; mirror redirects to the domain")
+    Rel(cf, site, "Serves the canonical site")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <p class="note">Prefer to explore it? The
+         <a href="https://andrewdhorowitz.com/docs/interactive-architecture.html">interactive version</a>
+         lets you drag the boxes, pan and zoom, and click any piece for what it does. The canonical
+         source is <a href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/blob/main/docs/architecture.md">docs/architecture.md in this repo</a>.</p>
       <div class="btns">
         <a class="btn primary" href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io">Repository</a>
+        <a class="btn" href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/blob/main/docs/architecture.md">Architecture</a>
         <button class="btn copy" data-copy-key="site">📋 Copy the full site prompt</button>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="art" aria-hidden="true">
+        <svg viewBox="0 0 800 220" role="img">
+          <g fill="none" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="60" y="40" width="150" height="60" rx="10" fill="#fff"/>
+            <rect x="60" y="120" width="150" height="60" rx="10" fill="#fff"/>
+            <rect x="590" y="40" width="150" height="60" rx="10" fill="#fff"/>
+            <rect x="590" y="120" width="150" height="60" rx="10" fill="#fff"/>
+            <circle cx="400" cy="110" r="34" fill="#fef3c7" stroke="#d97706"/>
+            <path d="M210 70 L366 96 M210 150 L366 124 M434 96 L590 70 M434 124 L590 150" stroke="#d97706" stroke-dasharray="2 12"/>
+          </g>
+        </svg>
+      </div>
+      <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="12" cy="12" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M7 7.5 L10 10 M17 7.5 L14 10 M7 16.5 L10 14 M17 16.5 L14 14"/></svg>The whole system <span class="tag">One picture</span></h3>
+      <p>How all of it fits together: the four public properties, the hosts that serve them,
+         the shared kit that keeps every repo to one standard, Firebase and Google Workspace
+         behind the scenes, and the assistant layer that builds and maintains the lot — drawn
+         as a single System Context diagram. The one grey (PROPOSED) box does not exist yet:
+         a fleet-wide error-reporting standard, drawn where it would sit.</p>
+      <h4>Architecture — the whole ecosystem in one view</h4>
+      <p class="note">One diagram instead of three: at this altitude only the context view
+         makes sense — the per-project cards above and their repos carry the container and
+         deployment detail. The Mermaid below is generated from the canonical source in
+         this repo, never a second hand-drawn copy.</p>
+      <details class="diagram notranslate" translate="no" open>
+        <summary>System Context view — the whole ecosystem</summary>
+        <div class="mermaid">
+C4Context
+    title Whole System - Website Ecosystem Context
+
+    Person(owner, "Andrew", "Owner of everything pictured. Approves what ships; the only human who can publish, send, or pay.")
+    Person(visitor, "Visitors / evaluators", "Read the showcase and the public project pages.")
+    Person(family, "Family members", "Use the Routines &amp; Streaks (test stage) and read their Family Cards.")
+    Person(bot, "External AIs / bots", "AIMF counterparties: read the protocol from its repo and send structured messages under agreements.")
+
+    System(showcase, "Showcase Site", "andrewdhorowitz.com - the portfolio front door: project cards, copyable build prompts, the architecture diagrams, community.")
+    System(routines, "Routines &amp; Streaks", "Single-file routine and streak app (Version 1, test stage) on GitHub Pages, backed by Firebase.")
+    System(aimf, "AIMF", "Inbound Message Format v1.9: a gated, documented format for sending information into the assistant. Invite page on its own subdomain.")
+    System(cards, "Family Cards", "Per-kid two-week cards: a public demo, and a private live site behind access codes on its own subdomain.")
+    System(muse, "Muse - Assistant Layer", "Builds, updates, and monitors every property: generators, scheduled watches, the calendar and inbox automations, and the showcase upkeep rule.")
+    System(kit, "Shared Kit", "repo-template + fleet-ci: the template and reusable CI that hold every repo to one standard - settings, workflows, diagram regeneration, converger scripts.")
+
+    System_Ext(cf, "Cloudflare", "Pages hosting for the domain and subdomains, DNS, TLS, and Web Analytics.")
+    System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), Actions CI, and Discussions.")
+    System_Ext(firebase, "Google Firebase", "Auth and Firestore behind the Routines &amp; Streaks.")
+    System_Ext(gws, "Google Workspace", "Calendar, Gmail, Drive, and Forms - the data the assistant's automations read and the AIMF transports.")
+    System_Ext(counters, "GoatCounter + GTranslate", "Visit counts on the showcase; automatic translation on the public pages.")
+
+    System(errep, "Visitor Error Reporting (PROPOSED)", "PROPOSED fleet-wide standard: each property classifies visitor errors by effect and sends minimal reports to a shared Worker collector, with pluggable sinks. Andrew gets a weekly digest line, same-day notes for stuck users, and an instant ping only for fleet-wide breakage.")
+
+    Rel(visitor, showcase, "Reads the portfolio")
+    Rel(visitor, routines, "Opens the app page and its diagram")
+    Rel(visitor, aimf, "Reads the invite page")
+    Rel(family, routines, "Signs in and runs routines")
+    Rel(family, cards, "Reads their own card by coded link")
+    Rel(bot, aimf, "Reads the spec; sends envelope messages")
+    Rel(owner, muse, "Directs and approves")
+    Rel(muse, showcase, "Builds and pushes updates (upkeep rule)")
+    Rel(muse, routines, "Maintains the repo; verifies deploys")
+    Rel(muse, aimf, "Runs the report-only attempt monitor")
+    Rel(muse, cards, "Generates the cards; runs the rebuilds and watches")
+    Rel(muse, gws, "Reads calendars, mail, and form responses")
+    Rel(muse, kit, "Maintains the template and the reusable CI")
+    Rel(kit, gh, "Sets the standard every repo converges to")
+    Rel(showcase, cf, "Served canonically from Cloudflare Pages")
+    Rel(aimf, cf, "Invite page served from Cloudflare Pages")
+    Rel(cards, cf, "Live site served from Cloudflare Pages (gated)")
+    Rel(showcase, gh, "Repo + redirecting Pages mirror + Discussions")
+    Rel(routines, gh, "Repo + GitHub Pages hosting")
+    Rel(aimf, gh, "Canonical repo + Pages mirror")
+    Rel(cards, gh, "Demo on GitHub Pages; repos hold the source")
+    Rel(routines, firebase, "Authenticates users; stores all state")
+    Rel(aimf, gws, "Envelopes arrive by mail, Drive, and chat")
+    Rel(cards, gws, "Generator reads the family calendars (assistant side only)")
+    Rel(showcase, counters, "Counts visits; translates pages")
+    Rel(showcase, errep, "PROPOSED: sends classified visitor-error reports")
+    Rel(routines, errep, "PROPOSED: first adopter - sends classified reports")
+    Rel(aimf, errep, "PROPOSED: sends classified visitor-error reports")
+    Rel(cards, errep, "PROPOSED: sends classified visitor-error reports")
+    Rel(errep, owner, "PROPOSED: weekly digest, same-day stuck-user notes, rare instant pings")
+    Rel(errep, cf, "PROPOSED: the shared collector is a Cloudflare Worker")
+
+    UpdateElementStyle(errep, $bgColor="#eeeeee", $fontColor="#555555")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+        </div>
+      </details>
+      <p class="note">The canonical source is
+         <a href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/blob/main/docs/whole-system-architecture.md">docs/whole-system-architecture.md in this repo</a>.</p>
     </div>
 
     </section>
@@ -872,7 +1124,7 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
-6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders each project's diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — marks the rendered diagrams notranslate, and links both the canonical source on GitHub and an interactive rendering of the deployment view (drag the nodes, pan, zoom, click a node for details; the interactive page is generated from the same model, and dragging never edits the source). When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation: its card carries all three views plus links to the canonical source and the interactive version.
+6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation.
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
