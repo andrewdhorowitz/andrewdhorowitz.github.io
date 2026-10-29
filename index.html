@@ -5,13 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Andrew (andrewdhorowitz) — Projects &amp; Automations</title>
-<meta name="description" content="Personal projects and home automations, built spec-first with AI: a family routines app, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
+<meta name="description" content="Personal projects and home automations, built spec-first with AI: a routines-and-streaks tracker that began as family reminders for the kids, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
 <link rel="canonical" href="https://andrewdhorowitz.com/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://andrewdhorowitz.com/">
 <meta property="og:title" content="Andrew (andrewdhorowitz) — Projects &amp; Automations">
-<meta property="og:description" content="Personal projects and home automations, built spec-first with AI: a family routines app, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
+<meta property="og:description" content="Personal projects and home automations, built spec-first with AI: a routines-and-streaks tracker that began as family reminders for the kids, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
 <meta property="og:image" content="https://andrewdhorowitz.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -137,15 +137,17 @@
         </svg>
       </div>
       <h3>Routines &amp; Streaks <span class="tag">Live app</span></h3>
-      <p>A daily routine tracker for families: morning and evening check-offs, streaks, and a
-         noon-rollover cycle, with per-person dashboards and an admin mode. The whole app is a
-         single HTML file backed by Firebase — and it was <em>generated</em>, not hand-written.</p>
+      <p>A daily routines-and-streaks tracker: tasks on a daily cycle that resets at noon,
+         persistent streaks and history, everything scoped to the signed-in person. It started
+         as a way to keep my kids' daily routines on track — the engine turned out to be
+         general, so now it tracks mine too. The whole app is a single HTML file backed by
+         Firebase — and it was <em>generated</em>, not hand-written.</p>
       <p class="note">The interesting part is how it was built: a full specification and a library of
          prompts live in the same repo — the master design spec, the generator prompt that produces
          the code, the build prompt, and the phase plan. Change the prompt, regenerate the app.</p>
       <ul class="highlights">
         <li>The whole app is a build artifact: fix the prompt, regenerate, and the code follows.</li>
-        <li>Its day resets at noon, not midnight — the cycle follows family life, not the clock.</li>
+        <li>Its day resets at noon, not midnight — the cycle follows real life, not the clock.</li>
         <li>Streaks and history live in the cloud database, so they survive a new phone or a cleared browser.</li>
       </ul>
       <div class="btns">
@@ -848,7 +850,7 @@ Verify by reading the generated JSON files and the rendered cards back, kid scop
 site: `Build me a personal showcase website like this one: a single-page site on GitHub Pages that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
 
 1. INVENTORY: List all my GitHub repositories. Separate the public highlights (real projects with something to show) from private practice/learning repos. Show me the inventory and ask which to feature; default to public projects only.
-2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
+2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Routines & Streaks is a daily routines-and-streaks tracker that began as family reminders for the kids — frame it generically, with that origin as the example. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for projects, the button fetches the canonical prompt file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break.
