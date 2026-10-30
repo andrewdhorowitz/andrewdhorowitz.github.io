@@ -13,6 +13,10 @@
 # cannot push files under .github/workflows/; the repo owner can).
 name: CI
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
   pull_request:
