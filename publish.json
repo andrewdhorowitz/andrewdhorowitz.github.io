@@ -22,5 +22,6 @@
     "group": "projects",
     "include": true
   },
-  "status": "public"
+  "status": "public",
+  "release_state": "released"
 }
