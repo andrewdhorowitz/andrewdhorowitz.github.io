@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 """Publish gate — fail the build if a page links a declared-private host.
 
-Reads every publish manifest in the fleet-kit registry copy
-(publish-registry/*.json), builds the denylist from each manifest's
-`private_hosts`, and scans the portfolio's HTML for hrefs to them.
-A private host may be declared as a bare host (matches that host
-exactly) or as a URL prefix (matches hrefs starting with it).
+Builds the denylist from the fleet's GENERATED private-hosts index
+(fleet-kit/publish-registry/private-hosts.json, produced by
+fleet-kit's pull tooling from each project's own publish.json — one
+project = one repo, so the manifests are pulled from their own
+repos, never copied), and scans the portfolio's HTML for hrefs to
+the declared hosts. A private host may be declared as a bare host
+(matches that host exactly) or as a URL prefix (matches hrefs
+starting with it).
 
 This checks PERMISSION, not liveness — the Lychee job already checks
 that links resolve; a gated live URL resolves fine and must still
 never be linked. (Spec: PUBLISH-MANIFEST-SPEC §4, fleet records.)
 
 Usage:
-    check_publish_gate.py --registry <dir> [--root <dir>]
+    check_publish_gate.py --index <private-hosts.json> [--root <dir>]
 
 Exit 0: no violations. Exit 1: at least one violation (each printed
-with its page, href, and the manifest that forbids it).
+with its page, href, and the project that forbids it).
 """
 
 import argparse
@@ -28,21 +31,18 @@ from urllib.parse import urlparse
 HREF_RE = re.compile(r"""href\s*=\s*["']([^"']+)["']""", re.I)
 
 
-def load_denylist(registry_dir):
-    entries = []  # (host, prefix_or_none, project, repo_file)
-    manifests = sorted(Path(registry_dir).glob("*.json"))
-    if not manifests:
-        raise SystemExit(f"no manifests found in {registry_dir}")
-    for path in manifests:
-        if path.name == "publish.schema.json":
-            continue
-        doc = json.loads(path.read_text())
-        for raw in doc.get("private_hosts") or []:
-            if "://" in raw:
-                parsed = urlparse(raw)
-                entries.append((parsed.netloc, raw.rstrip("/"), doc["project"], path.name))
-            else:
-                entries.append((raw, None, doc["project"], path.name))
+def load_denylist(index_path):
+    doc = json.loads(Path(index_path).read_text())
+    if not doc.get("generated"):
+        raise SystemExit(f"{index_path} is not the generated private-hosts index")
+    entries = []  # (host, prefix_or_none, project, source_repo)
+    for item in doc.get("private_hosts") or []:
+        raw = item["host"]
+        if "://" in raw:
+            parsed = urlparse(raw)
+            entries.append((parsed.netloc, raw.rstrip("/"), item["project"], item["repo"]))
+        else:
+            entries.append((raw, None, item["project"], item["repo"]))
     return entries
 
 
@@ -64,11 +64,11 @@ def denied(href, entries):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--registry", required=True, help="dir of registry manifests")
+    ap.add_argument("--index", required=True, help="generated private-hosts.json")
     ap.add_argument("--root", default=".", help="dir of built HTML to scan")
     args = ap.parse_args()
 
-    entries = load_denylist(args.registry)
+    entries = load_denylist(args.index)
     pages = sorted(Path(args.root).rglob("*.html"))
     violations = []
     checked = 0
