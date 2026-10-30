@@ -1,9 +1,12 @@
 # Publish gate — the portfolio may never link a surface a fleet
 # manifest has declared private (PUBLISH-MANIFEST-SPEC §4).
-# The denylist comes from the fleet-kit registry copy, checked out
-# at CI time (vendored, not copied into this repo, so the registry
-# stays the single source). Lychee (links.yml) checks liveness;
-# this checks permission. Both run; neither replaces the other.
+# The denylist comes from fleet-kit's GENERATED private-hosts index,
+# checked out at CI time. The index is produced by fleet-kit's pull
+# tooling from each project's own publish.json (one project = one
+# repo — manifests are never copied), and it carries only host
+# strings, so this public repo's CI never needs to read a private
+# repo. Lychee (links.yml) checks liveness; this checks permission.
+# Both run; neither replaces the other.
 name: Publish gate
 
 on:
@@ -22,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: site
-      - name: Check out the fleet publish registry (fleet-kit)
+      - name: Check out fleet-kit (schema + generated index home)
         uses: actions/checkout@v4
         with:
           repository: andrewdhorowitz/fleet-kit
@@ -33,5 +36,5 @@ jobs:
       - name: Fail on any href to a declared-private host
         run: >
           python3 site/scripts/check_publish_gate.py
-          --registry fleet-kit/publish-registry
+          --index fleet-kit/publish-registry/private-hosts.json
           --root site
