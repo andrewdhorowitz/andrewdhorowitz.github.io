@@ -15,7 +15,15 @@ concurrency:
 
 on:
   push:
+    paths:
+      - '**.html'
+      - 'scripts/check_publish_gate.py'
+      - '.github/workflows/publish-gate.yml'
   pull_request:
+    paths:
+      - '**.html'
+      - 'scripts/check_publish_gate.py'
+      - '.github/workflows/publish-gate.yml'
   workflow_dispatch:
 
 permissions:
