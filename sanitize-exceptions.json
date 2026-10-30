@@ -1,0 +1,14 @@
+{
+  "exceptions": [
+    {
+      "path": "index.html",
+      "class": "topic",
+      "terms": [
+        "therapy",
+        "medical",
+        "amount"
+      ],
+      "reason": "Two known general-terms wordings, no family specifics: (1) the embedded Family Cards generator prompt describes the redaction filter itself \u2014 'Filter out anything sensitive (medical, therapy, financial, legal)'; (2) the gas-automation card quotes the $175 pump authorization hold as a generic figure. Any other topic term in this file, and any identifier anywhere, still fails the gate."
+    }
+  ]
+}
