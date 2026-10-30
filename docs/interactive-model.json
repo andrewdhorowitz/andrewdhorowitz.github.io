@@ -1,14 +1,11 @@
 {
   "edges": {
     "ci->repo": "checks every push",
-    "commenter->giscus": "signs in + comments",
     "fbwatch->fbstate": "dedupes",
     "fbwatch->responses": "polls hourly",
     "gform->responses": "stores response",
-    "giscus->discussions": "threads live here",
     "mirror->page": "redirects to domain",
     "page->gc": "visit beacon",
-    "page->giscus": "embeds widget",
     "page->gt": "translates in-browser",
     "page->wa": "analytics beacon",
     "repo->mirror": "deploys mirror",
@@ -27,20 +24,6 @@
       "icon": "⚙️",
       "k": "Worker — GitHub Actions",
       "title": "CI Workflows"
-    },
-    "commenter": {
-      "body": "Comments in the Community section, signing in with a GitHub account through the Giscus widget.",
-      "host": "People",
-      "icon": "👤",
-      "k": "Person — GitHub account",
-      "title": "Community commenter"
-    },
-    "discussions": {
-      "body": "The comment threads behind the Community section (Announcements category). The Giscus widget is only a window; the threads live here, moderated by the owner.",
-      "host": "GitHub",
-      "icon": "🛢️",
-      "k": "Database — GitHub Discussions",
-      "title": "Community Discussions"
     },
     "fbstate": {
       "body": "Which form responses have already been reported, so each one surfaces exactly once.",
@@ -70,13 +53,6 @@
       "k": "External service — Google Form",
       "title": "Feedback Form"
     },
-    "giscus": {
-      "body": "The hosted comment widget embedded in the Community section; it reads and writes GitHub Discussions.",
-      "host": "Third-party services",
-      "icon": "☁️",
-      "k": "External service — cloud",
-      "title": "Giscus"
-    },
     "gt": {
       "body": "Automatic translation into the visitor's language, detected from the browser. Copyable prompt blocks are marked notranslate so prompts stay verbatim.",
       "host": "Third-party services",
@@ -99,7 +75,7 @@
       "title": "Andrew (owner / author)"
     },
     "page": {
-      "body": "The canonical site at andrewdhorowitz.com (apex + www): project cards, copyable prompts, embedded architecture diagrams, community, and contact — all in one page.",
+      "body": "The canonical site at andrewdhorowitz.com (apex + www): project cards, copyable prompts, embedded architecture diagrams, and contact — all in one page.",
       "host": "Cloudflare Pages",
       "icon": "🪟",
       "k": "UI screen — static HTML / JS",
@@ -141,7 +117,7 @@
       "title": "Web Analytics Beacon"
     }
   },
-  "panel_body": "One static page, two hosts: <b>Cloudflare Pages</b> serves the canonical site at andrewdhorowitz.com and the <b>GitHub Pages</b> copy is a mirror that redirects to it. Comments live in <b>GitHub Discussions</b> behind a Giscus window; feedback lands in a <b>Google Form</b> that an assistant-side <b>watch</b> polls. Click any box for its job.",
+  "panel_body": "One static page, two hosts: <b>Cloudflare Pages</b> serves the canonical site at andrewdhorowitz.com and the <b>GitHub Pages</b> copy is a mirror that redirects to it. Feedback lands in a <b>Google Form</b> that an assistant-side <b>watch</b> polls. Click any box for its job.",
   "project": "Showcase Site",
   "zones": {
     "cloudflare": {
@@ -149,7 +125,7 @@
       "title": "Cloudflare Pages"
     },
     "github": {
-      "sub": "Repo, Pages mirror, Discussions, Actions",
+      "sub": "Repo, Pages mirror, Actions",
       "title": "GitHub"
     },
     "google": {

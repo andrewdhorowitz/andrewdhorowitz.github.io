@@ -479,21 +479,19 @@ C4Container
     title Showcase Site - Container View
 
     Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
-    Person(commenter, "Community commenter", "GitHub account.")
     Person(owner, "Andrew (owner / author)", "Publishes via the assistant.")
 
-    System_Ext(giscus, "Giscus", "Comment widget backed by GitHub Discussions.")
     System_Ext(gc, "GoatCounter", "Visit counts (no cookies, no tracking across sites).")
     System_Ext(gt, "GTranslate", "In-browser automatic translation.")
     System_Ext(wa, "Cloudflare Web Analytics", "Privacy-friendly page-level counts from a beacon script.")
     System_Ext(gform, "Google Form", "Feedback form and its responses.")
-    System_Ext(raw, "GitHub Raw Content", "Canonical prompt files in the project repos, fetched at view time.")
+    System_Ext(raw, "GitHub Raw Content", "Canonical prompt files in the project repos, fetched live when a copy button is tapped.")
 
     System_Boundary(site, "Showcase Site") {
 
         Boundary(serving, "Serving", "Cloudflare Pages (canonical) + GitHub Pages (mirror)") {
-            Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The whole site in one page: project cards, automations, diagrams, community, contact. The GitHub Pages mirror is the same page with a first-script redirect to the domain.")
-            Container(prompts, "Copyable Build Prompts", "Embedded data, in-page JavaScript", "One build prompt per card, copied verbatim (marked notranslate). Three prompts refresh themselves from their canonical repo files at view time; the rest are embedded snapshots updated with the site.")
+            Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The whole site in one page: project cards, automations, diagrams, contact. The GitHub Pages mirror is the same page with a first-script redirect to the domain.")
+            Container(prompts, "Copyable Build Prompts", "Embedded data, in-page JavaScript", "One build prompt per card, copied verbatim (marked notranslate). Two prompts - the Routines &amp; Streaks generator prompt and the AIMF trial prompt - fetch their canonical text live from GitHub when their copy buttons are tapped; the rest are embedded snapshots updated with the site.")
             Container(diagrams, "Architecture Diagrams", "Mermaid sources embedded in-page", "The v3 three-view diagrams, rendered in the browser from the same canonical Mermaid sources that live in each project repo.")
         }
 
@@ -504,23 +502,18 @@ C4Container
         }
     }
 
-    ContainerDb_Ext(discussions, "Community Discussions", "GitHub Discussions", "The comment threads behind the Community section (Announcements category).")
-
     Rel(visitor, page, "Reads, copies prompts, expands diagrams", "HTTPS")
-    Rel(commenter, page, "Comments via the embedded widget")
-    Rel(page, giscus, "Loads the widget", "Comments live in Discussions")
-    Rel(giscus, discussions, "Reads and writes comment threads")
     Rel(page, gc, "Visit beacon")
     Rel(page, wa, "Analytics beacon")
     Rel(page, gt, "Translates content in-browser")
-    Rel(prompts, raw, "Three prompts fetch their canonical text", "At view time")
+    Rel(prompts, raw, "Two prompts fetch their canonical text", "On copy tap")
     Rel(visitor, gform, "Submits feedback", "Form link")
     Rel(fbwatch, gform, "Polls for new responses")
     Rel(fbwatch, fbstate, "Dedupes reported responses")
     Rel(upkeep, page, "Pushes verified updates")
 
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
-        </div>
+</div>
       </details>
       <details class="diagram notranslate" translate="no">
         <summary>Deployment view — which host runs what</summary>
@@ -529,18 +522,16 @@ C4Deployment
     title Showcase Site - Deployment View
 
     Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
-    Person(commenter, "Community commenter", "Comments with a GitHub account.")
     Person(owner, "Andrew (owner / author)", "Publishes through the assistant.")
 
     Deployment_Node(cloudflare, "Cloudflare Pages", "Canonical hosting + DNS + analytics") {
-        Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The canonical site at andrewdhorowitz.com (apex + www): cards, prompts, diagrams, community, contact.")
+        Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The canonical site at andrewdhorowitz.com (apex + www): cards, prompts, diagrams, contact.")
         Container(wa, "Web Analytics Beacon", "Cloudflare Web Analytics - server", "Page-level counts for the domain, from the beacon embedded in the page.")
     }
 
-    Deployment_Node(github, "GitHub", "Repository hosting, Pages mirror, Discussions, Actions") {
+    Deployment_Node(github, "GitHub", "Repository hosting, Pages mirror, Actions") {
         Container(repo, "Showcase Repo", "Git repository", "andrewdhorowitz.github.io - canonical source: the page, its prompts, the embedded diagrams, this diagram.")
         Container(mirror, "GitHub Pages Mirror", "Static HTML - UI screen", "The same page served from the github.io address; its first script redirects every visit to andrewdhorowitz.com, keeping path and query.")
-        ContainerDb(discussions, "Community Discussions", "GitHub Discussions", "Comment threads for the Community section; moderation is the owner's.")
         Container(ci, "CI Workflows", "GitHub Actions - worker", "The thin fleet-CI caller (validation, links, Lighthouse) on every push.")
     }
 
@@ -551,7 +542,6 @@ C4Deployment
     }
 
     Deployment_Node(third, "Third-party services", "External widgets and counters") {
-        Container_Ext(giscus, "Giscus", "Hosted widget - cloud", "Renders Discussions as the page's comment section.")
         Container_Ext(gc, "GoatCounter", "Hosted analytics - cloud", "Visit counts for the site.")
         Container_Ext(gt, "GTranslate", "Hosted widget - cloud", "Automatic translation into the visitor's language.")
     }
@@ -564,9 +554,6 @@ C4Deployment
     Rel(visitor, page, "Visits the canonical site", "HTTPS")
     Rel(visitor, mirror, "Old links land here and redirect", "HTTPS")
     Rel(mirror, page, "Redirects to the domain")
-    Rel(commenter, giscus, "Signs in with GitHub and comments")
-    Rel(page, giscus, "Embeds the widget")
-    Rel(giscus, discussions, "Threads live in Discussions")
     Rel(page, gc, "Visit beacon")
     Rel(page, gt, "Translation in the browser")
     Rel(page, wa, "Analytics beacon")
@@ -580,7 +567,7 @@ C4Deployment
     Rel(ci, repo, "Checks every push")
 
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
-        </div>
+</div>
       </details>
       <details class="diagram notranslate" translate="no">
         <summary>System Context view — the system and its neighbours</summary>
@@ -589,22 +576,18 @@ C4Context
     title Showcase Site - System Context
 
     Person(visitor, "Visitor / evaluator", "Reads the portfolio: project cards, copyable build prompts, automations, and architecture diagrams.")
-    Person(commenter, "Community commenter", "Comments in the Community section with a GitHub account.")
     Person(owner, "Andrew (owner / author)", "The person the site showcases. Publishes through the assistant and answers feedback.")
 
-    System(site, "Showcase Site", "Static portfolio at andrewdhorowitz.com: featured projects, automations, architecture diagrams, community, and contact.")
+    System(site, "Showcase Site", "Static portfolio at andrewdhorowitz.com: featured projects, automations, architecture diagrams, and contact.")
 
     System_Ext(cf, "Cloudflare Pages", "Canonical hosting for the domain (apex + www), plus DNS, TLS, and Web Analytics.")
-    System_Ext(gh, "GitHub", "Source repo, GitHub Pages mirror, Discussions behind the comments, and CI.")
-    System_Ext(giscus, "Giscus", "Comment widget powered by GitHub Discussions.")
+    System_Ext(gh, "GitHub", "Source repo, GitHub Pages mirror, and CI.")
     System_Ext(gc, "GoatCounter", "Privacy-friendly visit counts.")
     System_Ext(gform, "Google Form", "The feedback form; responses collect in Google.")
     System_Ext(gt, "GTranslate", "Automatic translation into the visitor's language, detected from the browser.")
     System_Ext(muse, "Muse - assistant side", "Builds and pushes site updates; watches for feedback; keeps cards, prompts, and diagrams in sync under the upkeep rule.")
 
     Rel(visitor, site, "Reads pages, copies prompts, opens diagrams")
-    Rel(commenter, site, "Reads and comments")
-    Rel(site, giscus, "Embeds the comment widget")
     Rel(site, gc, "Sends a visit beacon")
     Rel(site, gt, "Translates page content in the browser")
     Rel(visitor, gform, "Submits feedback", "Linked form")
@@ -614,7 +597,7 @@ C4Context
     Rel(cf, site, "Serves the canonical site")
 
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
-        </div>
+</div>
       </details>
       <p class="note">Prefer to explore it? The
          <a href="https://andrewdhorowitz.com/docs/interactive-architecture.html">interactive version</a>
@@ -662,7 +645,7 @@ C4Context
     Person(family, "Family members", "Use the Routines &amp; Streaks (test stage) and read their Family Cards.")
     Person(bot, "External AIs / bots", "AIMF counterparties: read the protocol from its repo and send structured messages under agreements.")
 
-    System(showcase, "Showcase Site", "andrewdhorowitz.com - the portfolio front door: project cards, copyable build prompts, the architecture diagrams, community.")
+    System(showcase, "Showcase Site", "andrewdhorowitz.com - the portfolio front door: project cards, copyable build prompts, the architecture diagrams.")
     System(routines, "Routines &amp; Streaks", "Single-file routine and streak app (Version 1, test stage) on GitHub Pages, backed by Firebase.")
     System(aimf, "AIMF", "Inbound Message Format v1.9: a gated, documented format for sending information into the assistant. Invite page on its own subdomain.")
     System(cards, "Family Cards", "Per-kid two-week cards: a public demo, and a private live site behind access codes on its own subdomain.")
@@ -670,7 +653,7 @@ C4Context
     System(kit, "Shared Kit", "repo-template + fleet-ci: the template and reusable CI that hold every repo to one standard - settings, workflows, diagram regeneration, converger scripts.")
 
     System_Ext(cf, "Cloudflare", "Pages hosting for the domain and subdomains, DNS, TLS, and Web Analytics.")
-    System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), Actions CI, and Discussions.")
+    System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), and Actions CI.")
     System_Ext(firebase, "Google Firebase", "Auth and Firestore behind the Routines &amp; Streaks.")
     System_Ext(gws, "Google Workspace", "Calendar, Gmail, Drive, and Forms - the data the assistant's automations read and the AIMF transports.")
     System_Ext(counters, "GoatCounter + GTranslate", "Visit counts on the showcase; automatic translation on the public pages.")
@@ -694,7 +677,7 @@ C4Context
     Rel(showcase, cf, "Served canonically from Cloudflare Pages")
     Rel(aimf, cf, "Invite page served from Cloudflare Pages")
     Rel(cards, cf, "Live site served from Cloudflare Pages (gated)")
-    Rel(showcase, gh, "Repo + redirecting Pages mirror + Discussions")
+    Rel(showcase, gh, "Repo + redirecting Pages mirror")
     Rel(routines, gh, "Repo + GitHub Pages hosting")
     Rel(aimf, gh, "Canonical repo + Pages mirror")
     Rel(cards, gh, "Demo on GitHub Pages; repos hold the source")
@@ -712,7 +695,7 @@ C4Context
     UpdateElementStyle(errep, $bgColor="#eeeeee", $fontColor="#555555")
 
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
-        </div>
+</div>
       </details>
       <p class="note">The canonical source is
          <a href="https://github.com/andrewdhorowitz/andrewdhorowitz.github.io/blob/main/docs/whole-system-architecture.md">docs/whole-system-architecture.md in this repo</a>.</p>

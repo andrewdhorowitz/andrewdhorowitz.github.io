@@ -34,7 +34,7 @@ C4Context
     Person(family, "Family members", "Use the Routines & Streaks (test stage) and read their Family Cards.")
     Person(bot, "External AIs / bots", "AIMF counterparties: read the protocol from its repo and send structured messages under agreements.")
 
-    System(showcase, "Showcase Site", "andrewdhorowitz.com - the portfolio front door: project cards, copyable build prompts, the architecture diagrams, community.")
+    System(showcase, "Showcase Site", "andrewdhorowitz.com - the portfolio front door: project cards, copyable build prompts, the architecture diagrams.")
     System(routines, "Routines & Streaks", "Single-file routine and streak app (Version 1, test stage) on GitHub Pages, backed by Firebase.")
     System(aimf, "AIMF", "Inbound Message Format v1.9: a gated, documented format for sending information into the assistant. Invite page on its own subdomain.")
     System(cards, "Family Cards", "Per-kid two-week cards: a public demo, and a private live site behind access codes on its own subdomain.")
@@ -42,7 +42,7 @@ C4Context
     System(kit, "Shared Kit", "repo-template + fleet-ci: the template and reusable CI that hold every repo to one standard - settings, workflows, diagram regeneration, converger scripts.")
 
     System_Ext(cf, "Cloudflare", "Pages hosting for the domain and subdomains, DNS, TLS, and Web Analytics.")
-    System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), Actions CI, and Discussions.")
+    System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), and Actions CI.")
     System_Ext(firebase, "Google Firebase", "Auth and Firestore behind the Routines & Streaks.")
     System_Ext(gws, "Google Workspace", "Calendar, Gmail, Drive, and Forms - the data the assistant's automations read and the AIMF transports.")
     System_Ext(counters, "GoatCounter + GTranslate", "Visit counts on the showcase; automatic translation on the public pages.")
@@ -66,7 +66,7 @@ C4Context
     Rel(showcase, cf, "Served canonically from Cloudflare Pages")
     Rel(aimf, cf, "Invite page served from Cloudflare Pages")
     Rel(cards, cf, "Live site served from Cloudflare Pages (gated)")
-    Rel(showcase, gh, "Repo + redirecting Pages mirror + Discussions")
+    Rel(showcase, gh, "Repo + redirecting Pages mirror")
     Rel(routines, gh, "Repo + GitHub Pages hosting")
     Rel(aimf, gh, "Canonical repo + Pages mirror")
     Rel(cards, gh, "Demo on GitHub Pages; repos hold the source")
