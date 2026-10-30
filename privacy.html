@@ -23,6 +23,12 @@
   a{color:var(--ink); text-decoration-color:var(--accent); text-decoration-thickness:2px; text-underline-offset:3px;}
   a:hover{color:var(--accent);}
   .band{background:var(--ink); color:#fff; padding:56px 20px 44px;}
+  .band .site-id{display:flex; align-items:center; gap:10px; margin-bottom:22px;}
+  .band .site-id a{color:#fff; text-decoration:none; font-size:1.15rem; font-weight:700; letter-spacing:-0.3px;}
+  .band .site-id .mono{height:1.5em; width:auto; fill:none; stroke:#fff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round;}
+  .band .site-id .mono .xbar{stroke:var(--accent);}
+  .band .links{margin-top:22px; font-size:0.95rem;}
+  .band .links a{color:#fff; margin-right:18px; display:inline-block; padding:4px 0;}
   .wrap{max-width:960px; margin:0 auto;}
   .band h1{font-size:2.3rem; letter-spacing:-0.5px; line-height:1.15;}
   .band p{color:#d6d6d6; margin-top:14px; font-size:1.05rem;}
@@ -34,12 +40,19 @@
 </style>
 </head>
 <body>
-<div class="band">
+<header class="band">
   <div class="wrap">
+    <div class="site-id"><svg class="mono" viewBox="2 8 58 48" aria-hidden="true" focusable="false"><path d="M8 50 L20 14 L32 50"/><path class="xbar" d="M12.6 38 L27.4 38"/><path d="M38 14 V50 M54 14 V50 M38 32 H54"/></svg><a href="/">Andrew Horowitz</a></div>
     <h1>Privacy</h1>
     <p>Last updated: October 30, 2026</p>
+    <nav class="links" aria-label="Site">
+      <a href="/">Home</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#automations">Automations</a>
+      <a href="mailto:hello@andrewdhorowitz.com">Contact</a>
+    </nav>
   </div>
-</div>
+</header>
 <main>
   <div class="wrap">
     <p><strong>Short version:</strong> these pages are static. They have no accounts of their own, run no advertising, and don't track you across other websites.</p>
