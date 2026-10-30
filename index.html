@@ -188,7 +188,7 @@
         <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/GENERATOR_PROMPT.md">Generator prompt</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/architecture.md">Architecture</a>
         <a class="btn" href="https://routines.andrewdhorowitz.com/docs/interactive-architecture.html">Interactive diagram</a>
-        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/routines-and-streaks/main/docs/GENERATOR_PROMPT.md" data-fallback="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/GENERATOR_PROMPT.md">📋 Copy the full generator prompt</button>
+        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/routines-and-streaks/main/docs/GENERATOR_PROMPT.md" data-prompt-id="routines-generator" data-fallback="https://github.com/andrewdhorowitz/routines-and-streaks/blob/main/docs/GENERATOR_PROMPT.md">📋 Copy the full generator prompt</button>
       </div>
     </div>
 
@@ -235,7 +235,7 @@
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/test-vectors.md">Test vectors</a>
         <a class="btn" href="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/docs/architecture.md">Architecture</a>
         <a class="btn" href="https://aimf.andrewdhorowitz.com/docs/interactive-architecture.html">Interactive diagram</a>
-        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/trial-prompt.md" data-fallback="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
+        <button class="btn copy" data-copy-remote="https://raw.githubusercontent.com/andrewdhorowitz/aimf-protocol/main/trial-prompt.md" data-prompt-id="aimf-trial" data-fallback="https://github.com/andrewdhorowitz/aimf-protocol/blob/main/trial-prompt.md">📋 Copy the full trial prompt</button>
       </div>
     </div>
 
@@ -994,7 +994,9 @@ Every morning, scan my calendar for the next 7 days. For every in-person event t
 - Anything ambiguous (who is driving, whether a pickup is needed) must NOT be guessed: collect those into one batched confirmation list and ask me once.
 - Use free-flow routing for the blocks (not live traffic), and write a short note in each block explaining how you worked out the route.
 
-Verify after each run by re-reading the calendar and listing what you added, what you skipped, and what needs my decision.`,
+Verify after each run by re-reading the calendar and listing what you added, what you skipped, and what needs my decision.
+
+[ref: AH-calendar-a940be]`,
 
 leave: `Build me a time-to-leave alert system with a light show.
 
@@ -1005,7 +1007,9 @@ Every 15 minutes between 7 AM and 9 PM:
 4. Compute leave-by = next event start, minus 5 minutes (I aim to arrive 5 early), minus (live drive x 1.2 + 5 minutes buffer).
 5. If it is past leave-by and you have not already alerted me for this exact transition today, send me one message: "Time to leave: head to <event> now to arrive by <time> (<drive> min drive with traffic)." Never alert twice for the same transition.
 6. If I am at home when the alert fires, also run a light show: snapshot the current state of all my smart lights, set them all to a prism effect at full brightness, and start a 3-minute timer that restores the snapshot. Append "Lights are doing the prism show" to my alert.
-7. Separately: if I have been away from home for 10+ minutes, turn all the lights off. Never act on a location reading older than 30 minutes — stale location data must mean "do nothing" for that run.`,
+7. Separately: if I have been away from home for 10+ minutes, turn all the lights off. Never act on a location reading older than 30 minutes — stale location data must mean "do nothing" for that run.
+
+[ref: AH-leave-837f19]`,
 
 gas: `Build me a gas tracker that works off my calendar.
 
@@ -1016,7 +1020,9 @@ Your job:
 - Estimate miles driven between fill-ups from my calendar events (trips with addresses), weighting highway driving as more efficient than local driving.
 - Project the date I will cross 1/4 tank. When that date is within about 2 days, pick a drive already on my calendar that day and attach a visible 20-minute calendar event to it titled "Get gas — tank at 1/4 (on the way to <event>)". Never create a standalone gas trip; the stop extends that drive's departure earlier and must never make an arrival slip.
 - Choose the station: the best-priced station on the route or within a ~5 minute detour. Put the station name and address in the event location and the price you checked in the description. If a different drive that day passes a station at least 10 cents/gallon cheaper and it is still convenient, move the stop to that drive.
-- Re-project every morning and move the event if the projection changes. Report the gauge estimate, miles to 1/4 tank, and projected crossing date when I ask.`,
+- Re-project every morning and move the event if the projection changes. Report the gauge estimate, miles to 1/4 tank, and projected crossing date when I ask.
+
+[ref: AH-gas-7b11d6]`,
 
 band: `Build me a schedule-change monitor for a school marching band.
 
@@ -1028,7 +1034,9 @@ Report to me, same morning, ONLY what changed since yesterday:
 - Treat events as real only if a source confirms them; label everything else "tentative" and never present a tentative event as a firm conflict on my calendar.
 - If nothing changed, say nothing. No daily "all clear" messages.
 
-Keep a dated log of every change you report so I can audit what you saw and when.`,
+Keep a dated log of every change you report so I can audit what you saw and when.
+
+[ref: AH-band-44350a]`,
 
 para: `Set up a PARA + GTD organization system for me in Google Drive and Google Tasks.
 
@@ -1038,7 +1046,9 @@ Tasks: create lists — Inbox, Next Actions, Waiting For, Someday / Maybe, one l
 
 Linking: in each task's notes, add a "Resources:" block with links to its Drive project/area folder and a shared token "PARA-LINK: <slug>". In each project folder, add a short "Links" doc naming its task list and the same token, so tasks and files find each other by search.
 
-Finally, create a recurring weekly-review task every Friday afternoon that walks me through clearing Inbox, reviewing Waiting For, and checking each project list.`,
+Finally, create a recurring weekly-review task every Friday afternoon that walks me through clearing Inbox, reviewing Waiting For, and checking each project list.
+
+[ref: AH-para-e7e76d]`,
 
 comms: `Build me a priority-contact watch.
 
@@ -1051,7 +1061,9 @@ The moment you find something new, message me immediately in this format: "<Name
 
 Track what you have already alerted me about (by timestamp and channel) so I never get the same alert twice. If nothing is new, stay completely silent.
 
-Be honest about coverage: if a channel cannot be checked (phone offline, message store lagging), say so once rather than claiming "nothing new". Never describe message access as real-time if the source you checked is a synced copy that can lag.`,
+Be honest about coverage: if a channel cannot be checked (phone offline, message store lagging), say so once rather than claiming "nothing new". Never describe message access as real-time if the source you checked is a synced copy that can lag.
+
+[ref: AH-comms-21c450]`,
 
 inbox: `Build me an inbox hygiene system for digest and notification email.
 
@@ -1060,7 +1072,9 @@ inbox: `Build me an inbox hygiene system for digest and notification email.
 3. Separately, every day: trash digest/notification email from those same senders once it is more than 5 days old (Gmail trash — recoverable for 30 days) — it has served its purpose by then.
 4. Stay silent when everything works. Only message me if a sweep fails, a sender changes its address, or the counts look abnormal.
 
-The goal: my inbox holds only mail that needs a human. Everything else is filed or gone, and I never have to think about it.`,
+The goal: my inbox holds only mail that needs a human. Everything else is filed or gone, and I never have to think about it.
+
+[ref: AH-inbox-799ccd]`,
 
 morning: `Build me a single morning day-plan briefing, delivered once at the start of my day.
 
@@ -1071,7 +1085,9 @@ Assemble it from my calendar, my task lists, and overnight changes:
 - Replies I owe: messages or emails from yesterday that clearly expect an answer from me, with who and what they are waiting on, in one line each.
 - Anything that changed overnight: new events, cancellations, schedule changes from the groups I follow.
 
-Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.`,
+Keep it skimmable: times first, one line per item, nothing decorative. If something needs my decision before a deadline today, put it at the very top. Do not include anything I have already handled — check before you list it.
+
+[ref: AH-morning-2d51a3]`,
 
 familycards: `Build me a Family Cards system: simple per-kid schedule cards for kids who will not use a calendar.
 
@@ -1098,7 +1114,9 @@ KID NOTES:
 DEMO:
 - Ship a public demo running the same page, gate, minter, and generator code on fully invented kids and events, with one fixed public demo code (owner scope) and the notes box shown disabled. The private system, its real data, and its address never appear in the demo repo or on any public page.
 
-Verify by reading the generated JSON files and the rendered cards back, kid scope by kid scope (including a forged note attribution test), before calling it done.`,
+Verify by reading the generated JSON files and the rendered cards back, kid scope by kid scope (including a forged note attribution test), before calling it done.
+
+[ref: AH-familycards-208694]`,
 
 site: `Build me a personal portfolio website like this one — an open portfolio: a single-page site on GitHub Pages, titled with my full name, that highlights my public GitHub projects and the personal automations I run — built spec-first with AI help, so the site itself demonstrates the method.
 
@@ -1111,7 +1129,9 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 8. PUBLISH: build it as one static index.html, no framework, no build step. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
-Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.`
+Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.
+
+[ref: AH-site-727a3c]`
 };
 
 function toast(msg){
@@ -1162,7 +1182,7 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
       const r = await fetch(btn.dataset.copyRemote);
       if(!r.ok) throw new Error('fetch failed');
       const text = await r.text();
-      track('copy-remote');
+      track('copy-' + (btn.dataset.promptId || 'remote'));
       const ok = await copyText(text);
       toast(ok ? '✓ Full prompt copied from GitHub — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
     }catch(e){
