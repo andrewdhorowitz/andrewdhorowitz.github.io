@@ -9,6 +9,10 @@
 # Both run; neither replaces the other.
 name: Publish gate
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
   pull_request:
