@@ -4,9 +4,11 @@ The self-maintaining calendar's travel-block automation as it is
 today: every morning, a scan reads the next 7 days of calendar
 events and keeps the calendar drive-ready. Each in-person event
 with an address gets a private travel block sized from the real
-drive (drive time × 1.2 plus a cushion, rounded up to the next
-5 minutes) from home or from the previous
-event's location. Days also get one get-ready block, and pickup
+drive (drive time × 1.2 plus a 5-minute garage-egress term
+only on legs departing home — there is no universal cushion —
+rounded up to the next 5 minutes) from the traveler's carried
+position: the previous event's end point, or home at the start
+of a chain. Days also get one get-ready block, and pickup
 legs get a pickup block when Dad is the driver — decided by a
 single precedence list, with undecided legs asked about, never
 assumed. Blocks are derived state: they mirror their event's
@@ -19,7 +21,13 @@ a single target arrival: the stops are modeled as real legs
 the other parent's home is simply the trip's first leg. An
 event carries an inbound travel block, plus a return pickup
 block only when Dad is the decided pickup driver and is not
-staying for the event.
+staying for the event. Position carries from each event's end
+point to the next trip; in a large gap, when going home in
+between fits with time to spare, the next block is sized from
+home as the final push and says so in its notes. A routed
+drive that is implausible for the distance is refused and
+reported unverified instead of being written as a giant
+block.
 Public-safe: generic labels only — no real addresses, calendar
 IDs, emails, or family names beyond what the public showcase
 cards already use.
@@ -87,7 +95,7 @@ C4Container
     System_Boundary(tb, "Travel Blocks Automation") {
 
         Boundary(assistant, "Assistant side", "Scheduled automation") {
-            Container(scan, "Travel Scan", "Python - worker", "Morning full scan of the next 7 days. Sizes each travel block from home or the previous event location (drive time x 1.2 plus a cushion, rounded up to 5 minutes; a trip with an intermediate stop is modeled as real legs toward one target arrival, never blanket padding), creates pickup blocks where Dad is the decided driver, and adds one get-ready block per day. Ends with dedupe and reconcile sweeps: duplicates are removed, blocks convert when their event's status changes, and blocks whose event moved or was deleted are cleared. Only blocks stamped as the scan's own are ever touched.")
+            Container(scan, "Travel Scan", "Python - worker", "Morning full scan of the next 7 days. Sizes each travel block from the traveler's carried position - the previous event's end point, or home at the start of a chain (drive time x 1.2 plus a 5-minute garage-egress only on legs departing home, rounded up to 5 minutes; there is no universal cushion; a trip with an intermediate stop is modeled as real legs toward one target arrival, never blanket padding), creates pickup blocks where Dad is the decided driver, and adds one get-ready block per day. Ends with dedupe and reconcile sweeps: duplicates are removed, blocks convert when their event's status changes, and blocks whose event moved or was deleted are cleared. Only blocks stamped as the scan's own are ever touched.")
             Container(check, "Travel Check", "Python - worker", "Read-only sufficiency pass, also run on demand. For each pair of back-to-back same-day events, verifies the gap fits the drive between the two addresses; when it does not, pins a short-travel warning block on the calendar, and clears warnings it pinned once the gap is fixed.")
             ContainerDb(state, "Planner State", "Local files", "Geocode cache so address lookups are reused, the check skip-list for pairs known to be fine, and a small adaptive buffer setting (a toggleable learned extra, switched off in the current deployment, so it adds nothing). Holds no calendar contents.")
         }

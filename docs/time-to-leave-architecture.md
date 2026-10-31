@@ -8,7 +8,8 @@ read-only export. It takes the phone's current GPS position and
 fetches the live drive time with traffic to the next event's
 location, then computes leave-by: the next event's start, minus
 5 minutes (the aim is to arrive 5 early), minus the live drive
-scaled by 1.2 plus the pair's cushion, a small buffer, and an
+scaled by 1.2, plus a 5-minute garage-egress term only when
+the departure point is home, and an
 optional adaptive extra learned from how trips actually go (a
 toggleable option in the design — switched off in the current
 deployment, so it contributes nothing). When the
@@ -16,7 +17,10 @@ moment comes it sends exactly one alert for that transition and
 records it, so it never repeats. Pairs are filtered first:
 placeholder mirrors with no real arrival deadline, tentative or
 optional markers, and legs that are someone else's drive never
-trigger anything. If a fresh fix says Dad is home when the alert
+trigger anything. Transitions include family pickups: a
+pickup pair targets the end of a kid's event, at the pickup
+address, and is worked with the same leave-by math.
+If a fresh fix says Dad is home when the alert
 fires, the home lights run a prism show at full brightness —
 their state snapshotted first, restored by a timer minutes
 later. A GPS fix older than 30 minutes counts as unknown: the
@@ -91,8 +95,8 @@ C4Container
     System_Boundary(ttl, "Time-to-Leave Alerts") {
 
         Boundary(assistant, "Assistant side", "Scheduled automation") {
-            Container(watch, "Transition Watch", "Scheduled job - worker", "Runs every 15 minutes, 7 AM to 9 PM. Pulls today's remaining event pairs from the travel scan's read-only export and applies the exclusion rules before anything else: pairs whose next event already started or is still hours away, placeholder mirrors with no real arrival deadline, legs that are someone else's drive, and tentative or optional markers that are not commitments. What survives is the single next transition: the event Dad is at (or just left) and the one after it.")
-            Container(check, "Leave-By Check", "Scheduled job - worker", "For the chosen transition, takes the phone's current GPS fix - a fix older than 30 minutes counts as unknown and ends the run quietly - and fetches the live drive time with traffic from that position to the next event's location (with no fresh fix it works from the current event's location instead; a failed lookup skips the run). Leave-by is the next event's start, minus 5 minutes because the aim is to arrive 5 early, minus the live drive scaled by 1.2 plus the pair's cushion, a small buffer, and the adaptive extra from Alert State (toggleable, and off in the current deployment). When the moment comes, it fires the alert and records the transition so it can never fire twice.")
+            Container(watch, "Transition Watch", "Scheduled job - worker", "Runs every 15 minutes, 7 AM to 9 PM. Pulls today's remaining event pairs from the travel scan's read-only export - including pickup pairs, which target the end of a kid's event at its pickup address - and applies the exclusion rules before anything else: pairs whose next event already started or is still hours away, placeholder mirrors with no real arrival deadline, legs that are someone else's drive, and tentative or optional markers that are not commitments. What survives is the single next transition: the event Dad is at (or just left) and the one after it.")
+            Container(check, "Leave-By Check", "Scheduled job - worker", "For the chosen transition, takes the phone's current GPS fix - a fix older than 30 minutes counts as unknown and ends the run quietly - and fetches the live drive time with traffic from that position to the next event's location (with no fresh fix it works from the current event's location instead; a failed lookup skips the run). Leave-by is the next event's start, minus 5 minutes because the aim is to arrive 5 early, minus the live drive scaled by 1.2, plus a 5-minute garage-egress term only when the departure point is home, and the adaptive extra from Alert State (toggleable, and off in the current deployment). When the moment comes, it fires the alert and records the transition so it can never fire twice.")
             Container(show, "Light Show", "Scheduled job - worker", "Runs only when an alert fires and the fresh fix says Dad is home. Snapshots the home lights' current state first - never overwriting a snapshot that has not been restored yet - then sets the lights to a prism effect at full brightness and starts a 3-minute timer that restores the snapshot. A separate lights job is the backstop if the timer is missed. Away from home, or with location unknown, the alert goes out alone.")
             ContainerDb(state, "Alert State", "Local files", "State shared with the travel planner. The transitions already alerted today, kept by day, so each departure pings exactly once; and the adaptive buffer - an extra-minutes setting learned from how trips actually go, kept behind a toggle; switched off in the current deployment, it contributes nothing to the leave-by math.")
         }
