@@ -4,14 +4,22 @@ The self-maintaining calendar's travel-block automation as it is
 today: every morning, a scan reads the next 7 days of calendar
 events and keeps the calendar drive-ready. Each in-person event
 with an address gets a private travel block sized from the real
-drive (drive time × 1.2 plus a cushion, larger for family trips,
-rounded up to the next 5 minutes) from home or from the previous
+drive (drive time × 1.2 plus a cushion, rounded up to the next
+5 minutes) from home or from the previous
 event's location. Days also get one get-ready block, and pickup
 legs get a pickup block when Dad is the driver — decided by a
 single precedence list, with undecided legs asked about, never
 assumed. Blocks are derived state: they mirror their event's
 tentative or confirmed status and are reconciled every scan, so a
 moved or deleted event never leaves a stale block behind.
+A trip with an intermediate stop is treated as one mission with
+a single target arrival: the stops are modeled as real legs
+(with a small dwell at a pickup stop), never as blanket padding
+— there is no family-trip surcharge; a pickup that starts at
+the other parent's home is simply the trip's first leg. An
+event carries an inbound travel block, plus a return pickup
+block only when Dad is the decided pickup driver and is not
+staying for the event.
 Public-safe: generic labels only — no real addresses, calendar
 IDs, emails, or family names beyond what the public showcase
 cards already use.
@@ -79,9 +87,9 @@ C4Container
     System_Boundary(tb, "Travel Blocks Automation") {
 
         Boundary(assistant, "Assistant side", "Scheduled automation") {
-            Container(scan, "Travel Scan", "Python - worker", "Morning full scan of the next 7 days. Sizes each travel block from home or the previous event location (drive time x 1.2 plus a cushion, larger for family trips, rounded up to 5 minutes), creates pickup blocks where Dad is the decided driver, and adds one get-ready block per day. Ends with dedupe and reconcile sweeps: duplicates are removed, blocks convert when their event's status changes, and blocks whose event moved or was deleted are cleared. Only blocks stamped as the scan's own are ever touched.")
+            Container(scan, "Travel Scan", "Python - worker", "Morning full scan of the next 7 days. Sizes each travel block from home or the previous event location (drive time x 1.2 plus a cushion, rounded up to 5 minutes; a trip with an intermediate stop is modeled as real legs toward one target arrival, never blanket padding), creates pickup blocks where Dad is the decided driver, and adds one get-ready block per day. Ends with dedupe and reconcile sweeps: duplicates are removed, blocks convert when their event's status changes, and blocks whose event moved or was deleted are cleared. Only blocks stamped as the scan's own are ever touched.")
             Container(check, "Travel Check", "Python - worker", "Read-only sufficiency pass, also run on demand. For each pair of back-to-back same-day events, verifies the gap fits the drive between the two addresses; when it does not, pins a short-travel warning block on the calendar, and clears warnings it pinned once the gap is fixed.")
-            ContainerDb(state, "Planner State", "Local files", "Geocode cache so address lookups are reused, the check skip-list for pairs known to be fine, and a small adaptive buffer setting. Holds no calendar contents.")
+            ContainerDb(state, "Planner State", "Local files", "Geocode cache so address lookups are reused, the check skip-list for pairs known to be fine, and a small adaptive buffer setting (a toggleable learned extra, switched off in the current deployment, so it adds nothing). Holds no calendar contents.")
         }
     }
 
@@ -103,7 +111,7 @@ C4Container
 |---|---|---|---|
 | Travel Scan | Gear | Python, scheduled | Creates and maintains the travel, pickup, and get-ready blocks; reconciles them against their events every run |
 | Travel Check | Gear | Python, on-demand pass | Verifies back-to-back gaps fit the drive; pins and clears short-travel warnings |
-| Planner State | Cylinder | Local files | Geocode cache, check skip-list, adaptive buffer setting |
+| Planner State | Cylinder | Local files | Geocode cache, check skip-list, adaptive buffer setting (toggleable, currently off) |
 
 ## Shape and host legend
 

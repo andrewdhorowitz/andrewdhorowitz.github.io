@@ -9,7 +9,9 @@ fetches the live drive time with traffic to the next event's
 location, then computes leave-by: the next event's start, minus
 5 minutes (the aim is to arrive 5 early), minus the live drive
 scaled by 1.2 plus the pair's cushion, a small buffer, and an
-adaptive extra learned from how trips actually go. When the
+optional adaptive extra learned from how trips actually go (a
+toggleable option in the design — switched off in the current
+deployment, so it contributes nothing). When the
 moment comes it sends exactly one alert for that transition and
 records it, so it never repeats. Pairs are filtered first:
 placeholder mirrors with no real arrival deadline, tentative or
@@ -90,9 +92,9 @@ C4Container
 
         Boundary(assistant, "Assistant side", "Scheduled automation") {
             Container(watch, "Transition Watch", "Scheduled job - worker", "Runs every 15 minutes, 7 AM to 9 PM. Pulls today's remaining event pairs from the travel scan's read-only export and applies the exclusion rules before anything else: pairs whose next event already started or is still hours away, placeholder mirrors with no real arrival deadline, legs that are someone else's drive, and tentative or optional markers that are not commitments. What survives is the single next transition: the event Dad is at (or just left) and the one after it.")
-            Container(check, "Leave-By Check", "Scheduled job - worker", "For the chosen transition, takes the phone's current GPS fix - a fix older than 30 minutes counts as unknown and ends the run quietly - and fetches the live drive time with traffic from that position to the next event's location (with no fresh fix it works from the current event's location instead; a failed lookup skips the run). Leave-by is the next event's start, minus 5 minutes because the aim is to arrive 5 early, minus the live drive scaled by 1.2 plus the pair's cushion, a small buffer, and the adaptive extra from Alert State. When the moment comes, it fires the alert and records the transition so it can never fire twice.")
+            Container(check, "Leave-By Check", "Scheduled job - worker", "For the chosen transition, takes the phone's current GPS fix - a fix older than 30 minutes counts as unknown and ends the run quietly - and fetches the live drive time with traffic from that position to the next event's location (with no fresh fix it works from the current event's location instead; a failed lookup skips the run). Leave-by is the next event's start, minus 5 minutes because the aim is to arrive 5 early, minus the live drive scaled by 1.2 plus the pair's cushion, a small buffer, and the adaptive extra from Alert State (toggleable, and off in the current deployment). When the moment comes, it fires the alert and records the transition so it can never fire twice.")
             Container(show, "Light Show", "Scheduled job - worker", "Runs only when an alert fires and the fresh fix says Dad is home. Snapshots the home lights' current state first - never overwriting a snapshot that has not been restored yet - then sets the lights to a prism effect at full brightness and starts a 3-minute timer that restores the snapshot. A separate lights job is the backstop if the timer is missed. Away from home, or with location unknown, the alert goes out alone.")
-            ContainerDb(state, "Alert State", "Local files", "State shared with the travel planner. The transitions already alerted today, kept by day, so each departure pings exactly once; and the adaptive buffer - an extra-minutes setting learned from how trips actually go, which the leave-by math adds on top of its fixed cushion.")
+            ContainerDb(state, "Alert State", "Local files", "State shared with the travel planner. The transitions already alerted today, kept by day, so each departure pings exactly once; and the adaptive buffer - an extra-minutes setting learned from how trips actually go, kept behind a toggle; switched off in the current deployment, it contributes nothing to the leave-by math.")
         }
     }
 
@@ -113,9 +115,9 @@ C4Container
 | Container | Shape | Technology | What it does |
 |---|---|---|---|
 | Transition Watch | Gear | Scheduled job | Reads the day's event pairs and applies the exclusion rules to pick the single next transition |
-| Leave-By Check | Gear | Scheduled job | Works out leave-by from the fresh GPS fix, live traffic, and the adaptive buffer; fires and records the one alert |
+| Leave-By Check | Gear | Scheduled job | Works out leave-by from the fresh GPS fix, live traffic, and the adaptive buffer (toggleable, currently off); fires and records the one alert |
 | Light Show | Gear | Scheduled job | On an at-home alert, snapshots the home lights, runs the prism show, and starts the timed restore |
-| Alert State | Cylinder | Local files | Already-alerted transitions by day, plus the adaptive buffer setting shared with the travel planner |
+| Alert State | Cylinder | Local files | Already-alerted transitions by day, plus the adaptive buffer setting (toggleable, currently off) shared with the travel planner |
 
 ## Shape and host legend
 
