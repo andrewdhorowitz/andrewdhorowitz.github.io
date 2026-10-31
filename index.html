@@ -4,19 +4,6 @@
 <script>if(location.hostname==="andrewdhorowitz.github.io"){location.replace("https://andrewdhorowitz.com"+location.pathname+location.search+location.hash);}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-  // FEATURE TOGGLE — favorites (Andrew, 2026-10-31): OFF. The favorites
-  // code (star buttons, the favorites section, the localStorage logic)
-  // stays in this page fully built, but while this flag is false none of
-  // it renders or runs: the stylesheet hides the favorites UI unless the
-  // document is marked data-favorites="on", and the favorites script
-  // checks this same flag before doing anything. No sign-in doorway is
-  // shown either — there is nothing behind a door yet. Flip to true to
-  // bring favorites back; revisit the doorway question when more
-  // features (e.g. per-project update subscriptions) exist.
-  window.FAVORITES_ENABLED = false;
-  document.documentElement.setAttribute('data-favorites', window.FAVORITES_ENABLED ? 'on' : 'off');
-</script>
 <title>Andrew Horowitz — Projects &amp; Automations</title>
 <meta name="description" content="Personal projects and home automations, built spec-first with AI: a routines-and-streaks tracker that began as family reminders for the kids, an AI-to-AI messaging protocol, and the systems that keep a calendar, a car, and a household running themselves.">
 <link rel="canonical" href="https://andrewdhorowitz.com/">
@@ -89,17 +76,6 @@
   .grid .card h3{font-size:1.05rem;}
   .grid .card p{font-size:0.95rem;}
   .grid .card .btns{margin-top:auto; padding-top:10px;}
-  .card-tools{display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-bottom:10px;}
-  .fav-btn{border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:4px 12px;
-    font:inherit; font-size:0.85rem; font-weight:600; cursor:pointer; color:var(--muted);}
-  .fav-btn:hover{border-color:var(--accent); color:var(--accent-deep);}
-  .fav-btn[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-deep);}
-  .rating-slot{display:none;}
-  /* Favorites toggle gate (FAVORITES_ENABLED, set in the head script):
-     the favorites UI stays hidden unless the document is marked on. */
-  html:not([data-favorites="on"]) .card-tools{display:none;}
-  html:not([data-favorites="on"]) #favorites{display:none;}
-  #favorites-list .card:last-child{margin-bottom:18px;}
   .howto{background:var(--ink); color:#eee; border-radius:12px; padding:22px; margin:8px 0 18px;}
   .howto h3{color:#fff; margin-bottom:8px;}
   .howto ol{margin-left:20px;}
@@ -135,7 +111,6 @@
     a{color:#000;}
     footer{padding:12px 0 0;}
     .tabs{display:none !important;}
-    .card-tools, #favorites{display:none !important;}
     .tab-panel{display:block !important;}
   }
 </style>
@@ -164,14 +139,6 @@
 
 <main>
   <div class="wrap">
-
-    <section id="favorites" aria-labelledby="favorites-heading" hidden>
-    <h2 id="favorites-heading">★ Your favorites</h2>
-    <p class="sub">Cards you star also show up here — and they stay in their home section too;
-       this is an added view, not a move. Favorites live only in this browser
-       (localStorage): no account, and nothing is sent anywhere.</p>
-    <div id="favorites-list"></div>
-    </section>
 
     <nav class="tabs" role="tablist" aria-label="Site sections">
       <button type="button" role="tab" id="tab-projects" aria-controls="panel-projects" aria-selected="true" data-tab="projects">Projects</button>
@@ -203,7 +170,6 @@
           </g>
         </svg>
       </div>
-      <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="routines-and-streaks" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.9 12 A8.9 8.9 0 1 1 14.6 3.5"/><path d="M11.5 1.7 L14.6 3.5 L11.8 6.2"/><path d="M12 9.6c1.05 1.6 2.5 2.8 2.5 4.5a2.5 2.5 0 1 1-5 0c0-1.7 1.45-2.9 2.5-4.5z"/></svg>Routines &amp; Streaks <span class="tag">Live app</span></h3>
       <p>A daily routines-and-streaks tracker: tasks on a daily cycle that resets at noon,
          persistent streaks and history, everything scoped to the signed-in person. It started
@@ -252,7 +218,6 @@
           </g>
         </svg>
       </div>
-      <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="aimf" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.8" y="3.2" width="12.4" height="9.6" rx="3"/><path d="M6.4 12.8 L6.4 15.9 L9.9 12.8"/><rect class="paper" x="9.4" y="10.6" width="11.8" height="9" rx="3"/><path d="M17.4 19.6 L17.4 22.4 L14.5 19.6"/><path d="M12.7 15.1 L17.9 15.1"/></svg>AIMF — AI Messaging Format <span class="tag">Protocol</span></h3>
       <p>An open protocol that lets AI assistants exchange structured messages — notes, file drops,
          requests, status reports — over ordinary email, with sender verification, consent
@@ -296,7 +261,6 @@
           </g>
         </svg>
       </div>
-      <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="family-cards" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6.2" y="2.8" width="14.3" height="16.8" rx="2.5"/><rect class="paper" x="3.5" y="5.4" width="14.3" height="15.8" rx="2.5"/><path d="M6.9 12.7 L10.65 9.3 L14.4 12.7"/><path d="M8.1 11.5 L8.1 16.9 L13.2 16.9 L13.2 11.5"/><path d="M10.65 16.9 L10.65 14.6"/></svg>Family Cards <span class="tag">Live demo</span></h3>
       <p>Per-kid schedule cards for kids who won't use a calendar — each kid gets one simple page
          covering the next two weeks, framed as <strong>With Dad</strong> vs <strong>With Mom</strong>.
@@ -493,7 +457,6 @@ C4Context
           </g>
         </svg>
       </div>
-      <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="this-website" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.2" width="18" height="15.6" rx="2.5"/><path d="M3 8.8 L21 8.8"/><circle class="dot" cx="6.1" cy="6.5" r="1"/><path d="M10.3 6.5 L18.4 6.5"/><path d="M10.1 12 L8.2 14.1 L10.1 16.2"/><path d="M13.9 12 L15.8 14.1 L13.9 16.2"/></svg>This website <span class="tag">You're looking at it</span></h3>
       <p>This site itself is one of the builds: a single static HTML page —
          no framework, no build step of its own — served by Cloudflare Pages at this domain (the
@@ -666,7 +629,6 @@ C4Context
           </g>
         </svg>
       </div>
-      <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="whole-system" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="12" cy="12" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M7 7.5 L10 10 M17 7.5 L14 10 M7 16.5 L10 14 M17 16.5 L14 14"/></svg>The whole system <span class="tag">One picture</span></h3>
       <p>How all of it fits together: the four public properties, the hosts that serve them,
          the shared kit that keeps every repo to one standard, Firebase and Google Workspace
@@ -769,7 +731,6 @@ C4Context
             <circle cx="640" cy="66" r="8" fill="#d97706"/>
             <circle cx="430" cy="170" r="9" fill="#111"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="calendar" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>🚗 The self-maintaining calendar</h3>
         <p>Every morning, a scanner reads the next seven days of the calendar and adds private
            drive-time blocks before in-person events — mapped drive × 1.2 + a 5-minute garage-egress
@@ -868,7 +829,6 @@ C4Context
             <path d="M610 60 c0 30 -22 44 -22 70 a22 22 0 1 0 44 0 c0 -26 -22 -40 -22 -70z" fill="#fff"/>
             <circle cx="610" cy="128" r="7" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="time-to-leave" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>⏰ Time-to-leave alerts, with a light show</h3>
         <p>Every 15 minutes, the next trip is checked against live traffic from the current GPS
            position. When it's time to go: one ping — and if I'm home, all five smart lights run a
@@ -967,7 +927,6 @@ C4Context
             <path d="M610 100 l35 -30" stroke="#d97706"/>
             <circle cx="652" cy="64" r="10" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="gas-tracker" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>⛽ Gas tracker</h3>
         <p>I report the gauge needle; fill-ups reconstruct themselves from the settled charges
            on my card. The system estimates miles driven from the
@@ -1064,7 +1023,6 @@ C4Context
             <line x1="562" y1="143" x2="562" y2="85"/>
             <line x1="437" y1="70" x2="562" y2="85" stroke="#111"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="band-monitor" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>🎺 Band schedule monitor</h3>
         <p>A daily diff of a high-school marching band's weekly schedule document, plus coordinator
            emails and crew texts. Changes surface the same morning; on performance days the brief
@@ -1170,7 +1128,6 @@ C4Context
             <rect x="525" y="152" width="24" height="24" rx="5"/>
             <line x1="562" y1="164" x2="675" y2="164"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="para-gtd" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>🗂️ PARA + GTD filing system</h3>
         <p>Every new document lands in a PARA folder structure in Drive; every task lives in exactly
            one GTD list and carries links back to its project resources, so a task and its paperwork
@@ -1265,7 +1222,6 @@ C4Context
             <path d="M640 55 a38 38 0 0 1 76 0 c0 30 10 38 10 38 h-96 s10 -8 10 -38z" fill="#fff" stroke="#d97706"/>
             <circle cx="678" cy="112" r="10" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="comms-watch" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>📬 Priority comms watch</h3>
         <p>Every 15 minutes during waking hours, texts, email, and call logs are checked for one
            priority contact, so a time-sensitive family request never sits unseen. Everything else
@@ -1359,7 +1315,6 @@ C4Context
             <path d="M426 95 l109 78 l109 -78" stroke="#d97706"/>
             <path d="M255 30 l6 14 l14 2 l-11 10 l3 14 l-12 -8 l-13 8 l3 -14 l-10 -10 l14 -2z" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="inbox-hygiene" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>🧹 Inbox hygiene</h3>
         <p>School digest and notification mail is auto-labeled and swept out of the inbox daily;
            anything stale past five days trashes itself. The inbox stays for things that need a human.</p>
@@ -1449,7 +1404,6 @@ C4Context
             <circle cx="415" cy="115" r="4" fill="#d97706" stroke="#d97706"/>
             <circle cx="415" cy="150" r="4" fill="#d97706" stroke="#d97706"/>
           </g></svg></div>
-        <div class="card-tools"><span class="rating-slot" data-rating-slot aria-hidden="true"></span><button type="button" class="fav-btn" data-fav-toggle="morning-plan" aria-pressed="false" title="Save this card to your favorites">☆ Favorite</button></div>
       <h3>🌅 Morning day-plan</h3>
         <p>One consolidated brief to start the day: today's drives and tight spots, tasks due,
            replies owed, and anything that changed overnight — assembled from the same systems above.</p>
@@ -1754,11 +1708,10 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 2. PROJECTS: For each featured project gather: what it is in two sentences, the live link if it has one, the repo link, and — most important — the design docs and AI prompts behind it (SPECs, build prompts, generator prompts in the repo). Link those directly. On this site, the prompt is presented as the source code. Every card is three layers: a one-paragraph summary anyone can skim, a short highlights list of the clever bits and hard-won lessons drawn from the spec (notable bug fixes included), and the full prompt itself. The featured projects on this site are Routines & Streaks, the AIMF protocol, Family Cards, and the website itself. Routines & Streaks is a daily routines-and-streaks tracker that began as family reminders for the kids — frame it generically, with that origin as the example. Family Cards is per-kid two-week schedule cards for kids who will not use a calendar; feature only its public demo — invented kids and events running the same code as the private system — and never the private system, its real data, or its address.
 3. AUTOMATIONS: Ask me what I have automated (calendar, home, inbox, monitoring, briefs — whatever I run). Write each up as a short card in plain language with NO private details: no family names, no street addresses, no email addresses anywhere on the page.
 4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
-5. FAVORITES (built, currently toggled OFF): every project and automation card carries a star toggle (a "☆ Favorite" button) that marks it as the visitor's favorite. A favorites section sits at the very top of the page, above the tab bar, showing the visitor's favorited cards; a favorited card also stays in its home section — favorites are an added view, never a move. Favorites are viewer state, not project data: they persist only in the visitor's browser localStorage, never leave the device, need no account, and are never written into any project's publish.json or repo. The stored per-card record is forward-compatible with a future rating system — an object holding the favorite flag with room for a rating value beside it ({favorite: true, rating: null}) — and each card keeps an empty structural slot where a rating control or average display can later appear; v1 ships the slot with no rating functionality. The whole feature sits behind one toggle — a FAVORITES_ENABLED flag set in a small script at the top of the head — and as shipped the flag is OFF, a deliberate choice (2026-10-31) to keep the page a simple browse-and-look shopfront: no star button renders, the favorites section never appears, the page neither reads nor writes favorites storage, and no sign-in doorway is shown (there is nothing behind a door yet). The code stays in the page intact; flipping the flag on restores the feature exactly as specified above. Revisit the flag — and the optional-sign-in doorway question — when further visitor features (like per-project update subscriptions) are fleshed out.
-6. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
-7. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. Automations carry diagrams on the same pattern, adapted to their scope: the self-maintaining calendar card (the Travel Blocks automation, the first of them) carries two views in-page — System Context and Container — rendered from its canonical source, docs/travel-blocks-architecture.md in this repo, with no Deployment view (deliberately: the automation runs on a single host, the assistant runtime) and no interactive rendering. The Gas Tracker card carries the same two views in-page, rendered from its canonical source, docs/gas-tracker-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The PARA + GTD filing system card carries the same two views in-page, rendered from its canonical source, docs/para-gtd-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Time-to-Leave Alerts card carries the same two views in-page, rendered from its canonical source, docs/time-to-leave-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Priority Comms Watch card carries the same two views in-page, rendered from its canonical source, docs/comms-watch-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Band Monitor card carries the same two views in-page, rendered from its canonical source, docs/band-monitor-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Inbox Hygiene card carries the same two views in-page, rendered from its canonical source, docs/inbox-hygiene-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Morning Day-Plan card carries the same two views in-page, rendered from its canonical source, docs/morning-day-plan-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation. In-page diagram boxes ship collapsed (a details element with no open attribute): the Mermaid library may preload as a box's summary nears the viewport, but a diagram renders only when its box is first opened — scrolling never opens a box.
-8. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
-9. PUBLISH: build it as one static index.html, no framework, no build step for the page itself. The one generated artifact is projects-data.js at the repo root: the freshness badges on the project cards (New / Recently updated / Testing), produced by scripts/generate_public.py from the fleet's single publish derivation (fleet-kit's publish_view.py) over each card project's own publish.json, fail-closed to projects that are public-tier with a fresh sanitization-gate pass, and regenerated daily by CI so the badges appear and expire on their own — never hand-edit the data file and never hand-type a badge. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
+5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
+6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. Automations carry diagrams on the same pattern, adapted to their scope: the self-maintaining calendar card (the Travel Blocks automation, the first of them) carries two views in-page — System Context and Container — rendered from its canonical source, docs/travel-blocks-architecture.md in this repo, with no Deployment view (deliberately: the automation runs on a single host, the assistant runtime) and no interactive rendering. The Gas Tracker card carries the same two views in-page, rendered from its canonical source, docs/gas-tracker-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The PARA + GTD filing system card carries the same two views in-page, rendered from its canonical source, docs/para-gtd-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Time-to-Leave Alerts card carries the same two views in-page, rendered from its canonical source, docs/time-to-leave-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Priority Comms Watch card carries the same two views in-page, rendered from its canonical source, docs/comms-watch-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Band Monitor card carries the same two views in-page, rendered from its canonical source, docs/band-monitor-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Inbox Hygiene card carries the same two views in-page, rendered from its canonical source, docs/inbox-hygiene-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Morning Day-Plan card carries the same two views in-page, rendered from its canonical source, docs/morning-day-plan-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation. In-page diagram boxes ship collapsed (a details element with no open attribute): the Mermaid library may preload as a box's summary nears the viewport, but a diagram renders only when its box is first opened — scrolling never opens a box.
+7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
+8. PUBLISH: build it as one static index.html, no framework, no build step for the page itself. The one generated artifact is projects-data.js at the repo root: the freshness badges on the project cards (New / Recently updated / Testing), produced by scripts/generate_public.py from the fleet's single publish derivation (fleet-kit's publish_view.py) over each card project's own publish.json, fail-closed to projects that are public-tier with a fresh sanitization-gate pass, and regenerated daily by CI so the badges appear and expire on their own — never hand-edit the data file and never hand-type a badge. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.
 
@@ -1842,7 +1795,6 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
   Object.keys(badges).forEach(function(id){
     var raw = badges[id]; if(!raw) return;
     var card = document.querySelector('[data-card-id="' + id + '"]'); if(!card) return;
-    if(card.closest('#favorites')) return;
     var h3 = card.querySelector('h3'); if(!h3) return;
     var s = document.createElement('span');
     s.className = 'badge ' + ((raw === 'New' || raw === 'Recently updated') ? 'badge-fresh' : 'badge-state');
@@ -1853,101 +1805,6 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
 })();
 </script>
 
-<script>
-(function(){
-  // Favorites feature toggle (FAVORITES_ENABLED, set in the head
-  // script): while off, none of this runs — no render, no click
-  // handling, no favorites storage reads or writes.
-  if(!window.FAVORITES_ENABLED) return;
-  var KEY = 'showcase-favorites-v1';
-  function load(){
-    try{ var raw = localStorage.getItem(KEY); var o = raw ? JSON.parse(raw) : {}; return (o && typeof o === 'object') ? o : {}; }
-    catch(e){ return {}; }
-  }
-  function save(state){
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-  }
-  function isFav(state, id){ return !!(state[id] && state[id].favorite); }
-  function cardTitle(card){
-    var h = card.querySelector('h3'); if(!h) return 'this card';
-    var t = h.textContent.replace(/\s+/g,' ').trim(); return t || 'this card';
-  }
-  function bindCopy(scope){
-    if(!scope) return;
-    scope.querySelectorAll('[data-copy-key]').forEach(function(btn){
-      btn.addEventListener('click', async function(){
-        track('copy-' + btn.dataset.copyKey);
-        var ok = await copyText(PROMPTS[btn.dataset.copyKey] || '');
-        toast(ok ? '✓ Prompt copied — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
-      });
-    });
-    scope.querySelectorAll('[data-copy-remote]').forEach(function(btn){
-      btn.addEventListener('click', async function(){
-        var orig = btn.textContent;
-        btn.textContent = '⏳ Fetching the canonical prompt…';
-        try{
-          var r = await fetch(btn.dataset.copyRemote);
-          if(!r.ok) throw new Error('fetch failed');
-          var text = await r.text();
-          track('copy-remote');
-          var ok = await copyText(text);
-          toast(ok ? '✓ Full prompt copied from GitHub — paste it into your AI assistant' : 'Copy failed — your browser blocked it');
-        }catch(e){
-          window.open(btn.dataset.fallback, '_blank');
-          toast('Could not fetch it directly — opened the prompt on GitHub instead');
-        }
-        btn.textContent = orig;
-      });
-    });
-  }
-  function syncButtons(state){
-    document.querySelectorAll('[data-fav-toggle]').forEach(function(btn){
-      var on = isFav(state, btn.getAttribute('data-fav-toggle'));
-      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      btn.textContent = on ? '★ Favorited' : '☆ Favorite';
-    });
-  }
-  function render(){
-    var state = load();
-    var section = document.getElementById('favorites');
-    var list = document.getElementById('favorites-list');
-    if(!section || !list) return;
-    list.innerHTML = '';
-    var any = false;
-    document.querySelectorAll('[data-card-id]').forEach(function(card){
-      if(card.closest('#favorites')) return;
-      var id = card.getAttribute('data-card-id');
-      if(!isFav(state, id)) return;
-      any = true;
-      var clone = card.cloneNode(true);
-      clone.removeAttribute('id');
-      clone.querySelectorAll('[id]').forEach(function(n){ n.removeAttribute('id'); });
-      clone.querySelectorAll('details').forEach(function(d){ d.removeAttribute('open'); });
-      bindCopy(clone);
-      list.appendChild(clone);
-    });
-    section.hidden = !any;
-    syncButtons(state);
-  }
-  document.addEventListener('click', function(ev){
-    var btn = ev.target && ev.target.closest ? ev.target.closest('[data-fav-toggle]') : null;
-    if(!btn) return;
-    var id = btn.getAttribute('data-fav-toggle');
-    var state = load();
-    var card = btn.closest('[data-card-id]');
-    if(isFav(state, id)){
-      delete state[id];
-      toast('Removed from your favorites');
-    } else {
-      state[id] = {favorite:true, rating:null};
-      toast('★ Saved to your favorites' + (card ? ': ' + cardTitle(card) : ''));
-    }
-    save(state);
-    render();
-  });
-  render();
-})();
-</script>
 
 <script>
 (function(){
