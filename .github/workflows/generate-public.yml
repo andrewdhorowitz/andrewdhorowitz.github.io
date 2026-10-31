@@ -1,0 +1,54 @@
+# Generate public card data — projects-data.js carries the project
+# cards' freshness badges, derived by fleet-kit's ONE derivation
+# (scripts/publish_view.py) over each card project's own
+# publish.json. Badges are date-derived, so the file must be
+# regenerated for them to appear and expire on their own: this
+# workflow runs it daily, on changes to the site's own manifest or
+# the generator, and on demand. The generator pulls only public
+# repos (the card projects and fleet-kit), so this public repo's CI
+# never needs to read a private repo — the same property the
+# publish gate is built on. GITHUB_TOKEN is passed only to raise
+# the API rate limit.
+name: Generate public card data
+
+concurrency:
+  group: generate-public
+  cancel-in-progress: false
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  push:
+    paths:
+      - "publish.json"
+      - "scripts/generate_public.py"
+      - ".github/workflows/generate-public.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the portfolio
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate projects-data.js from the fleet derivation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/generate_public.py
+      - name: Commit the regenerated data file if it changed
+        run: |
+          if [ -z "$(git status --porcelain -- projects-data.js)" ]; then
+            echo "projects-data.js unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add projects-data.js
+          git commit -m "projects-data.js: regenerate card badges (fleet derivation)"
+          git push
