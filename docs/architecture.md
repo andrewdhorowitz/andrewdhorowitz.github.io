@@ -77,7 +77,7 @@ C4Container
     System_Boundary(site, "Showcase Site") {
 
         Boundary(serving, "Serving", "Cloudflare Pages (canonical) + GitHub Pages (mirror)") {
-            Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The whole site in one page: project cards, automations, diagrams, contact. The GitHub Pages mirror is the same page with a first-script redirect to the domain.")
+            Container(page, "Showcase Page", "Static HTML / JavaScript - UI screen", "The whole site in one page: project cards, automations, diagrams, contact. The GitHub Pages mirror is the same page with a first-script redirect to the domain. The project cards' freshness badges come from projects-data.js, a generated data include the page loads, regenerated daily from the fleet's publish derivation.")
             Container(prompts, "Copyable Build Prompts", "Embedded data, in-page JavaScript", "One build prompt per card, copied verbatim (marked notranslate). Two prompts - the Routines & Streaks generator prompt and the AIMF trial prompt - fetch their canonical text live from GitHub when their copy buttons are tapped; the rest are embedded snapshots updated with the site.")
             Container(diagrams, "Architecture Diagrams", "Mermaid sources embedded in-page", "The v3 three-view diagrams, rendered in the browser from the same canonical Mermaid sources that live in each project repo.")
         }
