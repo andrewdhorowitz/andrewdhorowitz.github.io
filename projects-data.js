@@ -5,7 +5,7 @@
 // Tier=Public with a fresh Sanitized=True gate result.
 // Sources: aimf-protocol@2617fce7, family-cards-demo@4552fda6, andrewdhorowitz.github.io@995b5a86
 // Sanitize overlay: fleet-kit sanitize-overlay.json@b5d0d465, generated 2026-10-31T03:18:09Z
-// Freshness: fleet-kit scripts/publish_view.py@851f8ef4 vs the generation date 2026-11-02 (UTC);
+// Freshness: fleet-kit scripts/publish_view.py@851f8ef4 vs the generation date 2026-11-03 (UTC);
 // CI regenerates this file daily, so badges expire on their own.
 window.PUBLIC_CARD_BADGES = {
   "aimf": "testing",
