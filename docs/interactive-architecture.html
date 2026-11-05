@@ -89,14 +89,13 @@ const NODES = [
  {id:"upkeep", x:950, y:540, cls:"worker", icon:"⚙️", t:"Site Builder and Upkeep", k:"Worker — assistant workflow", host:"Muse — assistant side", body:"Builds each update, verifies it live, and pushes through the snapshot route. Under the upkeep rule, a feature change carries its card text, its embedded prompt, and its diagram in the same push."},
  {id:"fbwatch", x:1220, y:540, cls:"worker", icon:"⚙️", t:"Feedback Watch", k:"Worker — scheduled job", host:"Muse — assistant side", body:"Hourly: checks the feedback form for new responses and reports each one to Andrew verbatim (daytime hours only)."},
  {id:"fbstate", x:950, y:690, cls:"db", icon:"🛢️", t:"Feedback Watch State", k:"Database — JSON file", host:"Muse — assistant side", body:"Which form responses have already been reported, so each one surfaces exactly once."},
- {id:"gc", x:1540, y:540, cls:"cloud", icon:"☁️", t:"GoatCounter", k:"External service — cloud", host:"Third-party services", body:"Privacy-friendly visit counts for the showcase. Kept on this site; deliberately not the fleet standard (domain properties count via Cloudflare instead)."},
  {id:"gt", x:1810, y:540, cls:"cloud", icon:"☁️", t:"GTranslate", k:"External service — cloud", host:"Third-party services", body:"Automatic translation into the visitor's language, detected from the browser. Copyable prompt blocks are marked notranslate so prompts stay verbatim."},
  {id:"gform", x:2130, y:540, cls:"cloud", icon:"☁️", t:"Feedback Form", k:"External service — Google Form", host:"Google", body:"The public feedback form linked from the site's Get in touch section. The public email address stays off the site; the form is the inbox."},
  {id:"responses", x:2400, y:540, cls:"db", icon:"🛢️", t:"Form Responses", k:"Database — Google Form responses", host:"Google", body:"Where submitted feedback lands. Read by the Feedback Watch on its hourly poll."}
 ];
 const EDGES = [
  ["visitor","page","visits (HTTPS)"],["visitor","mirror","old links"],["mirror","page","redirects to domain"],
- ["page","gc","visit beacon"],["page","gt","translates in-browser"],["page","wa","analytics beacon"],
+ ["page","gt","translates in-browser"],["page","wa","analytics beacon"],
  ["visitor","gform","submits feedback"],["gform","responses","stores response"],["fbwatch","responses","polls hourly"],
  ["fbwatch","fbstate","dedupes"],["upkeep","repo","pushes updates"],["repo","page","deploys (Cloudflare)"],
  ["repo","mirror","deploys mirror"],["ci","repo","checks every push"]

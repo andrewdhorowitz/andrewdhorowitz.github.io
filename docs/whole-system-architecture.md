@@ -45,7 +45,7 @@ C4Context
     System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), and Actions CI.")
     System_Ext(firebase, "Google Firebase", "Auth and Firestore behind the Routines & Streaks.")
     System_Ext(gws, "Google Workspace", "Calendar, Gmail, Drive, and Forms - the data the assistant's automations read and the AIMF transports.")
-    System_Ext(counters, "GoatCounter + GTranslate", "Visit counts on the showcase; automatic translation on the public pages.")
+    System_Ext(counters, "GTranslate", "Automatic translation on the public pages.")
 
     System(errep, "Visitor Error Reporting (PROPOSED)", "PROPOSED fleet-wide standard: each property classifies visitor errors by effect and sends minimal reports to a shared Worker collector, with pluggable sinks. Andrew gets a weekly digest line, same-day notes for stuck users, and an instant ping only for fleet-wide breakage.")
 
@@ -73,7 +73,7 @@ C4Context
     Rel(routines, firebase, "Authenticates users; stores all state")
     Rel(aimf, gws, "Envelopes arrive by mail, Drive, and chat")
     Rel(cards, gws, "Generator reads the family calendars (assistant side only)")
-    Rel(showcase, counters, "Counts visits; translates pages")
+    Rel(showcase, counters, "Translates pages")
     Rel(showcase, errep, "PROPOSED: sends classified visitor-error reports")
     Rel(routines, errep, "PROPOSED: first adopter - sends classified reports")
     Rel(aimf, errep, "PROPOSED: sends classified visitor-error reports")
@@ -92,7 +92,7 @@ C4Context
 |---|---|---|
 | Person figure | A human (or human-directed) actor | Andrew, Visitors, Family members, External AIs / bots |
 | Box (system) | One of the ecosystem's own systems | Showcase, Routines & Streaks, AIMF, Family Cards, Assistant Layer, Shared Kit |
-| Grey system | An external hosted service | Cloudflare, GitHub, Google Firebase, Google Workspace, GoatCounter + GTranslate |
+| Grey system | An external hosted service | Cloudflare, GitHub, Google Firebase, Google Workspace, GTranslate |
 | Grey, (PROPOSED) | A proposed system that does not exist yet | Visitor Error Reporting (PROPOSED) |
 
 Hosts in one line each: the **Showcase** and the **AIMF invite

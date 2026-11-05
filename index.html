@@ -463,8 +463,7 @@ C4Context
          GitHub Pages copy just redirects here). Its one generated piece is a small data file,
          rebuilt daily from each project's own publish manifest by the fleet's single publish
          derivation, that puts the freshness badges (New, Testing) on the project cards, where every project and automation carries the spec and the
-         AI prompt behind it, on copy buttons. It also runs GoatCounter analytics (page views and
-         copy-button click events) plus Cloudflare Web Analytics for cookieless page-view stats
+         AI prompt behind it, on copy buttons. It also runs Cloudflare Web Analytics for cookieless page-view stats
          on the custom domain, and a feedback/contact form that never exposes a personal email address.</p>
       <ul class="highlights">
         <li>The generator and trial prompts are fetched live from GitHub when you tap copy — always the current version, never a stale snapshot.</li>
@@ -487,7 +486,6 @@ C4Container
     Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
     Person(owner, "Andrew (owner / author)", "Publishes via the assistant.")
 
-    System_Ext(gc, "GoatCounter", "Visit counts (no cookies, no tracking across sites).")
     System_Ext(gt, "GTranslate", "In-browser automatic translation.")
     System_Ext(wa, "Cloudflare Web Analytics", "Privacy-friendly page-level counts from a beacon script.")
     System_Ext(gform, "Google Form", "Feedback form and its responses.")
@@ -509,7 +507,6 @@ C4Container
     }
 
     Rel(visitor, page, "Reads, copies prompts, expands diagrams", "HTTPS")
-    Rel(page, gc, "Visit beacon")
     Rel(page, wa, "Analytics beacon")
     Rel(page, gt, "Translates content in-browser")
     Rel(prompts, raw, "Two prompts fetch their canonical text", "On copy tap")
@@ -547,8 +544,7 @@ C4Deployment
         ContainerDb(fbstate, "Feedback Watch State", "JSON file", "Responses already reported.")
     }
 
-    Deployment_Node(third, "Third-party services", "External widgets and counters") {
-        Container_Ext(gc, "GoatCounter", "Hosted analytics - cloud", "Visit counts for the site.")
+    Deployment_Node(third, "Third-party services", "External widgets") {
         Container_Ext(gt, "GTranslate", "Hosted widget - cloud", "Automatic translation into the visitor's language.")
     }
 
@@ -560,7 +556,6 @@ C4Deployment
     Rel(visitor, page, "Visits the canonical site", "HTTPS")
     Rel(visitor, mirror, "Old links land here and redirect", "HTTPS")
     Rel(mirror, page, "Redirects to the domain")
-    Rel(page, gc, "Visit beacon")
     Rel(page, gt, "Translation in the browser")
     Rel(page, wa, "Analytics beacon")
     Rel(visitor, gform, "Submits feedback")
@@ -588,13 +583,11 @@ C4Context
 
     System_Ext(cf, "Cloudflare Pages", "Canonical hosting for the domain (apex + www), plus DNS, TLS, and Web Analytics.")
     System_Ext(gh, "GitHub", "Source repo, GitHub Pages mirror, and CI.")
-    System_Ext(gc, "GoatCounter", "Privacy-friendly visit counts.")
     System_Ext(gform, "Google Form", "The feedback form; responses collect in Google.")
     System_Ext(gt, "GTranslate", "Automatic translation into the visitor's language, detected from the browser.")
     System_Ext(muse, "Muse - assistant side", "Builds and pushes site updates; watches for feedback; keeps cards, prompts, and diagrams in sync under the upkeep rule.")
 
     Rel(visitor, site, "Reads pages, copies prompts, opens diagrams")
-    Rel(site, gc, "Sends a visit beacon")
     Rel(site, gt, "Translates page content in the browser")
     Rel(visitor, gform, "Submits feedback", "Linked form")
     Rel(muse, site, "Builds and pushes updates", "Upkeep rule")
@@ -662,7 +655,7 @@ C4Context
     System_Ext(gh, "GitHub", "Every repo, GitHub Pages (the app, the demo, and the mirrors), and Actions CI.")
     System_Ext(firebase, "Google Firebase", "Auth and Firestore behind the Routines &amp; Streaks.")
     System_Ext(gws, "Google Workspace", "Calendar, Gmail, Drive, and Forms - the data the assistant's automations read and the AIMF transports.")
-    System_Ext(counters, "GoatCounter + GTranslate", "Visit counts on the showcase; automatic translation on the public pages.")
+    System_Ext(counters, "GTranslate", "Automatic translation on the public pages.")
 
     System(errep, "Visitor Error Reporting (PROPOSED)", "PROPOSED fleet-wide standard: each property classifies visitor errors by effect and sends minimal reports to a shared Worker collector, with pluggable sinks. Andrew gets a weekly digest line, same-day notes for stuck users, and an instant ping only for fleet-wide breakage.")
 
@@ -690,7 +683,7 @@ C4Context
     Rel(routines, firebase, "Authenticates users; stores all state")
     Rel(aimf, gws, "Envelopes arrive by mail, Drive, and chat")
     Rel(cards, gws, "Generator reads the family calendars (assistant side only)")
-    Rel(showcase, counters, "Counts visits; translates pages")
+    Rel(showcase, counters, "Translates pages")
     Rel(showcase, errep, "PROPOSED: sends classified visitor-error reports")
     Rel(routines, errep, "PROPOSED: first adopter - sends classified reports")
     Rel(aimf, errep, "PROPOSED: sends classified visitor-error reports")
@@ -1710,7 +1703,7 @@ site: `Build me a personal portfolio website like this one — an open portfolio
 4. COPY-PROMPT BUTTONS on every card: for a project whose canonical prompt lives as a file in its repo (on this site: the Routines & Streaks generator prompt and the AIMF trial prompt), the button fetches that file live from GitHub (raw URL) and copies it to the clipboard, falling back to opening the file page if the fetch fails; where a project's build prompt is maintained in the page itself (Family Cards, and this site prompt), embed it in the page like the automations'. For automations, embed a complete, self-contained build prompt — rules and edge cases included — that a visitor could paste into their own AI assistant to recreate the system. Keep each embedded prompt in sync with the live system it describes: when the real system changes, update its prompt in the same change, refresh the card's highlights to match, and update this site prompt too whenever a change affects what it specifies.
 5. VISUALS: give each card a banner visual. Simple inline SVG scenes in a black-and-white-plus-one-accent style are ideal: crisp at any size, no external image files, nothing to break. Each featured-project card's heading also carries a small inline SVG line icon (24px, accent-deep strokes, round caps, decorative and aria-hidden): a cycle-and-flame for Routines & Streaks, two speech bubbles for AIMF, stacked cards with a house for Family Cards, and a browser window with code brackets for the site itself.
 6. ARCHITECTURE DIAGRAMS: give every featured project architecture diagrams in the canonical v3 pattern — three Mermaid views (System Context, Container, and a Deployment/host view) in one canonical diagrams-as-code source that lives in the project's own repo. Shapes are keyed to the kind of thing, with a legend in the file: a person figure is a human user, a browser window is a UI screen, a server rack is a server or server-side function, a gear is a worker or scheduled job, a cylinder is a database or data store, a cloud is an external hosted service, and a repository shape is a source store; hosts are drawn as separate deployment nodes (GitHub, Cloudflare, the assistant runtime, Google) in their own colours. The site renders diagrams client-side with Mermaid from a copy generated out of the canonical source at push time — never a second hand-maintained copy — and marks the rendered diagrams notranslate. The Family Cards card and the website's own card carry all three views in-page; the Routines & Streaks and AIMF cards link the canonical source on GitHub and the interactive rendering served from their own repos instead (an Architecture button and an Interactive diagram button). Every interactive rendering of a deployment view (drag the nodes, pan, zoom, click a node for details) is generated from the same model by the shared kit's regeneration script, and dragging never edits the source. The Projects tab closes with a whole-system card carrying a single System Context diagram of the whole ecosystem, rendered in-page from its canonical source, docs/whole-system-architecture.md in this repo. Automations carry diagrams on the same pattern, adapted to their scope: the self-maintaining calendar card (the Travel Blocks automation, the first of them) carries two views in-page — System Context and Container — rendered from its canonical source, docs/travel-blocks-architecture.md in this repo, with no Deployment view (deliberately: the automation runs on a single host, the assistant runtime) and no interactive rendering. The Gas Tracker card carries the same two views in-page, rendered from its canonical source, docs/gas-tracker-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The PARA + GTD filing system card carries the same two views in-page, rendered from its canonical source, docs/para-gtd-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Time-to-Leave Alerts card carries the same two views in-page, rendered from its canonical source, docs/time-to-leave-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Priority Comms Watch card carries the same two views in-page, rendered from its canonical source, docs/comms-watch-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Band Monitor card carries the same two views in-page, rendered from its canonical source, docs/band-monitor-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Inbox Hygiene card carries the same two views in-page, rendered from its canonical source, docs/inbox-hygiene-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. The Morning Day-Plan card carries the same two views in-page, rendered from its canonical source, docs/morning-day-plan-architecture.md in this repo, likewise with no Deployment view and no interactive rendering. When a system changes, review its diagram source in the same change and regenerate the site's copy from it. Family Cards is the reference implementation. In-page diagram boxes ship collapsed (a details element with no open attribute): the Mermaid library may preload as a box's summary nears the viewport, but a diagram renders only when its box is first opened — scrolling never opens a box.
-7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (GoatCounter for page views and copy-button click events, plus Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which prompts people actually take. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
+7. SHARING & CONTACT: add share buttons (native share where available, plus copy-link, LinkedIn, and X), and a feedback/contact path that does not expose my personal email address — a Google Form works well (feedback type, message, optional name, optional reply email), alongside a listed role address on my own domain (hello@andrewdhorowitz.com, forwarded to my inbox by Cloudflare Email Routing) for plain email. Route the form's responses to an assistant watch that notifies me about each new response, quoted verbatim — gathered, never rewritten. Add privacy-friendly analytics (Cloudflare Web Analytics for cookieless page-view stats on the custom domain) so I can see which pages people actually read. Add a free GTranslate translation widget with browser-language detection switched on, so the page offers itself in each visitor's own language automatically; the copyable prompt texts themselves stay untranslated.
 8. PUBLISH: build it as one static index.html, no framework, no build step for the page itself. The one generated artifact is projects-data.js at the repo root: the freshness badges on the project cards (New / Recently updated / Testing), produced by scripts/generate_public.py from the fleet's single publish derivation (fleet-kit's publish_view.py) over each card project's own publish.json, fail-closed to projects that are public-tier with a fresh sanitization-gate pass, and regenerated daily by CI so the badges appear and expire on their own — never hand-edit the data file and never hand-type a badge. If the username.github.io repo does not exist, give me the 30-second instructions to create it (empty, public) and wait for me — then push and VERIFY the live URL actually serves the new page before telling me it is done. This site's primary address is the custom domain andrewdhorowitz.com, served by Cloudflare Pages connected to the same repo; GitHub Pages stays on as a mirror at the github.io address, and the share/copy links use the custom domain. An inline script at the very top of the head bounces any visit arriving on the github.io hostname straight to the custom domain (location.replace, preserving path, query, and hash), so the mirror never serves as a second front door; it is inert on the custom domain itself. For discovery: the head carries a canonical link to the custom domain, Open Graph tags with a 1200x630 social card (og-image.png), and an SVG favicon bearing my AH monogram (cream letters on a rounded accent-deep badge, with matching PNG icons drawn from the same mark), and the repo root ships a robots.txt and a sitemap.xml naming the custom domain. The page closes with the standard footer — two lines: “© <year> Andrew Horowitz · Contact · Privacy · github.com/andrewdhorowitz” (Contact is a mailto to the role address; Privacy is /privacy on this domain, and satellite pages link the absolute URL; GitHub is my profile), then “Built by Andrew Horowitz with Muse” (satellite pages append “· Part of andrewdhorowitz.com”); footer links get a few px of vertical padding so they make ~24px tap targets — and the head also carries a Person JSON-LD block, an apple-touch icon, and a web app manifest; the repo root ships a branded 404.html, and the stylesheet includes a print block so the page prints cleanly. The header's H1 is my full name, set beside an inline SVG of the same AH monogram — cream strokes with the A's crossbar in amber, sized to the heading's cap height, the page title follows the pattern "<Full Name> — Projects & Automations", and the tagline under the header reads "An open portfolio — every project with its playbook attached." The sections sit behind a single-page tab bar — Projects, Automations, The Playbook, Get in touch — built from real buttons with aria-selected state and hash deep links (#projects, #automations, #playbook, #contact): Projects is the default tab, inactive panels are hidden rather than removed, clicking a tab updates the hash, loading with a hash opens that tab, and in-page anchor links open the tab containing their target. In print, the tab bar disappears and every panel shows. The steal-this-site prompt section (item 4's site prompt) is the content of The Playbook tab, and the sharing & contact section sits under Get in touch.
 
 Design: clean, black-and-white with a single accent color, cards, generous spacing. Tone: plain-spoken and a little proud — these are real systems that run every day.
@@ -1734,13 +1727,6 @@ async function copyText(text){
     ta.remove(); return ok;
   }
 }
-function track(name){
-  try{ if(window.goatcounter && window.goatcounter.count)
-    window.goatcounter.count({path:'event/'+name, event:true}); }catch(e){}
-}
-document.querySelectorAll('[data-track]').forEach(el=>{
-  el.addEventListener('click', ()=>track(el.dataset.track));
-});
 const shareBtn = document.getElementById('shareBtn');
 if(shareBtn) shareBtn.addEventListener('click', async ()=>{
   const data = {title:'Andrew Horowitz — Projects & Automations',
@@ -1936,7 +1922,6 @@ document.querySelectorAll('[data-copy-remote]').forEach(btn=>{
   });
 })();
 </script>
-<script data-goatcounter="https://fourpshot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper"}</script>
 <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b90078ae9cbc4ddda6d16bddf943cf46"}'></script><!-- End Cloudflare Web Analytics -->

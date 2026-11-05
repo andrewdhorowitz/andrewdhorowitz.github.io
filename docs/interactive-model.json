@@ -5,7 +5,6 @@
     "fbwatch->responses": "polls hourly",
     "gform->responses": "stores response",
     "mirror->page": "redirects to domain",
-    "page->gc": "visit beacon",
     "page->gt": "translates in-browser",
     "page->wa": "analytics beacon",
     "repo->mirror": "deploys mirror",
@@ -38,13 +37,6 @@
       "icon": "⚙️",
       "k": "Worker — scheduled job",
       "title": "Feedback Watch"
-    },
-    "gc": {
-      "body": "Privacy-friendly visit counts for the showcase. Kept on this site; deliberately not the fleet standard (domain properties count via Cloudflare instead).",
-      "host": "Third-party services",
-      "icon": "☁️",
-      "k": "External service — cloud",
-      "title": "GoatCounter"
     },
     "gform": {
       "body": "The public feedback form linked from the site's Get in touch section. The public email address stays off the site; the form is the inbox.",

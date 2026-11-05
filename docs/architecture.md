@@ -5,7 +5,7 @@ The site as it is today: one static page (plus a privacy page) at
 GitHub Pages address kept as a mirror whose first script redirects
 visitors to the domain. It carries project cards with copyable build
 prompts, the v3 architecture diagrams rendered in-page, a Google
-Form for feedback, GoatCounter and Cloudflare Web Analytics for
+Form for feedback, Cloudflare Web Analytics for
 counts, and GTranslate for automatic translation. Updates are built and pushed
 from the assistant side under the showcase upkeep rule. Public-safe
 throughout: no private data appears here or on the site.
@@ -37,13 +37,11 @@ C4Context
 
     System_Ext(cf, "Cloudflare Pages", "Canonical hosting for the domain (apex + www), plus DNS, TLS, and Web Analytics.")
     System_Ext(gh, "GitHub", "Source repo, GitHub Pages mirror, and CI.")
-    System_Ext(gc, "GoatCounter", "Privacy-friendly visit counts.")
     System_Ext(gform, "Google Form", "The feedback form; responses collect in Google.")
     System_Ext(gt, "GTranslate", "Automatic translation into the visitor's language, detected from the browser.")
     System_Ext(muse, "Muse - assistant side", "Builds and pushes site updates; watches for feedback; keeps cards, prompts, and diagrams in sync under the upkeep rule.")
 
     Rel(visitor, site, "Reads pages, copies prompts, opens diagrams")
-    Rel(site, gc, "Sends a visit beacon")
     Rel(site, gt, "Translates page content in the browser")
     Rel(visitor, gform, "Submits feedback", "Linked form")
     Rel(muse, site, "Builds and pushes updates", "Upkeep rule")
@@ -68,7 +66,6 @@ C4Container
     Person(visitor, "Visitor / evaluator", "Reads the portfolio.")
     Person(owner, "Andrew (owner / author)", "Publishes via the assistant.")
 
-    System_Ext(gc, "GoatCounter", "Visit counts (no cookies, no tracking across sites).")
     System_Ext(gt, "GTranslate", "In-browser automatic translation.")
     System_Ext(wa, "Cloudflare Web Analytics", "Privacy-friendly page-level counts from a beacon script.")
     System_Ext(gform, "Google Form", "Feedback form and its responses.")
@@ -90,7 +87,6 @@ C4Container
     }
 
     Rel(visitor, page, "Reads, copies prompts, expands diagrams", "HTTPS")
-    Rel(page, gc, "Visit beacon")
     Rel(page, wa, "Analytics beacon")
     Rel(page, gt, "Translates content in-browser")
     Rel(prompts, raw, "Two prompts fetch their canonical text", "On copy tap")
@@ -135,7 +131,6 @@ C4Deployment
     }
 
     Deployment_Node(third, "Third-party services", "External widgets and counters") {
-        Container_Ext(gc, "GoatCounter", "Hosted analytics - cloud", "Visit counts for the site.")
         Container_Ext(gt, "GTranslate", "Hosted widget - cloud", "Automatic translation into the visitor's language.")
     }
 
@@ -147,7 +142,6 @@ C4Deployment
     Rel(visitor, page, "Visits the canonical site", "HTTPS")
     Rel(visitor, mirror, "Old links land here and redirect", "HTTPS")
     Rel(mirror, page, "Redirects to the domain")
-    Rel(page, gc, "Visit beacon")
     Rel(page, gt, "Translation in the browser")
     Rel(page, wa, "Analytics beacon")
     Rel(visitor, gform, "Submits feedback")
@@ -171,7 +165,7 @@ C4Deployment
 | Server rack | A server / server-side function | Web Analytics Beacon |
 | Gear | A worker / background or scheduled job | Site Builder and Upkeep, Feedback Watch, CI Workflows |
 | Cylinder | A database / data store | Form Responses, Feedback Watch State |
-| Cloud | An external hosted service | GoatCounter, GTranslate, Google Form |
+| Cloud | An external hosted service | GTranslate, Google Form |
 | Repository | A source / code store | Showcase Repo |
 
 Hosts: **Cloudflare Pages** (canonical site + analytics),
@@ -189,8 +183,8 @@ embedded data (two fetch their canonical text live from their
 repos when their copy buttons are tapped); the architecture
 diagrams render in-browser from
 the same Mermaid sources as the repos; GTranslate offers the page
-in the visitor's language; GoatCounter and the Web Analytics
-beacon each count the visit.
+in the visitor's language; the Web Analytics
+beacon counts the visit.
 
 **2. Feedback.** Feedback goes to the linked Google Form; the
 assistant-side Feedback Watch polls the responses hourly and
@@ -217,7 +211,7 @@ diagrams contradict.
 | Site Builder and Upkeep | Gear - worker | Assistant side | Builds, verifies, and pushes updates; upkeep-rule sync |
 | Feedback Watch | Gear - scheduled worker | Assistant side | Hourly poll; new responses reported verbatim |
 | Feedback Watch State | Cylinder - data store | Assistant side | Dedupe of reported responses |
-| GoatCounter / GTranslate | Cloud - external service | Third-party hosts | Visit counts, translation |
+| GTranslate | Cloud - external service | Third-party hosts | Translation |
 | Feedback Form / Responses | Cloud + cylinder | Google | The form and where its responses land |
 
 ## Sources
