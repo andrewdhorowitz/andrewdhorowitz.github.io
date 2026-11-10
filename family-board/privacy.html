@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy policy for Family Board, a family calendar display app for TV and phone.">
+  <title>Privacy Policy — Family Board</title>
+  <!-- Draft prepared November 7, 2026. Effective date to be set at publication.
+       Updated November 9, 2026 for the v1.8.0 alert system: background
+       command checks, alert content and media, scheduled alerts, and
+       YouTube embedded-player loads.
+       Updated November 9, 2026 for the multi-user version (Stage 1):
+       per-person profiles held on the server, per-profile board pages
+       and keys, and account linking with the access grant held
+       server-side only.
+       Updated November 9, 2026 for the multi-user version (Stage 2):
+       alert templates and the command slot are per-person, and a new
+       Privacy modes section describes the server mode in use today
+       and the planned private (end-to-end) mode, which is not yet
+       offered.
+       Updated November 9, 2026 for the multi-user version (Stage 5,
+       app version 2.0.0): configuration now lives in the phone app —
+       source and display selections, the media library index and
+       trigger bindings are stored on the person's profile; the
+       per-profile key is held in the app's private storage on the
+       device; alert templates and commands use the per-profile
+       store. There is still no sign-in or account linking in the
+       app, and no privacy mode can be chosen yet.
+       Updated November 9, 2026 for the multi-user version (Stage 6,
+       first half, app version 2.1.0): optional TV pairing — the TV
+       shows a one-time code, the phone claims it, and the TV
+       receives the profile's access key and, when the phone holds
+       one, the person's encryption key over that one-time channel;
+       the per-person encryption key generated and held only on the
+       person's devices (the service never holds it); and encrypted
+       packages stored on the server as opaque ciphertext the
+       service cannot read. Private mode is still not an in-use
+       data mode for anyone, and no privacy mode can be chosen
+       yet.
+       Updated November 9, 2026 for the multi-user version (Stage 6,
+       second half, app version 2.2.0): the private-mode on-device
+       leg — an opt-in, per-device calendar collector on the phone
+       (the app's first calendar permission; events are read from
+       the device's own calendar store, titles, times and the first
+       part of the location line only, never descriptions), the
+       board package built on the phone, encrypted with the
+       person's key and stored on the server as opaque ciphertext,
+       and a paired TV decrypting and rendering that package in the
+       app. Collection is off unless the person turns it on for
+       that phone; task lists are not collected on the device in
+       this version; and the in-app board preview on the phone.
+       A profile-level privacy-mode choice is still not offered —
+       the per-device collector switch is the control today, and
+       no default mode is set.
+       Updated November 9, 2026 for app version 2.2.2: a
+       self-hosted crash reporter built into the app (reports go
+       only to the operator's own server — there is still no
+       third-party crash-reporting or analytics service), a small
+       "companion opened" note the phone app sends when its
+       control screen opens, and an app-integrity check that runs
+       in observe-only mode: the app asks Google Play for an
+       integrity token and sends it to the operator's server,
+       where its receipt is recorded; nothing is blocked or
+       changed by it in this version. -->
+  <style>
+    :root {
+      color-scheme: light dark;
+      --text: #202124;
+      --muted: #5f6368;
+      --background: #ffffff;
+      --rule: #dadce0;
+      --link: #0b57d0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #e8eaed;
+        --muted: #9aa0a6;
+        --background: #131314;
+        --rule: #3c4043;
+        --link: #8ab4f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    main {
+      width: min(100% - 2rem, 760px);
+      margin: 0 auto;
+      padding: 3rem 0 4rem;
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      margin: 2.25rem 0 0.65rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: 1.3rem;
+      line-height: 1.3;
+    }
+    p, ul { margin: 0.65rem 0; }
+    ul { padding-left: 1.35rem; }
+    li { margin: 0.45rem 0; }
+    a { color: var(--link); }
+    .meta, .package { color: var(--muted); }
+    .meta { margin-bottom: 2rem; }
+    .short-version {
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy — Family Board</h1>
+  <p class="meta">Effective date: November 9, 2026</p>
+  <p class="package">Android package: <code>com.andrewdhorowitz.familyboard</code></p>
+
+  <p class="short-version"><strong>Short version:</strong> Family Board shows one family&rsquo;s calendar and due tasks on a TV and phone display. A server-side generator reads the family&rsquo;s calendar events (titles, times, and the first part of the location line — never event descriptions) and a short list of due tasks, builds a display page, and the apps fetch and show that page. The board runs no advertising and no analytics, and its information is not sold.</p>
+
+  <h2>Scope and availability</h2>
+  <p>Family Board is distributed through Google Play&rsquo;s internal testing track and is not offered for public download. The original version serves one family on their own TV and phone. The multi-user version gives each person their own profile and their own board, generated from the calendars and task lists that person chooses.</p>
+  <p>The board is a display: anyone who can see the TV or phone screen can see the event titles and times shown on it.</p>
+
+  <h2>Information the service accesses and receives</h2>
+  <p><strong>Calendar events.</strong> A generator running on the operator&rsquo;s server reads the family&rsquo;s Google Calendar events for the current week. For each event it uses the title, the start and end times, and the first part of the location line. Event descriptions are never read into the board and never displayed.</p>
+  <p><strong>Tasks.</strong> The generator also reads the due dates of items on the family&rsquo;s task list and shows the title of the few items due today, tomorrow, or overdue, together with a short first line of each item&rsquo;s notes.</p>
+  <p><strong>The board page.</strong> The generator combines the above into one display page (the board snapshot), which is stored on the server and replaced with a fresh page about every 15 minutes.</p>
+  <p><strong>App status reports.</strong> The TV and phone apps send a small status report to the server: the app version, the time of the last successful board load, and, if a load failed, the type and time of the error. This is used only to notice and fix problems. The app contains no advertising and no analytics software.</p>
+  <p><strong>Crash reports (version 2.2.2 and later).</strong> If the app itself crashes, it saves a small report on the device and sends it to the operator&rsquo;s own server the next time the app opens; the copy on the device is deleted once the server confirms it arrived. A crash report contains exactly this: the kind of error and its message, the technical trace of the app code that failed, the app&rsquo;s version, the device model, the Android version level, the time of the crash, and which of the app&rsquo;s screens was showing. It contains no calendar information, no profile information, and nothing the family typed or chose. Reports go only to the operator&rsquo;s server — there is no third-party crash-reporting service. The phone app also sends a brief note when its control screen opens successfully (the app version and the time, nothing else), so an opening that fails can be told apart from a crash.</p>
+  <p><strong>App-integrity check (version 2.2.2 and later).</strong> When the phone app&rsquo;s control screen opens, and when a TV pairing is claimed, the app asks Google Play for an app-integrity token — Google&rsquo;s check that the app is the genuine, unmodified app running on a real device — and sends that token to the operator&rsquo;s own server, which decodes it with Google to read the verdict (whether the app is licensed, whether it is the genuine unmodified app, and the device&rsquo;s integrity level) and records that verdict. In this version the check is observe-only: nothing in the app is blocked, delayed, or changed by it, and no decision is made from it. If Google Play cannot issue a token, the app notes the failure type and carries on exactly as before. Google handles the token request itself, so Google&rsquo;s privacy policy applies to that request.</p>
+  <p><strong>Alerts and test commands.</strong> From the phone app, a family member can send a command through the server to the TV app — a family alert (for example a get-ready or time-to-leave alert) or a test command: test alert, test wake, or test alarm. The TV app carries it out and reports the result back through the same path. So that an alert can arrive while the board app is not open, the TV app also checks the server for commands in the background once the board has been opened on that device. Those checks use the same read-only view key described below and carry no personal information; the server keeps only the latest pending command and its result. In the multi-user version, each person&rsquo;s commands travel through that person&rsquo;s own command slot, readable only with that person&rsquo;s own key.</p>
+  <p><strong>Alert content.</strong> An alert can include a title, a short message, a small set of schedule blocks (event titles and times only), and media the family chooses, such as a video, a picture, or a sound. The schedule card inside an alert is drawn by software included in the board page itself and makes no outside request.</p>
+  <p><strong>In-app configuration (multi-user version).</strong> In version 2.0.0 and later, configuration lives in the phone app itself; there is no separate configuration program, and the TV app has no configuration screens. From the phone, a person can edit: the source and display selections described under Profiles below; a media library — a list of the names and links or references of the YouTube videos, sounds and clips their alert templates can pick from (the app stores the name and reference only; it does not upload or hold the files themselves); and trigger bindings — an exact phrase the person chooses, a presentation style, and the template it fires. Trigger setup includes a read-only browse view of the person's own current board: tapping an event copies its title into the phrase field as a draft for editing, and nothing is ever written back — the app has no ability to write to any calendar. All of this is stored on the person's own profile through that profile's own key, and every save is verified by reading the stored values back. The per-profile key itself is held in the app's private storage on the device and is used only to read and write that person's own profile, templates, commands and board page. This version of the app has no sign-in and no account linking: a profile key is placed on the device by the operator, the app shows the account's linking state as "not linked," and the selections above are the person's saved choices, ready for when linking arrives in a later version. No profile-level privacy mode can be chosen yet, and no default is set; from version 2.2.0, private-mode collection is controlled by the per-device switch described under Privacy modes below.</p>
+  <p><strong>Alert template configuration.</strong> The phone app is where alert templates are configured — which screen elements each template shows, its message, how loud it may get, how long it stays on screen, and links or references to the media it plays. Those settings are stored on the server in two copies: a saved draft, and the published configuration. Only the published copy is sent to the TV app, which keeps a copy on the device so alerts still work if the server cannot be reached. In the multi-user version, the draft and published copies belong to each person&rsquo;s own profile: one person&rsquo;s templates cannot be read or changed with another person&rsquo;s key. Template settings contain no calendar information and no account credentials — media is stored as the link or reference the family entered, not as uploaded files. From the same screen, the family can preview a saved template: the preview travels to the TV through the same command path as a test command and is reported back the same way.</p>
+  <p><strong>Alarm permissions.</strong> If the user grants them in Android Settings, the TV app can register wake-up alarms on the device, show full-screen alerts, draw over other apps, and keep the device awake for those alerts. Alarms — including alerts scheduled for a set time — are registered and fire on the device itself.</p>
+  <p><strong>TV pairing (multi-user version).</strong> In version 2.1.0 and later, a TV can be paired to one person&rsquo;s profile. Pairing is started on the TV, which asks the server for a short code (valid for 10 minutes, usable once) and shows it; the person enters the code in the phone app to claim it. When a code is claimed, the TV receives that profile&rsquo;s access key over a one-time channel — and, if the phone holds the person&rsquo;s encryption key (below), that key as well. The server keeps those keys only in the pairing record between the claim and the TV&rsquo;s first collection of them, deletes them from that record in the same step, and holds no other copy; the TV stores the keys it received in its own private storage on the TV. The phone app lists the TVs paired to the profile, and unpairing there revokes the pairing: the TV is instructed to wipe its stored keys the next time it checks in, and it returns to the standard board. A TV is paired to exactly one person&rsquo;s profile — pairing links a device to a person, never people to each other.</p>
+  <p><strong>Encryption keys and encrypted packages (multi-user version).</strong> The phone app can generate a personal encryption key for private mode. The key is created on the phone from a random source, is not derived from any account or sign-in, and is stored on the device protected by the device&rsquo;s secure key storage. The service never holds this key and cannot read anything encrypted with it. The same key protects encrypted packages: the app can encrypt a small package on the phone and send it to the server, which stores it exactly as received — opaque ciphertext it cannot parse or decrypt — alongside (never replacing) the profile&rsquo;s board page, and returns it only to that profile&rsquo;s own key. A paired TV holding the same key can decrypt the package on the TV itself. If a phone is replaced, there is no key recovery in this version: a new key is generated, TVs are paired again, and fresh packages replace the old ones. Rotating the key on the phone likewise makes earlier packages unreadable; they are overwritten by the next package sent.</p>
+  <p><strong>Profiles (multi-user version).</strong> Each person has one profile, held on the server. A profile records the person&rsquo;s account label, which of their calendars and task lists they have chosen to show on their board, their display settings, and their alert template configuration. A profile never contains a password or an access token. When a person links their Google account so the server can read their chosen calendars and task lists, the access grant that linking creates is held on the server only — it is not stored in the profile record the apps read, is never sent to the TV or phone, and can be revoked, which stops future reading and returns the board to its last generated page. Each profile has its own board page, and that page can be read only with that profile&rsquo;s own key; one profile&rsquo;s key cannot open another profile&rsquo;s board or settings.</p>
+
+  <h2>Privacy modes</h2>
+  <p>In the multi-user version, each person&rsquo;s board is generated in one of two modes. The mode is a per-person setting in the profile. Both modes keep only the person&rsquo;s latest board page, use calendar and task information only to build that page, and isolate each person from every other person. They differ in where the building happens.</p>
+  <p><strong>Server mode (the mode in use today).</strong> The server reads the calendars and task lists the person selected, builds the board page, and keeps only the latest page. While it builds, the server handles the information it reads; the stored page and profile records are protected by encryption in transit and at rest and by the profile&rsquo;s own key. To be plain about the limit of this mode: the operator runs the server and can technically access the records it holds, so this mode does not claim that the operator cannot see the information. What it does guarantee is that one person&rsquo;s key cannot open another person&rsquo;s board, settings, templates, or commands.</p>
+  <p><strong>Private mode (on-device leg shipped in version 2.2.0; opt-in per device).</strong> In private mode the person&rsquo;s phone collects their calendar events and encrypts a board package with a key held only on that person&rsquo;s devices before anything is sent. The server stores only the encrypted package and cannot read it; a paired TV decrypts the package and renders the board in the app. The trade-off is freshness: the board can only be refreshed while the phone collects and sends a new package, and the TV keeps showing the last board it received in the meantime. As of version 2.2.0, the on-device leg exists: the phone can read the calendars the person selected from the device&rsquo;s own calendar store — this is the app&rsquo;s first calendar permission, and it is requested only for this collector — using each event&rsquo;s title, times, and the first part of the location line, never descriptions; it builds the package on the phone, encrypts it, and sends it through the encrypted-package store described above. A paired TV renders that package with an in-app renderer that matches the server board&rsquo;s Today and Week views. Collection is off by default and is switched on per phone in the app&rsquo;s Pairings &amp; private mode screen; while the battery or the device is under pressure, collection runs less often rather than failing. Task lists are not collected on the device in this version, so a privately built board&rsquo;s task section is empty. No profile-level privacy-mode choice is offered yet and no default mode is set: the per-device collector switch is the control today, and a profile whose collector is off is generated exactly as before.</p>
+  <p><strong>Board preview (version 2.2.0).</strong> The phone app can preview the board on the phone itself. The preview shows the same data the TV shows — the person&rsquo;s stored private package, rendered in the app, when one exists, and otherwise the live board page the TV loads — and it is labelled on screen with which of the two it is showing. The preview is view-only: it sends nothing to the TV and changes nothing.</p>
+
+  <h2>How information is used</h2>
+  <p>Information handled by Family Board is used only to:</p>
+  <ul>
+    <li>build and display the family&rsquo;s board on the TV and phone;</li>
+    <li>keep the board current, regenerating it about every 15 minutes;</li>
+    <li>notice when an app cannot load the board, so the problem can be fixed;</li>
+    <li>notice when the app itself crashes, so the fault can be found and fixed;</li>
+    <li>carry out alerts, test commands, and device alarms the family sets up; and</li>
+    <li>operate the server described in this policy.</li>
+  </ul>
+
+  <h2>Where information goes</h2>
+  <p>The board snapshot and app status reports are held on a Cloudflare Worker server operated for the family, with the current snapshot stored in Google Firestore under the operator&rsquo;s account. The apps fetch the board page over HTTPS using a read-only view key stored in the app; that key can only read the board page. In the multi-user version, profile records and each profile&rsquo;s board page are stored in the same place, and each profile&rsquo;s page is fetched with that profile&rsquo;s own key.</p>
+  <p>The generator reads calendar and task information through Google Calendar and Google Tasks under the operator&rsquo;s account. Google provides those services and Firestore; Cloudflare provides the server platform.</p>
+  <p>When an alert plays a YouTube video, the TV app loads that video through YouTube&rsquo;s embedded player, so the request goes to Google and Google&rsquo;s privacy policy applies to it. An alert can instead open the video in the YouTube app on the TV, which is likewise a Google service. Other alert media loads from wherever the family chose to host it.</p>
+  <p>Information is not sold or rented, and it is not shared for advertising or marketing. It is disclosed only to the service providers needed for the functions described in this policy.</p>
+
+  <h2>Retention</h2>
+  <p>Crash reports are kept on the server while the app is in use, so faults can be compared across app versions; the note that the control screen opened, and the record that an integrity token arrived, are kept the same way. The board snapshot is replaced each time the board is regenerated; only the current board page is kept as the snapshot. The service does not keep a copy of the calendar or task information it reads: that information is used to build the current board page and is not stored separately, and no history of past board pages is kept. In the multi-user version, the same rule applies per person: only that person&rsquo;s current board page is kept, overwritten whole at each generation, and the calendar and task information used to build it is discarded once the page is built. The board is generated mechanically from event titles, times, and locations; event content is not interpreted, and descriptions are never read into the board. App status reports are kept while the app is in use so that load problems can be seen and fixed.</p>
+  <p>To ask about information covered by this policy or request its deletion, contact the operator at the email address below.</p>
+
+  <h2>Security</h2>
+  <p>The board page contains calendar titles, times, and partial locations only — never event descriptions. Uploads to the server require a dedicated token, and the apps&rsquo; read-only view key cannot change anything. In the multi-user version, each profile has its own separate key, and the server stores only a fingerprint of that key — not the key itself — so the stored record cannot be used to open the board. The same per-profile key scopes that person&rsquo;s alert templates and command slot, and deleting a profile deletes its board page, templates, commands, and pairings with it. A person&rsquo;s private-mode encryption key is different in kind: it is generated and held only on that person&rsquo;s own devices and is never held by the server — the only time it passes through the server at all is the one-time pairing transfer described above, which is deleted from the pairing record when the TV collects it. Communications with the server use HTTPS.</p>
+  <p>No transmission or storage method can be guaranteed completely secure, but access to the server and stored records is limited to the operator&rsquo;s accounts and the services named in this policy.</p>
+
+  <h2>Choices and controls</h2>
+  <p>The family can stop using the app, uninstall it, or revoke the permissions it uses (such as alarms and drawing over other apps) in Android Settings at any time. Those actions stop the corresponding future processing, but they do not by themselves delete records already held on the server.</p>
+  <p>Questions, access requests, and deletion requests can be sent to <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a>.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If the app&rsquo;s data practices change, this policy will be updated at the same time and the effective date above will change.</p>
+
+  <h2>Contact</h2>
+  <p>Andrew Horowitz<br>
+  <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a></p>
+</main>
+</body>
+</html>
