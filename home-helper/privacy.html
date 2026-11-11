@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy policy for Andrew's Home Helper, a single-user personal home-automation app for Android.">
+  <title>Privacy Policy — Home Helper</title>
+  <!-- First published November 11, 2026, for app version 0.5.1.
+       Content is the app repo's PRIVACY.md (v0.5.1, Nov 11, 2026)
+       rendered to HTML: the v0.5.0 trigger (geofence arming,
+       background sampling in armed windows, trigger-session
+       records) and the v0.5.1 unlock actuator (an owner-enabled
+       accessibility service that can tap one verified unlock
+       control in the ButterflyMX app during an attempt). -->
+  <style>
+    :root {
+      color-scheme: light dark;
+      --text: #202124;
+      --muted: #5f6368;
+      --background: #ffffff;
+      --rule: #dadce0;
+      --link: #0b57d0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #e8eaed;
+        --muted: #9aa0a6;
+        --background: #131314;
+        --rule: #3c4043;
+        --link: #8ab4f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    main {
+      width: min(100% - 2rem, 760px);
+      margin: 0 auto;
+      padding: 3rem 0 4rem;
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      margin: 2.25rem 0 0.65rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: 1.3rem;
+      line-height: 1.3;
+    }
+    p, ul { margin: 0.65rem 0; }
+    ul { padding-left: 1.35rem; }
+    li { margin: 0.45rem 0; }
+    a { color: var(--link); }
+    .meta, .package { color: var(--muted); }
+    .meta { margin-bottom: 2rem; }
+    .short-version {
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+  
+    h3 {
+      margin: 1.75rem 0 0.5rem;
+      font-size: 1.12rem;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy — Home Helper</h1>
+  <p class="meta">Effective date: November 11, 2026</p>
+  <p class="package">Android package: <code>com.andrewdhorowitz.homehelper</code></p>
+
+  <p>Single-user personal app. This document states what the app records, where each thing goes, and what never leaves the phone. Updated in the same pass as the features it describes (v0.5.1, Nov 11, 2026).</p>
+  <h2>What the app records, and where it goes</h2>
+  <h3>Calibration samples</h3>
+  <p>Each point capture records, for about 25 seconds: every nearby Bluetooth advertiser&#x27;s name/MAC and signal-strength samples, a best-effort GPS fix, the timestamp, and (from v0.3.0) the calibration binding — <code>kind</code>, <code>door_id</code>, <code>point_id</code>, <code>proximity</code>, <code>side</code>, <code>carry_state</code> (whether the phone was in hand or in a pocket), <code>capture_delay_s</code>, an optional freeform <code>note</code>, and for walks <code>from_point_id</code> / <code>to_point_id</code>. From v0.4.0 every capture also records whether it was stopped early (<code>stopped_early</code>) and its actual duration; bindings carry true coordinates (<code>location_id</code>, <code>point_lat</code>/<code>point_lon</code>, <code>from_lat</code>/<code>from_lon</code>, <code>to_lat</code>/<code>to_lon</code>, <code>from_location_id</code>/<code>to_location_id</code>); and a walk additionally records the timed GPS fixes taken during the walk (<code>walk_fixes</code>, about one every 10 seconds) and the walk&#x27;s point-by-point score (<code>walk_score</code> and its counts). A capture can be ended early with the app&#x27;s STOP button; a stopped capture keeps what was collected and is marked as such. Samples are stored as individual JSON files on the phone and uploaded to the owner&#x27;s own receiver endpoint (<code>hooks.andrewdhorowitz.com/homehelper-sample</code>) under a shared token that exists only on the phone and at the endpoint — never in this repository, never in a sample, never in the action log. Upload attempts annotate the sample on-device with <code>upload_last_attempt_at</code> and <code>upload_last_error</code> (an HTTP code or an exception summary — never the token).</p>
+  <p>Any single sample&#x27;s JSON can be shared out through the Android share sheet. That happens only when the owner picks a sample and taps Share; nothing is sent automatically beyond the upload above.</p>
+  <h3>The point registry</h3>
+  <p>The per-location registry of calibration points (names, zone slots, descriptions, and — since v0.4.0 — true Earth coordinates for the points the owner placed in Google Earth, alongside the older reference-photo placements) ships as a bundled seed and is copied to on-device storage. It also bundles the owner&#x27;s two drawn Earth paths and the GPS positions of 54 of the owner&#x27;s own photos (an evidence layer). It never leaves the phone. The bundled reference photos show the owner&#x27;s own building entrance.</p>
+  <h3>The action log (new in v0.3.0)</h3>
+  <p>A bounded, rolling, timestamped log on the device: captures started and finished (with point and carry state), verdicts computed, upload attempts with their result or exact error, configuration refreshes, and TEST runs — capped at 400 entries, oldest rolling off. The log contains no token and no sample payloads. <strong>It never uploads, syncs, or leaves the phone</strong> except when the owner explicitly exports it via the share sheet (&quot;Export action log&quot;).</p>
+  <h3>Configuration</h3>
+  <p>The app pulls a configuration file (places, thresholds, switches) from this repository&#x27;s published endpoint and caches the last-good copy on the phone. The pull sends no identifying data beyond the request itself.</p>
+  <h3>The trigger (v0.5.0)</h3>
+  <p>When automation is live (the master switch ON and the configuration allowing it), the app keeps ONE geofence around the home area from the configuration. Android reports entering that area to the app on the device; no location is sent anywhere by the geofence itself. Entering (or tapping &#x27;Arm now&#x27;) starts a 15-minute window during which the app samples Bluetooth and GPS in the background under a persistent notification, judging the reads against the same fingerprint and registry as manual scans. Each window is saved as one trigger-session record — arm source, state transitions, counts, and whether an unlock attempt was made — and uploads through the same sample endpoint; session records contain no coordinates and no Bluetooth payloads. Background location (&#x27;Allow all the time&#x27;) is used only for the geofence; without it, arming on entry does not happen and the app says so.</p>
+  <h3>The unlock actuator (v0.5.1)</h3>
+  <p>When the trigger orders its one unlock attempt — or when the owner taps &#x27;TEST: Open the Building B door&#x27; — the app uses an accessibility service the owner must first enable in Android Settings. During that attempt only, the service reads the ButterflyMX app&#x27;s on-screen controls in memory to find the unlock control it can verify belongs to the Building B door, and taps it once. It reads nothing at any other time, stores or sends no screen content anywhere, cannot type, and never enters or stores any credential: if ButterflyMX shows its sign-in screen, the attempt aborts and says so. Every attempt&#x27;s outcome (unlocked, or the reason it aborted) is recorded in the on-device action log and, for trigger attempts, in the trigger-session record like any other attempt outcome. Without the Settings grant, nothing changes: attempts fall back to the at-door alert, as in v0.5.0.</p>
+  <h2>What the app never does</h2>
+  <ul>
+    <li>No advertising, analytics, or third-party SDKs.</li>
+    <li>No accounts, no sign-in, no contacts/calendar/message access.</li>
+    <li>No triggering beyond the M3 trigger described above, and that only when automation is live; the master switch ships OFF and automation also requires the configuration to allow it. TEST MODE (automation not live) is detection and recording only.</li>
+    <li>The upload token is never printed, logged, committed, or included in any export.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Questions, access requests, and deletion requests can be sent to <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a>.</p>
+</main>
+</body>
+</html>
