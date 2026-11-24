@@ -74,7 +74,7 @@
 <body>
 <main>
   <h1>Privacy Policy — It&rsquo;s Me</h1>
-  <p class="meta">Effective date: November 22, 2026</p>
+  <p class="meta">Effective date: November 24, 2026</p>
   <p class="package">Android package: <code>com.andrewdhorowitz.me</code></p>
   <p>Developer: Andrew Horowitz<br>
   Contact: <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a></p>
@@ -85,6 +85,7 @@
   <h2>What data the app handles</h2>
   <p><strong>A device key, generated on the device.</strong> On first run, the app generates a cryptographic key pair inside the device&rsquo;s hardware-backed keystore. The private key never leaves the device and cannot be exported. The public key is sent to the developer&rsquo;s own server and stored there, together with the date it was enrolled and a record of any approvals it signs. A public key is not a secret and cannot be used to sign anything by itself. If an enrollment is started but not approved, the server holds the request for 30 minutes and then discards it automatically.</p>
   <p><strong>Signatures for approvals.</strong> When the app approves another of the developer&rsquo;s apps for enrollment, it sends a digital signature and the approval details (which app, which key, when) to the developer&rsquo;s server, where the signature is verified and the approval is recorded.</p>
+  <p><strong>Root transfer records.</strong> The owner can move this app&rsquo;s trusted status from one install of the app to another (for example, from a hand-installed copy to the Play-published copy, which cannot inherit the key). The trusted key signs a one-time transfer grant; the server stores only cryptographic hashes of the grant and of its redemption code — never the code itself — together with the issuing key&rsquo;s identifier and an expiry of at most 30 minutes. When the code is redeemed, the new install&rsquo;s public key is enrolled as trusted, the old key&rsquo;s record is marked superseded with the new key&rsquo;s identifier and the time, and both steps are written to the operational log described below. A superseded key is never trusted again.</p>
   <p><strong>An on-device account check.</strong> The app can check, on the device only, whether any of the owner&rsquo;s own email addresses is present among the accounts on the device. This check happens entirely on the device. No account information is read beyond existence, and nothing about the device&rsquo;s accounts is transmitted, stored, or shared.</p>
   <p><strong>The owner&rsquo;s own information, built in.</strong> The app contains a photograph of the owner and the owner&rsquo;s email addresses as part of its configuration. These were supplied by the owner himself and are visible only to whoever holds the unlocked device.</p>
   <p><strong>Diagnostics, on the device only.</strong> The app keeps a diagnostics log on the device so the owner can see what the app did and when. This log stays on the device and is shown only in the app&rsquo;s owner-facing diagnostics view.</p>
@@ -102,7 +103,7 @@
   <p>The public key and approval records described above are stored on the developer&rsquo;s own server infrastructure (Cloudflare Workers and Google Firestore). They are used for one purpose only: deciding whether a device key is trusted. They are not used for advertising or profiling, and they are not sold or shared.</p>
 
   <h2>Security</h2>
-  <p>The private key is protected by the device&rsquo;s hardware-backed keystore and by the device lock. All communication between the app and the server is encrypted in transit. A new key becomes trusted only when an already-trusted key approves it or when the owner enrolls it with his private bootstrap credential. Trusted keys can be revoked on the server at any time, and revocation takes effect immediately.</p>
+  <p>The private key is protected by the device&rsquo;s hardware-backed keystore and by the device lock. All communication between the app and the server is encrypted in transit. A new key becomes trusted only when an already-trusted key approves it, when the owner enrolls it with his private bootstrap credential, or when it redeems a one-time transfer grant signed by the currently trusted key, as described above. Trusted keys can be revoked on the server at any time, and revocation takes effect immediately.</p>
 
   <h2>Retention and deletion</h2>
   <p>Enrollment records (public key, enrollment date, approval records) are kept while a key is active. Retiring a key inside the app revokes its trusted status immediately; the record of a retired key is deleted within 30 days. To request deletion of any stored records at any time, contact <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a> — because the app&rsquo;s only user is its owner, such requests are honored in full.</p>
