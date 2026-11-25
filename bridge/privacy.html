@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy policy for Andrew and Muse Bridge, a private single-user app, including the org package distributed only within the developer's organization through managed Google Play.">
+  <title>Privacy Policy — Andrew and Muse Bridge</title>
+  <!-- Policy text rendered from the Bridge repo's PRIVACY.md
+       (andrewdhorowitz/text-bridge, current for v0.10.28,
+       November 24, 2026), published for the org package's Play
+       production release App content:
+       https://andrewdhorowitz.com/bridge/privacy -->
+  <style>
+    :root {
+      color-scheme: light dark;
+      --text: #202124;
+      --muted: #5f6368;
+      --background: #ffffff;
+      --rule: #dadce0;
+      --link: #0b57d0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #e8eaed;
+        --muted: #9aa0a6;
+        --background: #131314;
+        --rule: #3c4043;
+        --link: #8ab4f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    main {
+      width: min(100% - 2rem, 760px);
+      margin: 0 auto;
+      padding: 3rem 0 4rem;
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      margin: 2.25rem 0 0.65rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: 1.3rem;
+      line-height: 1.3;
+    }
+    p, ul { margin: 0.65rem 0; }
+    ul { padding-left: 1.35rem; }
+    li { margin: 0.45rem 0; }
+    a { color: var(--link); }
+    .meta, .package { color: var(--muted); }
+    .meta { margin-bottom: 2rem; }
+    .short-version {
+      font-size: 1.08rem;
+      line-height: 1.6;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Privacy Policy — Andrew and Muse Bridge</h1>
+  <p class="meta">Effective date: November 24, 2026</p>
+  <p class="package">Android packages: <code>com.andrewdhorowitz.bridge</code> (standard) and <code>com.andrewdhorowitz.bridge.org</code> (org — see “The org package” below)</p>
+  <p>Developer: Andrew Horowitz<br>
+  Contact: <a href="mailto:privacy@andrewdhorowitz.com">privacy@andrewdhorowitz.com</a></p>
+
+  <h2>What the app does</h2>
+  <p>Bridge is a personal, single-user app on the owner’s own phone, distributed only through Google Play’s internal testing track. It:</p>
+  <ul>
+    <li>forwards Google Messages notifications to the owner’s server <strong>only</strong> when the sender matches a capture allowlist the owner maintains in the app (Contacts config);</li>
+    <li>sends a text by SMS only after the owner approves that specific message;</li>
+    <li>registers and fires get-ready alarms from instructions the server sends;</li>
+  </ul>
+  <p>It also presents <strong>alarm-grade urgent alerts</strong> (since v0.10.12) — a small, owner-defined set of time-critical items (pickup pings, time-to-leave alerts, a child’s urgent ask, an urgent message from the co-parent) that the server flags as alerts. An alert presents with a full-screen takeover and the SOS escalation (since v0.10.22): a vibration pattern — three short, three long, three short — that grows stronger over about 90 seconds, then SOS beeps on the alarm audio stream that start very low and rise over about 90 seconds, followed by a short spoken label. When the phone is not silent the beeps start alongside the vibration; when it is silent, only the strongest tier proceeds from vibration into sound, and Total silence still blocks even alarms. The lock screen and the over-lock alert screen show only a short public summary; the message detail itself appears only after the owner unlocks and taps “Show details”. The app never changes the device’s volume settings — its own alert sound starts low and rises within them — and, only if the owner grants it, uses Do Not Disturb policy access. The spoken label is the alert’s short public label (for example “time to leave”), synthesized on the device; the private detail is never spoken. The alert screen’s only actions are “Got it” and “Remind in 10 min” — an alert never sends anything to anyone. An unacknowledged alert re-rings at +5 and +15 minutes, then stops and is reported to the owner once. The push that wakes the phone for an alert carries no content — only a type marker; the alert itself travels over the same signed leg as the alarms.</p>
+  <p>It also escalates <strong>owner-marked calendar events on the device itself</strong> (since v0.10.16): when a calendar app’s notification carries the owner’s <code>#alarm</code> marker in the event title, the app presents it through the same alert machinery. This happens entirely on the phone — the calendar notification’s title and text are read on the device, never transmitted anywhere, and no calendar data is collected or stored beyond the alert’s own on-device presentation record. Since v0.10.21, the marker alone no longer escalates: before presenting, the app verifies on the device — against the calendar provider, which requires the Calendar permission — that the event is the owner’s own (it sits on the owner’s primary calendar, was authored by the owner, and has no other attendees). A shared-calendar event or an invitation never escalates. The calendar details read for that check (event title, start time, calendar, organizer, attendee addresses) are used only for the decision, on the device, and are never transmitted or stored; if the permission is not granted, nothing escalates.</p>
+  <p>Since v0.10.23 the app’s Alarms tab also lists the coming week’s marked events with the verdict each would get, from the same on-device read; the list is shown only in the app and is likewise never transmitted or stored. Since v0.10.25, when that check finds no event with the notification’s title — a just-created event can still be syncing into the on-device calendar — the app re-checks for a few minutes before deciding, instead of dropping the escalation, and the verified event’s start time tells two events that share a title apart. Same on-device read, same decision-only use; nothing new is collected, transmitted, or stored.</p>
+  <p>Since v0.10.24 the tabs also show dependency health (the server’s reachability as Bridge’s own delivery record shows it, push registration, permissions, the gate’s cached standing, and the standings the server itself last reported about the enrolled key and the owner account record). That display is computed on the device from state the app already holds, at the moment the tab is opened; it collects nothing new, transmits nothing, and triggers no checks. The one new stored value is the time and outcome shape of the key-standing ask the gate already makes at sign-in passes, kept on the device for that display. How alerts present (three tiers — ordinary notification, or the gradual SOS escalation at two bypass strengths) is configuration the owner controls; it changes presentation only, never what data exists or where it goes.</p>
+
+  <h2>The org package</h2>
+  <p>The org package (<code>com.andrewdhorowitz.bridge.org</code>, since v0.10.28) is the same app from the same codebase, distributed privately through managed Google Play to the owner’s own organization only — it is never offered on the public store. Everything in this policy applies to it unchanged, with ONE addition to how it captures:</p>
+  <p><strong>In addition to notifications, the org package reads the phone’s SMS message store</strong> (the Android Telephony provider), under the SMS permission (READ_SMS), which the owner grants or revokes in system Settings like any other permission. A change observer tells the app the store changed; the app then reads the messages newer than a stored position marker (a “watermark”) and runs them through the SAME capture allowlist, matched on the phone, before anything is queued. Messages from anyone not on the allowlist are never transmitted, exactly as on the notification path — the filter is applied on the device first, and only an allowlisted inbound message’s record (sender, text, time) leaves the phone, to the same server store described below. Nothing else in the message store is read into any record: no other senders, no other content.</p>
+  <p><strong>Why:</strong> notification capture can lose a message (a dismissed notification is gone) and truncates long ones. The store is durable, so the watermark read also picks up — once — any allowlisted message that arrived while the app was not running. The two sources dedupe against each other on the phone (and the server dedupes again), so a message both sources see is stored once.</p>
+  <p><strong>The watermark itself</strong> — a timestamp plus hashes of the store rows already processed — is kept only on the phone, in the app’s private storage. The hashes are not message content and are never transmitted.</p>
+  <p><strong>Direction:</strong> only received messages are captured. Messages the owner sent are never captured by either source.</p>
+  <p><strong>Not the default SMS app:</strong> the org package does not take the default-SMS role, does not replace the owner’s messaging app, and cannot send from the store read — sending remains the approved-send path described above. While the SMS permission is ungranted or revoked, the org package captures from notifications only, exactly like the standard package.</p>
+  <p>The <strong>standard package does not read the message store</strong>: it does not declare the SMS permission and contains no store-read code; its capture is notifications only, as described in “What the app does” above.</p>
+
+  <h2>Opening the app and enrollment</h2>
+  <p><strong>There is no account sign-in in the app</strong> (since v0.10.19). An earlier design opened the app only after a Google sign-in check; that check was removed entirely after a device-side failure in the phone’s credential service locked the owner out of his own app for a full day. The app now opens locally, on the owner’s own phone — a local owner pass. The app’s real credential was never the sign-in: it is the enrolled device key below, and the app’s background work (capturing, delivering, alarms) runs off that enrollment.</p>
+  <p><strong>Enrollment is by approval in the It’s Me app</strong> (since v0.10.20). The phone generates a signing key in the Android Keystore (non-exportable; the private key never leaves the phone) and submits the public key to the server as a <em>pending</em> enrollment. The owner approves the pending request in the separate It’s Me app — the approval is a signature from an already-enrolled key, verified by the server — and the key then becomes an installation record on the server, under the tenant registry’s owner email. Until approval, the key is trusted by nothing and trusts nothing; the app polls its own standing with requests signed by the key itself. No Google account, sign-in token, or Play Integrity verdict participates in this flow.</p>
+  <p>Enrollments made under the retired sign-in bootstrap — including the original November 14, 2026 enrollment — remain valid and are not disturbed by the approval flow: an approval adds a record for the new key alongside them.</p>
+  <p>There is <strong>no pasted setup key</strong> (retired in v0.10.0).</p>
+  <p><strong>Biometric unlock is optional and entirely on-device (since v0.10.13).</strong> The app offers — once — to enable locking its screens behind the phone’s fingerprint or face unlock; the same toggle lives in the app’s Settings. <strong>The app never collects, stores, or transmits biometric data.</strong> Android’s own biometric system performs the check inside the phone’s secure hardware; the app learns only that it passed, proven by a key held in the Android Keystore that Android invalidates if the phone’s biometric enrollment changes (which turns the option off). When enabled, the app’s screens lock when the phone locks or after a minute in the background, until a biometric pass. Biometric data is not collected — so the data-safety declaration is unchanged by this feature.</p>
+  <p>Signature enforcement is a property of the owner’s installation state on the server: enrolling a new key does not switch it off.</p>
+  <p>The kill path is server-side revocation of an enrolled key; a revoked key’s signatures stop verifying.</p>
+  <p>The app’s Settings screen — also linked from this app’s page in Android’s system Settings — carries the same server endpoint field as the Setup screen and the same Remove device key control: removing the key sends the signed revoke notice to the server first, then destroys the private key on the phone.</p>
+
+  <h2>App updates</h2>
+  <p>The server holds a per-app <strong>version policy</strong> — just two version numbers (the minimum supported version and the latest) — so an old install can be retired by a server-side change, with no app release needed at that moment. Since v0.10.8 the same policy can also carry a short operator <strong>notice</strong> (fleet-wide, or specific to this app) that the app shows as a dismissible banner; the notice is text the operator writes, delivered on the same read — it is not data collected from the phone.</p>
+  <p>The app reads that policy when it opens and again while it is in use. The read is unauthenticated and carries nothing about the phone, the account, or any key — it asks for two public numbers. If the policy server cannot be reached, the app falls back to the same two numbers published through Firebase Remote Config; the server policy is authoritative whenever it answers, and if neither source answers, nothing is blocked.</p>
+  <p>Below the minimum, the app’s screens are replaced by an update prompt and Google Play’s in-app update flow performs the update. The app’s background work (message capture, approved sends, alarms) is never switched off by version state.</p>
+  <p>At or above the minimum, an available update is offered once per session as a background download the owner can decline.</p>
+
+  <h2>What the server stores</h2>
+  <ul>
+    <li>Incoming message records (sender, text, time) in Firestore until processed and cleared through the owner’s workflow. If the same message is delivered twice (same sender and text within a few minutes — e.g. two installations of the app, or a retried delivery), the server stores it once.</li>
+    <li>Installation records, one per enrolled installation: public key, the account email it enrolled under, whether that installation is set to collect and process, its auto-send mode, its setup-checklist state as the app reports it, and its push (FCM) token. These power the in-app system view, which shows installation status only — never message content.</li>
+    <li>Alarm instructions and acknowledgements (acks retained 90 days).</li>
+    <li>Urgent-alert records (since v0.10.12): one record per alert holding its class, title, lock-screen-safe public summary, and — only until the alert ends — its private detail (the message text the alert presents, which is message content the bridge already processes; no new data category). When an alert reaches a terminal state (acknowledged, expired, unacknowledged-final, or cancelled), the private detail and the public summary are purged from the record; the alert’s id, class, title, state history, and timestamps are retained for 14 days so a missed alert can be reported to the owner exactly once, and then pruned. Test alerts the owner fires from the app’s own readiness screen are flagged as tests in their records. Alert records are never shared with the people the alerts are about, or anyone else.</li>
+    <li>Send records (recipient, content, outcome) for messages the owner approved — retained 90 days. Since v0.10.11, a failed send’s outcome record also carries the exception’s full stack trace (the framework classes and line numbers of the failure — diagnostic detail about the phone’s telephony stack, not message content beyond what the send record already holds), so the owner can see which call failed. It travels only in the existing receipt to the owner’s own server; no new destination receives it.</li>
+    <li>Every stored record that belongs to the owner’s system carries the system’s identifier and label (“Andrew’s Bridge”).</li>
+  </ul>
+
+  <h2>Logging</h2>
+  <p>The server writes <strong>traffic events only</strong> — message in, message out, claims, receipts, enrollments — to the platform’s logging (Cloudflare / Google). Each event has its own event ID, a stable installation identifier, and a masked (hashed) recipient identifier. <strong>Message content is never written to these logs</strong>, so there is no content to reveal from them.</p>
+
+  <h2>Error and performance monitoring (Sentry)</h2>
+  <p>The app uses Sentry, a third-party error- and performance-monitoring service, as a data processor. When the app crashes, hangs (ANR), or encounters an error, a report is sent to Sentry containing the stack trace, the app version and release, the device model and operating system version, and a trail of breadcrumbs recorded before the event. Breadcrumbs include app lifecycle events and user interactions — including taps and clicks on controls — so a failure can be understood in the context of what the app was doing. Performance traces of app operations may be sent the same way. Reports contain no message content and no credentials. Sentry processes these reports on the developer’s behalf; they are used only to diagnose and fix defects, never for advertising or tracking across apps.</p>
+  <p>Bridge’s own configuration narrows this further (since v0.10.21): Sentry’s default-PII collection is off, screenshot and view-hierarchy attachments are off (a screen in this app can display a message, and neither may capture it), and the app’s own breadcrumbs carry only static action labels and network routes with status codes — never message content, sender or recipient names or numbers, tokens, or URL query strings.</p>
+
+  <h2>Deletion</h2>
+  <p>The records the server holds are the ones listed under “What the server stores” above: incoming message records, installation (enrollment) records, alarm instructions and acknowledgements, urgent-alert records, and send records. Some already expire on their own schedules (send records and alarm acknowledgements at 90 days, an alert’s retained remnants at 14 days after it ends).</p>
+  <p>To have server-held records deleted sooner — or deleted entirely — email <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a>. A deletion request deletes the installation record and its enrolled key’s standing (the key stops verifying, as under revocation), any unprocessed incoming message records, and the send, alert, and alarm records tied to that installation, within 30 days of the request. On the phone itself, the app’s Remove device key control revokes the key on the server and destroys the private key on the device, and uninstalling the app removes its on-device data.</p>
+
+  <h2>Sharing</h2>
+  <p>Nothing is sold, rented, or shared for advertising. Data goes only to the providers that run the system (Cloudflare, Google — Firestore, Firebase Cloud Messaging, Play Integrity — and Sentry, for the error and performance reports described above) and, for an approved text, the mobile carrier that delivers the SMS.</p>
+</main>
+</body>
+</html>
