@@ -113,7 +113,18 @@
        and the app-integrity check now decides the two
        enrollment moments — joining (the profile-key
        handover) and claiming a TV pairing — instead of
-       being observe-only there (2.2.16). -->
+       being observe-only there (2.2.16).
+       Updated November 25, 2026 for app version 2.2.19: the
+       app publishes one device-local action, Open alert now,
+       so the device's own automation (for example Samsung
+       Routines) or another app on the same device can ask
+       Family Board to display one of its alert canvases
+       immediately. The action accepts only an alert name and
+       a short line of display text, supplied on the device at
+       the moment of the request; nothing about the request
+       leaves the device — it is not sent to the service, not
+       logged remotely, and not stored beyond a brief
+       on-device record used to collapse duplicate requests. -->
   <style>
     :root {
       color-scheme: light dark;
@@ -179,7 +190,7 @@
 <body>
 <main>
   <h1>Privacy Policy — Family Board</h1>
-  <p class="meta">Effective date: November 17, 2026</p>
+  <p class="meta">Effective date: November 25, 2026</p>
   <p class="package">Android package: <code>com.andrewdhorowitz.familyboard</code></p>
 
   <p class="short-version"><strong>Short version:</strong> Family Board shows one family&rsquo;s calendar and due tasks on a TV and phone display. A server-side generator reads the family&rsquo;s calendar events (titles, times, and the first part of the location line — never event descriptions) and a short list of due tasks, builds a display page, and the apps fetch and show that page. The board runs no advertising and no analytics, and its information is not sold.</p>
@@ -242,6 +253,9 @@
   <h2>Choices and controls</h2>
   <p>The family can stop using the app, uninstall it, or revoke the permissions it uses (such as alarms and drawing over other apps) in Android Settings at any time. Those actions stop the corresponding future processing, but they do not by themselves delete records already held on the server.</p>
   <p>Questions, access requests, and deletion requests can be sent to <a href="mailto:apps@andrewdhorowitz.com">apps@andrewdhorowitz.com</a>.</p>
+
+  <h2>“Open alert now” action (on-device only)</h2>
+  <p>The app publishes one device-local action, <strong>Open alert now</strong>, so the device’s own automation (for example Samsung Routines) or another app on the same device can ask Family Board to display one of its alert canvases immediately. The action accepts only an alert name and a short line of display text, supplied on the device at the moment of the request. Nothing about the request leaves the device: it is not sent to the service, not logged remotely, and not stored beyond a brief on-device record used to collapse duplicate requests. The alerts themselves are the app’s existing templates (including an SOS template); what appears on screen is rendered entirely on the device.</p>
 
   <h2>Changes to this policy</h2>
   <p>If the app&rsquo;s data practices change, this policy will be updated at the same time and the effective date above will change.</p>
